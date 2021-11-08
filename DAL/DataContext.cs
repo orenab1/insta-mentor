@@ -11,6 +11,8 @@ namespace DAL
         }
 
         public DbSet<AppUser> Users{get;set;}
+
+        public DbSet<Project> Projects{get;set;}
     }
 
     

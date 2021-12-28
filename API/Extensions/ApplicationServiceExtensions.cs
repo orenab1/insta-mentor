@@ -4,6 +4,7 @@ using API.Interfaces;
 using API.Services;
 using DAL.Data;
 using Microsoft.EntityFrameworkCore;
+using DAL;
 
 namespace API.Extensions
 {

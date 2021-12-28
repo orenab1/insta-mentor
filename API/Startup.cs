@@ -19,6 +19,7 @@ using API.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using API.Extensions;
 
 namespace API
 {
@@ -51,7 +52,7 @@ namespace API
             options.AddPolicy(name: MyAllowSpecificOrigins,
                               builder =>
                               {
-                                  builder.WithOrigins("https://localhost:4200");
+                                  builder.WithOrigins("https://localhost:4200").AllowAnyHeader().AllowAnyMethod();;
                               });
         });
 

@@ -5,6 +5,10 @@ using API.Services;
 using DAL.Data;
 using Microsoft.EntityFrameworkCore;
 using DAL;
+using API.Interfaces.Repositories;
+using API.Repositories;
+using AutoMapper;
+using API.Helpers;
 
 namespace API.Extensions
 {
@@ -12,8 +16,9 @@ namespace API.Extensions
     {
         public static IServiceCollection AddApplicationServices(this IServiceCollection services,IConfiguration config)
         {
-    
-         services.AddScoped<ITokenService,TokenService>();
+            services.AddScoped<ITokenService,TokenService>();
+            services.AddScoped<IUserRepository,UserRepository>();
+            services.AddAutoMapper(typeof(AutoMapperProfiles).Assembly);
 
             services.AddDbContext<DataContext>(options =>{
                 options.UseSqlite(config.GetConnectionString("DefaultConnection"));

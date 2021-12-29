@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
+import { HomeService } from '../_services/home.service';
 
 @Component({
   selector: 'app-home',
@@ -8,10 +9,13 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HomeComponent implements OnInit {
   registerMode=false;
+  questions:any;
+  
 
-  constructor() { }
+  constructor(private homeService:HomeService) { }
 
   ngOnInit(): void {
+    this.getQuestions();
   }
 
 
@@ -21,5 +25,9 @@ export class HomeComponent implements OnInit {
   
   cancelRegisterMode(event:boolean){
     this.registerMode=event;
+  }
+
+    getQuestions(){
+     this.questions= this.homeService.questions;
   }
 }

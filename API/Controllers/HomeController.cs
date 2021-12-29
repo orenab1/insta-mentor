@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
-using API.DTOs;
+using DAL.DTOs;
 using System.Threading.Tasks;
 using DAL;
 using DAL.Entities;

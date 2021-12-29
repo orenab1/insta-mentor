@@ -1,21 +1,28 @@
 using System.Configuration;
-using API.Interfaces.Repositories;
+using DAL.Interfaces.Repositories;
 using DAL.Entities;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using DAL;
 using System.Data;
 using Microsoft.EntityFrameworkCore;
+using System.Runtime.CompilerServices;
+using System.Security.Cryptography.X509Certificates;
+using AutoMapper;
+using DAL.DTOs;
+using System.Linq;
 
-namespace API.Repositories
+namespace DAL.Repositories
 {
     public class UserRepository : IUserRepository
     {
         private readonly DataContext _context;
+        private readonly IMapper _mapper;
 
-        public UserRepository(DataContext context)
+        public UserRepository(DataContext context,IMapper mapper)
         {
             this._context = context;
+            this._mapper = mapper;
         }
 
         public void Update(AppUser user)
@@ -34,9 +41,24 @@ namespace API.Repositories
         public async Task<AppUser> GetUserAsync(int id)
         {
             return await _context.Users
-                .Include(x=> x.EmailPrefrence)
-                .Include(x=> x.Photo)
-                .SingleOrDefaultAsync(x=>x.Id==id);
+                .Include(x => x.EmailPrefrence)
+                .Include(x => x.Photo)
+                .SingleOrDefaultAsync(x => x.Id == id);
+        }
+
+        public async Task<IEnumerable<MemberDto>> GetMembersAsync()
+        {
+            return await _mapper
+                .ProjectTo<MemberDto>(_context.Users)
+                .ToListAsync();
+        }
+
+        public async Task<MemberDto> GetMemberAsync(int id)
+        {
+            return await _mapper
+                .ProjectTo<MemberDto>(_context.Users.Where(x => x.Id==id))
+                .SingleOrDefaultAsync();
+
         }
     }
 }

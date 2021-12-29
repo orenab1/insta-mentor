@@ -6,15 +6,15 @@ using DAL;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authorization;
-using API.Interfaces.Repositories;
-using API.DTOs;
+using DAL.Interfaces.Repositories;
+using DAL.DTOs;
 using AutoMapper;
 
 namespace API.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class UsersController:BaseApiController
+    public class UsersController : BaseApiController
     {
         private readonly IUserRepository _userRepository;
         private readonly IMapper _mapper;
@@ -29,17 +29,15 @@ namespace API.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<MemberDto>>> GetUsers()
         {
-            var users=await _userRepository.GetUsersAsync();
-            var usersToReturn=_mapper.Map<IEnumerable<MemberDto>>(users);
-            return Ok(usersToReturn);
+            var users = await _userRepository.GetMembersAsync();
+            return Ok(users);
         }
 
         [Authorize]
         [HttpGet("{id}")]
         public async Task<ActionResult<MemberDto>> GetUser(int id)
         {
-            var user=await _userRepository.GetUserAsync(id);
-            return _mapper.Map<MemberDto>(user);
+            return await _userRepository.GetMemberAsync(id);
         }
     }
 }

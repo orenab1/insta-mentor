@@ -5,8 +5,8 @@ using API.Services;
 using DAL.Data;
 using Microsoft.EntityFrameworkCore;
 using DAL;
-using API.Interfaces.Repositories;
-using API.Repositories;
+using DAL.Interfaces.Repositories;
+using DAL.Repositories;
 using AutoMapper;
 using API.Helpers;
 

@@ -1,9 +1,10 @@
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Threading.Tasks;
-using API.DTOs;
+using DAL.DTOs;
 using DAL.Entities;
 
-namespace API.Interfaces.Repositories
+namespace DAL.Interfaces.Repositories
 {
     public interface IUserRepository
     {
@@ -13,8 +14,8 @@ namespace API.Interfaces.Repositories
 
         Task<AppUser> GetUserAsync(int id);
 
-        Task<MemberDto> GetMembersAsync();
+        Task<IEnumerable<MemberDto>> GetMembersAsync();
 
-
+        Task<MemberDto> GetMemberAsync(int Id);
     }
 }

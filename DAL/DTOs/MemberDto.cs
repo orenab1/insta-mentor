@@ -1,7 +1,7 @@
 using System;
 using DAL.Entities;
 
-namespace API.DTOs
+namespace DAL.DTOs
 {
     public class MemberDto
     {

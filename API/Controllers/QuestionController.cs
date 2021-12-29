@@ -1,5 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
-using API.DTOs;
+using DAL.DTOs;
 using System.Threading.Tasks;
 using DAL;
 using DAL.Entities;

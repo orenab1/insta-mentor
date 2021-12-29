@@ -1,6 +1,6 @@
 using System.ComponentModel;
 using System.Runtime.InteropServices;
-using API.DTOs;
+using DAL.DTOs;
 using AutoMapper;
 using DAL.Entities;
 

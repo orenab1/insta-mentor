@@ -4,7 +4,7 @@ using System.Text;
 using System.Threading.Tasks;
 using DAL.Entities;
 using DAL;
-using API.DTOs;
+using DAL.DTOs;
 using Microsoft.EntityFrameworkCore;
 using API.Interfaces;
 

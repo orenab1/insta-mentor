@@ -1,4 +1,4 @@
-namespace API.DTOs
+namespace DAL.DTOs
 {
     public class PhotoDto
     {

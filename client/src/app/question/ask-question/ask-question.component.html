@@ -1,0 +1,18 @@
+<form #askQuestionForm="ngForm" (ngSubmit)="askQuestion()" autocomplete="off">
+    <div class="form-group mt-5">
+        <label>Your Question</label>
+        <input type="text" class="form-control" name="header" [(ngModel)]="model.header">
+
+        <label>Some more details?</label>
+        <input type="textarea" class="form-control" name="body" [(ngModel)]="model.body">
+
+        <div *ngFor="let comment of model.comments">
+            <app-comments [comment]="comment"></app-comments>
+        </div>
+
+        <div class="form-group text-center">
+            <button class="btn btn-success mr-2" type="submit">Publish</button>
+            <button class="btn btn-default mr-2" (click)="cancel()">Cancel</button>
+        </div>
+    </div>
+</form>

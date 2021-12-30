@@ -14,7 +14,8 @@ import { MemberListComponent } from './members/member-list/member-list.component
 import { MemberDetailComponent } from './members/member-detail/member-detail.component';
 import { ListsComponent } from './lists/lists.component';
 import { MessagesComponent } from './messages/messages.component';
-import { AskQuestionComponent } from './ask-question/ask-question.component';
+import { AskQuestionComponent } from './question/ask-question/ask-question.component';
+import { CommentsComponent } from './question/comments/comments.component';
 
 @NgModule({
   declarations: [
@@ -26,7 +27,8 @@ import { AskQuestionComponent } from './ask-question/ask-question.component';
     MemberDetailComponent,
     ListsComponent,
     MessagesComponent,
-    AskQuestionComponent
+    AskQuestionComponent,
+    CommentsComponent
   ],
   imports: [
     BrowserModule,

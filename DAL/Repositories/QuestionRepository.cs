@@ -11,6 +11,7 @@ using System.Security.Cryptography.X509Certificates;
 using AutoMapper;
 using DAL.DTOs;
 using System.Linq;
+using System;
 
 namespace DAL.Repositories
 {
@@ -32,19 +33,21 @@ namespace DAL.Repositories
                 .SingleOrDefaultAsync();
         }
 
-        public async void AskQuestion(QuestionDto questionDto)
+        public async Task<int> AskQuestion(QuestionDto questionDto)
         {
-            _context.Questions.AddAsync(new Question
+            var questionToSave=new Question
             {
                 Header = questionDto.Header,
                 Body = questionDto.Body
-            });
-            
-        }
+            };
 
-        public async Task<bool> SaveAllAsync()
-        {
-            return await _context.SaveChangesAsync() > 0;
+            _context.Questions.AddAsync(questionToSave);
+            
+            await _context.SaveChangesAsync();
+
+
+            return questionToSave.Id;
+
         }
     }
 }

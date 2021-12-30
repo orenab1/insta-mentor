@@ -5,7 +5,7 @@ import { ListsComponent } from './lists/lists.component';
 import { MemberDetailComponent } from './members/member-detail/member-detail.component';
 import { MemberListComponent } from './members/member-list/member-list.component';
 import { MessagesComponent } from './messages/messages.component';
-import { AskQuestionComponent } from './ask-question/ask-question.component';
+import { AskQuestionComponent } from './question/ask-question/ask-question.component';
 
 const routes: Routes = [
   {path:'',component:HomeComponent},

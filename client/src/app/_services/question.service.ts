@@ -18,7 +18,7 @@ export class QuestionService {
   constructor(private http:HttpClient) { }
 
   askQuestion(model:any){
-    return this.http.post(this.baseUrl+'question/ask-question',model).pipe();
+    return this.http.post(this.baseUrl+'questions/ask-question',model).pipe();
   }
 
   getQuestion(id:number){

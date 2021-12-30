@@ -22,18 +22,22 @@ namespace API.Controllers
         [HttpPost("ask-question")]
         public async Task<ActionResult<QuestionDto>> AskQuestion(QuestionDto questionDto)
         {
-            _questionRepository.AskQuestion(questionDto);
+            int id = await _questionRepository.AskQuestion(questionDto);
 
-            _questionRepository.SaveAllAsync();
-            return Ok("ok!");
+            //_questionRepository.SaveAllAsync();
+            return Ok(id);
         }
 
         [Authorize]
         [HttpGet("{id}")]
         public async Task<ActionResult<QuestionDto>> GetQuestion(int id)
         {
+            // if (id==0)
+            // {
+            //     return await new QuestionDto();
+            // }
             return await _questionRepository.GetQuestionAsync(id);
         }
-        
+
     }
 }

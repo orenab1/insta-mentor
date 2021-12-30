@@ -14,6 +14,9 @@ namespace API.Helpers
                 .ForMember(dest => dest.PhotoUrl, opt => opt.MapFrom(src =>
                     src.Photo.Url));
             CreateMap<Photo, PhotoDto>();
+            CreateMap<Question, QuestionDto>();
+            CreateMap<Comment, CommentDto>();
+            CreateMap<Offer, OfferDto>();
         }
     }
 }

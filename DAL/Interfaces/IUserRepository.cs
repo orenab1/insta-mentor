@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using DAL.DTOs;
 using DAL.Entities;
 
-namespace DAL.Interfaces.Repositories
+namespace DAL.Interfaces
 {
     public interface IUserRepository
     {
@@ -16,6 +16,6 @@ namespace DAL.Interfaces.Repositories
 
         Task<IEnumerable<MemberDto>> GetMembersAsync();
 
-        Task<MemberDto> GetMemberAsync(int Id);
+        Task<MemberDto> GetMemberAsync(int id);
     }
 }

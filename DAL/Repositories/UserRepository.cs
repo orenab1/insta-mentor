@@ -1,5 +1,5 @@
 using System.Configuration;
-using DAL.Interfaces.Repositories;
+using DAL.Interfaces;
 using DAL.Entities;
 using System.Threading.Tasks;
 using System.Collections.Generic;

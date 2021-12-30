@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { question } from '../_models/question';
 import { QuestionService } from '../_services/question.service';
 
 @Component({
@@ -7,25 +8,34 @@ import { QuestionService } from '../_services/question.service';
   styleUrls: ['./ask-question.component.scss']
 })
 export class AskQuestionComponent implements OnInit {
-  model:any={};
+  model: question;
 
 
-  constructor(private questionService:QuestionService) {
+  constructor(private questionService: QuestionService) {
     
-   }
-
-  ngOnInit(): void {
   }
 
-  askQuestion(){
-    this.questionService.askQuestion(this.model).subscribe(response =>{
+  ngOnInit(): void {
+    this.getQuestion();
+  }
+
+  askQuestion() {
+    this.questionService.askQuestion(this.model).subscribe(response => {
       console.log(response);
-    }, error =>{
+    }, error => {
       console.log(error);
     });
   }
 
-  cancel(){
+  getQuestion() {
+    this.questionService.getQuestion(2).subscribe(response => {
+      this.model = response;
+    }, error => {
+      console.log(error);
+    });
+  }
+
+  cancel() {
 
   }
 }

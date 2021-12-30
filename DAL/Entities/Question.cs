@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 namespace DAL.Entities
 {
     public class Question
@@ -7,6 +9,8 @@ namespace DAL.Entities
 
         public string Body { get; set; }
 
-        
+        public ICollection<Comment> Comments { get; set; }
+
+        public ICollection<Offer> Offers { get; set; }
     }
 }

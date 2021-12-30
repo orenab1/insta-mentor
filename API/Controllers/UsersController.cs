@@ -6,7 +6,7 @@ using DAL;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authorization;
-using DAL.Interfaces.Repositories;
+using DAL.Interfaces;
 using DAL.DTOs;
 using AutoMapper;
 
@@ -17,12 +17,10 @@ namespace API.Controllers
     public class UsersController : BaseApiController
     {
         private readonly IUserRepository _userRepository;
-        private readonly IMapper _mapper;
 
-        public UsersController(IUserRepository userRepository, IMapper mapper)
+        public UsersController(IUserRepository userRepository)
         {
             this._userRepository = userRepository;
-            this._mapper = mapper;
         }
 
         [AllowAnonymous]

@@ -3,30 +3,36 @@ using DAL.DTOs;
 using System.Threading.Tasks;
 using DAL;
 using DAL.Entities;
+using DAL.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 
 namespace API.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class QuestionController : ControllerBase
+    public class QuestionsController : ControllerBase
     {
-        private readonly DataContext _context;
+        private readonly IQuestionRepository _questionRepository;
 
-        public QuestionController(DataContext context)
+        public QuestionsController(IQuestionRepository questionRepository)
         {
-            _context = context;
+            this._questionRepository = questionRepository;
         }
 
         [HttpPost("ask-question")]
         public async Task<ActionResult<QuestionDto>> AskQuestion(QuestionDto questionDto)
         {
-            _context.Questions.AddAsync(new Question{
-                Header=questionDto.Header,
-                Body=questionDto.Body
-            });
+            _questionRepository.AskQuestion(questionDto);
 
-            _context.SaveChangesAsync();
+            _questionRepository.SaveAllAsync();
             return Ok("ok!");
+        }
+
+        [Authorize]
+        [HttpGet("{id}")]
+        public async Task<ActionResult<QuestionDto>> GetQuestion(int id)
+        {
+            return await _questionRepository.GetQuestionAsync(id);
         }
         
     }

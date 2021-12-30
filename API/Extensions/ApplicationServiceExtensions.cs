@@ -5,7 +5,7 @@ using API.Services;
 using DAL.Data;
 using Microsoft.EntityFrameworkCore;
 using DAL;
-using DAL.Interfaces.Repositories;
+using DAL.Interfaces;
 using DAL.Repositories;
 using AutoMapper;
 using API.Helpers;
@@ -18,6 +18,7 @@ namespace API.Extensions
         {
             services.AddScoped<ITokenService,TokenService>();
             services.AddScoped<IUserRepository,UserRepository>();
+            services.AddScoped<IQuestionRepository,QuestionRepository>();
             services.AddAutoMapper(typeof(AutoMapperProfiles).Assembly);
 
             services.AddDbContext<DataContext>(options =>{

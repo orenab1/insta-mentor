@@ -1,3 +1,6 @@
+using System.Collections.Generic;
+using DAL.Entities;
+
 namespace DAL.DTOs
 {
     public class QuestionDto
@@ -6,5 +9,7 @@ namespace DAL.DTOs
         public string Header { get; set; }
 
         public string Body { get; set; }
+
+        public List<CommentDto> Comments { get; set; }
     }
 }

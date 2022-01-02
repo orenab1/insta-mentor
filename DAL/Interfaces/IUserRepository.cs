@@ -12,10 +12,10 @@ namespace DAL.Interfaces
         Task<bool> SaveAllAsync();
         Task<IEnumerable<AppUser>> GetUsersAsync();
 
-        Task<AppUser> GetUserAsync(int id);
+        Task<AppUser> GetUserAsync(string username);
 
         Task<IEnumerable<MemberDto>> GetMembersAsync();
 
-        Task<MemberDto> GetMemberAsync(int id);
+        Task<MemberDto> GetMemberAsync(string username);
     }
 }

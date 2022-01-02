@@ -13,5 +13,7 @@ namespace DAL.Interfaces
         Task<int> AskQuestionAsync(QuestionDto questionDto);
 
         Task<bool> PostCommentAsync(CommentDto commentDto);
+
+        Task<IEnumerable<QuestionDto>> GetQuestionsAsync();
     }
 }

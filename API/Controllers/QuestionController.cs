@@ -5,6 +5,7 @@ using DAL;
 using DAL.Entities;
 using DAL.Interfaces;
 using Microsoft.AspNetCore.Authorization;
+using System.Collections.Generic;
 
 namespace API.Controllers
 {
@@ -46,6 +47,12 @@ namespace API.Controllers
 
             //_questionRepository.SaveAllAsync();
             return Ok();
+        }
+
+        [HttpGet()]
+        public async Task<ActionResult<IEnumerable<QuestionDto>>> GetQuestionsAsync()
+        {
+            return Ok(await _questionRepository.GetQuestionsAsync());
         }
 
     }

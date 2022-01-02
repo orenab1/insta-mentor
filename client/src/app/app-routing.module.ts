@@ -6,16 +6,18 @@ import { MemberDetailComponent } from './members/member-detail/member-detail.com
 import { MemberListComponent } from './members/member-list/member-list.component';
 import { MessagesComponent } from './messages/messages.component';
 import { AskQuestionComponent } from './question/ask-question/ask-question.component';
+import { QuestionsComponent } from './question/questions/questions.component';
 
 const routes: Routes = [
-  {path:'',component:HomeComponent},
-  {path:'members',component:MemberListComponent},
-  {path:'members/:id',component:MemberDetailComponent},
-  {path:'lists',component:ListsComponent},
-  {path:'messages',component:MessagesComponent},
-  {path:'ask-question',component:AskQuestionComponent},
-  {path:'ask-question/:id',component:AskQuestionComponent},
-  {path:'**',component:HomeComponent,pathMatch:'full'},
+  { path: '', component: HomeComponent },
+  { path: 'members', component: MemberListComponent },
+  { path: 'questions', component: QuestionsComponent },
+  { path: 'members/:id', component: MemberDetailComponent },
+  { path: 'lists', component: ListsComponent },
+  { path: 'messages', component: MessagesComponent },
+  { path: 'ask-question', component: AskQuestionComponent },
+  { path: 'ask-question/:id', component: AskQuestionComponent },
+  { path: '**', component: HomeComponent, pathMatch: 'full' },
 
 ];
 

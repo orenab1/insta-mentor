@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import {HttpClient, HttpClientModule} from '@angular/common/http';
+import {HttpClient, HttpClientModule, HTTP_INTERCEPTORS} from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -16,6 +16,8 @@ import { ListsComponent } from './lists/lists.component';
 import { MessagesComponent } from './messages/messages.component';
 import { AskQuestionComponent } from './question/ask-question/ask-question.component';
 import { CommentsComponent } from './question/comments/comments.component';
+import { JwtInterceptor } from './_interceptors/jwt.interceptor';
+import { QuestionsComponent } from './question/questions/questions.component';
 
 @NgModule({
   declarations: [
@@ -28,7 +30,8 @@ import { CommentsComponent } from './question/comments/comments.component';
     ListsComponent,
     MessagesComponent,
     AskQuestionComponent,
-    CommentsComponent
+    CommentsComponent,
+    QuestionsComponent
   ],
   imports: [
     BrowserModule,
@@ -38,7 +41,10 @@ import { CommentsComponent } from './question/comments/comments.component';
     FormsModule,
     BsDropdownModule.forRoot()
   ],
-  providers: [HttpClientModule],
+  providers: [
+    HttpClientModule,
+    {provide:HTTP_INTERCEPTORS, useClass:JwtInterceptor,multi:true}
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

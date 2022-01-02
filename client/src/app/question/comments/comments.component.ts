@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { comment } from '../../_models/question';
 import { QuestionService } from '../../_services/question.service';
 
@@ -14,7 +15,7 @@ export class CommentsComponent implements OnInit {
   shouldDisplayCommentButton:boolean=true;
   model:Comment;
 
-  constructor(private questionService: QuestionService) { }
+  constructor(private questionService: QuestionService, private router: Router) { }
 
   ngOnInit(): void {
   }
@@ -31,8 +32,8 @@ export class CommentsComponent implements OnInit {
 
     }
 
-    // this.questionService.postComment(this.model).subscribe(response => {
-    // });
+    this.questionService.postComment(this.model).subscribe(response => {
+    });
   }
 
   displayAddForm(){
@@ -43,5 +44,14 @@ export class CommentsComponent implements OnInit {
   post(){
     this.shouldDisplayAddForm=false;
     this.shouldDisplayCommentButton=true;
+    this.reloadCurrentRoute();
   }
+
+
+  reloadCurrentRoute() {
+    const currentUrl = this.router.url;
+    this.router.navigateByUrl('/', {skipLocationChange: true}).then(() => {
+        this.router.navigate([currentUrl]);
+    });
+}
 }

@@ -73,5 +73,12 @@ namespace DAL.Repositories
 
             return await _context.SaveChangesAsync()>0;
         }
+
+        public async Task<IEnumerable<QuestionDto>> GetQuestionsAsync()
+        {
+            return await _mapper
+                .ProjectTo<QuestionDto>(_context.Questions)
+                .ToListAsync();
+        }
     }
 }

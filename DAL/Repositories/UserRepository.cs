@@ -38,12 +38,12 @@ namespace DAL.Repositories
             return await _context.Users.ToListAsync();
         }
 
-        public async Task<AppUser> GetUserAsync(int id)
+        public async Task<AppUser> GetUserAsync(string username)
         {
             return await _context.Users
                 .Include(x => x.EmailPrefrence)
                 .Include(x => x.Photo)
-                .SingleOrDefaultAsync(x => x.Id == id);
+                .SingleOrDefaultAsync(x => x.UserName == username);
         }
 
         public async Task<IEnumerable<MemberDto>> GetMembersAsync()
@@ -53,10 +53,10 @@ namespace DAL.Repositories
                 .ToListAsync();
         }
 
-        public async Task<MemberDto> GetMemberAsync(int id)
+        public async Task<MemberDto> GetMemberAsync(string username)
         {
             return await _mapper
-                .ProjectTo<MemberDto>(_context.Users.Where(x => x.Id==id))
+                .ProjectTo<MemberDto>(_context.Users.Where(x => x.UserName==username))
                 .SingleOrDefaultAsync();
 
         }

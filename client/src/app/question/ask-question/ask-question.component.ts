@@ -15,6 +15,7 @@ export class AskQuestionComponent implements OnInit {
   id: number;
   routeSub: Subscription;
   baseUrl = environment.apiUrl;
+  isNew=false;
   // ={
   //   id:0,
   //   header:'',
@@ -29,10 +30,12 @@ export class AskQuestionComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.getQuestion();
     this.routeSub = this.route.params.subscribe(params => {
 
-      this.id = parseInt(params.get('id'));
+      this.id = parseInt(params['id']) || 0;
+      
+      this.isNew=this.id===0;
+      this.getQuestion();
     });
   }
 
@@ -42,7 +45,6 @@ export class AskQuestionComponent implements OnInit {
 
   askQuestion() {
     this.questionService.askQuestion(this.model).subscribe(response => {
-      alert('/questions/' + response);
       this.router.navigate(['/ask-question/' + response]);
     }, error => {
       alert('error');

@@ -10,6 +10,8 @@ export interface question {
 export interface comment {
     id: number;
     text: string;
+    questionId:number;
+    commentorId:number;
 }
 
 export interface offer {

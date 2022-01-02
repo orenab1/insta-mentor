@@ -5,8 +5,8 @@ import { question } from '../_models/question';
 
 const httpOptions = {
   headers: new HttpHeaders({
-    Authorization: 'Bearer ' + JSON.parse(localStorage.getItem('user'))?.token
-  })
+    Authorization: 'Bearer ' + JSON.parse(localStorage.getItem('user'))?.token,
+    'Content-Type': 'application/json'})
 }
 
 @Injectable({
@@ -18,10 +18,15 @@ export class QuestionService {
   constructor(private http:HttpClient) { }
 
   askQuestion(model:any){
-    return this.http.post(this.baseUrl+'questions/ask-question',model).pipe();
+    return this.http.post(this.baseUrl+'questions/ask-question',model);
   }
 
   getQuestion(id:number){
-    return this.http.get<question>(this.baseUrl+'questions/'+id, httpOptions);
+    const serverId=id?? 0;
+    return this.http.get<question>(this.baseUrl+'questions/'+serverId, httpOptions);
+  }
+
+  postComment(model:Comment){
+    return this.http.post(this.baseUrl+'questions/postComment',model);
   }
 }

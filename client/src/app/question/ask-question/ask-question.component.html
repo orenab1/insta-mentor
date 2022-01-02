@@ -1,16 +1,32 @@
 <form #askQuestionForm="ngForm" (ngSubmit)="askQuestion()" autocomplete="off">
     <div class="form-group mt-5">
         <label>Your Question</label>
-        <input type="text" class="form-control" name="header" [(ngModel)]="model.header">
 
-        <label>Some more details?</label>
-        <input type="textarea" class="form-control" name="body" [(ngModel)]="model.body">
-
-        <div *ngFor="let comment of model.comments">
-            <app-comments [comment]="comment"></app-comments>
+        <div>        
+            <div *ngIf="isNew; else headerInput">
+                <input  type="text" class="form-control" name="header" [(ngModel)]="model.header">
+            </div>
+            <ng-template #headerInput>
+                <label>{{model.header}}</label>
+            </ng-template>
         </div>
 
-        <div class="form-group text-center">
+        
+        <div>
+            <label>Some more details?</label>
+        </div>
+            <div *ngIf="isNew; else bodyInput">
+                <input type="textarea" class="form-control" name="body" [(ngModel)]="model.body">
+
+            </div>
+            <ng-template #bodyInput>
+                {{model.body}}
+            </ng-template>
+       
+
+            <app-comments *ngIf="!isNew;" [comments]="model.comments" [questionId]="id"></app-comments>
+
+        <div *ngIf="isNew" class="form-group text-center">
             <button class="btn btn-success mr-2" type="submit">Publish</button>
             <button class="btn btn-default mr-2" (click)="cancel()">Cancel</button>
         </div>

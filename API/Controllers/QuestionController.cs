@@ -22,7 +22,7 @@ namespace API.Controllers
         [HttpPost("ask-question")]
         public async Task<ActionResult<QuestionDto>> AskQuestion(QuestionDto questionDto)
         {
-            int id = await _questionRepository.AskQuestion(questionDto);
+            int id = await _questionRepository.AskQuestionAsync(questionDto);
 
             //_questionRepository.SaveAllAsync();
             return Ok(id);
@@ -37,6 +37,15 @@ namespace API.Controllers
             //     return await new QuestionDto();
             // }
             return await _questionRepository.GetQuestionAsync(id);
+        }
+
+        [HttpPost("post-comment")]
+        public async Task<ActionResult<CommentDto>> PostComment(CommentDto commentDto)
+        {
+            await _questionRepository.PostCommentAsync(commentDto);
+
+            //_questionRepository.SaveAllAsync();
+            return Ok();
         }
 
     }

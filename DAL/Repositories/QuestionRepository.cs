@@ -12,6 +12,7 @@ using AutoMapper;
 using DAL.DTOs;
 using System.Linq;
 using System;
+//using System.Runtime.Remoting.Lifetime;
 
 namespace DAL.Repositories
 {
@@ -33,21 +34,44 @@ namespace DAL.Repositories
                 .SingleOrDefaultAsync();
         }
 
-        public async Task<int> AskQuestion(QuestionDto questionDto)
+        public async Task<int> AskQuestionAsync(QuestionDto questionDto)
         {
-            var questionToSave=new Question
+            var questionToSave = new Question
             {
                 Header = questionDto.Header,
                 Body = questionDto.Body
             };
 
             _context.Questions.AddAsync(questionToSave);
-            
+
             await _context.SaveChangesAsync();
 
 
             return questionToSave.Id;
 
+        }
+
+        public async Task<bool> PostCommentAsync(CommentDto commentDto)
+        {
+            var question = _context.Questions.SingleOrDefault(x => x.Id == commentDto.QuestionId);
+
+            if (question.Comments==null)
+            {
+                question.Comments=new List<Comment>();
+            }
+            question.Comments.Add(
+                new Comment
+                {
+                    Text = commentDto.Text,
+                    Created = DateTime.Now,
+                    Question = question
+                }
+            );
+
+
+            _context.Entry(question).State = EntityState.Modified;
+
+            return await _context.SaveChangesAsync()>0;
         }
     }
 }

@@ -10,8 +10,8 @@ namespace DAL.Interfaces
     {
         Task<QuestionDto> GetQuestionAsync(int id);
 
-        Task<int> AskQuestion(QuestionDto questionDto);
+        Task<int> AskQuestionAsync(QuestionDto questionDto);
 
-      
+        Task<bool> PostCommentAsync(CommentDto commentDto);
     }
 }

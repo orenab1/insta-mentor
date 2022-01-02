@@ -14,6 +14,7 @@ const routes: Routes = [
   {path:'lists',component:ListsComponent},
   {path:'messages',component:MessagesComponent},
   {path:'ask-question',component:AskQuestionComponent},
+  {path:'ask-question/:id',component:AskQuestionComponent},
   {path:'**',component:HomeComponent,pathMatch:'full'},
 
 ];

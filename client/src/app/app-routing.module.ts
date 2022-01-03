@@ -10,11 +10,11 @@ import { QuestionsComponent } from './question/questions/questions.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
-  { path: 'members', component: MemberListComponent },
+ // { path: 'members', component: MemberListComponent },
   { path: 'questions', component: QuestionsComponent },
-  { path: 'members/:id', component: MemberDetailComponent },
+  { path: 'members/:username', component: MemberDetailComponent },
   { path: 'lists', component: ListsComponent },
-  { path: 'messages', component: MessagesComponent },
+ // { path: 'messages', component: MessagesComponent },
   { path: 'ask-question', component: AskQuestionComponent },
   { path: 'ask-question/:id', component: AskQuestionComponent },
   { path: '**', component: HomeComponent, pathMatch: 'full' },

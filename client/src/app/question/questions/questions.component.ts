@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { question } from 'src/app/_models/question';
+import { Question } from 'src/app/_models/question';
 import { QuestionService } from 'src/app/_services/question.service';
 
 @Component({
@@ -8,11 +8,12 @@ import { QuestionService } from 'src/app/_services/question.service';
   styleUrls: ['./questions.component.scss']
 })
 export class QuestionsComponent implements OnInit {
-  questions: question[];
+  questions: Question[];
 
   constructor(private questionService: QuestionService) { }
 
   ngOnInit(): void {
+    this.loadQuestions();
   }
 
   loadQuestions(): void {

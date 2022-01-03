@@ -1,10 +1,15 @@
 <div>
     <div *ngFor="let question of questions">
-        <div>
-            {{question.Header}}
-        </div>
-        <div>
-            {{question.Body}}
+        <div class="mt-3 bg-light" routerLink='/ask-question/{{question.id}}'>
+            <p class="fw-bold">
+                {{question.header}}
+            </p>
+            <div>
+                {{question.body}}
+            </div>
+            <div routerLink='/ask-question/{{question.askerId}}'>
+                {{question.askerUsername}}
+            </div>
         </div>
     </div>
 </div>

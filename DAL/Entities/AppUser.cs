@@ -1,5 +1,6 @@
 using System;
 using DAL.Entities;
+using System.Collections.Generic;
 
 namespace DAL.Entities
 {
@@ -24,5 +25,7 @@ namespace DAL.Entities
         public DateTime Created { get; set; }
 
         public EmailPrefrence EmailPrefrence { get; set; }
+
+        public ICollection<Question> Questions { get; set; }
     }
 }

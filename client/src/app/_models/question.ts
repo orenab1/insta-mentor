@@ -1,20 +1,22 @@
-export interface question {
+export interface Question {
     id: number;
     header: string;
     body: string;
-    comments: comment[];
-    offers: offer[];
+    comments: Comment[];
+    offers: Offer[];
+    askerId: number;
+    askerUsername: string;
 }
 
 
-export interface comment {
+export interface Comment {
     id: number;
     text: string;
-    questionId:number;
-    commentorId:number;
+    questionId: number;
+    commentorId: number;
 }
 
-export interface offer {
+export interface Offer {
     id: number;
     text: string;
 }

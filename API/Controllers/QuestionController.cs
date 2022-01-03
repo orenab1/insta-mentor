@@ -50,7 +50,7 @@ namespace API.Controllers
         }
 
         [HttpGet()]
-        public async Task<ActionResult<IEnumerable<QuestionDto>>> GetQuestionsAsync()
+        public async Task<ActionResult<IEnumerable<QuestionDto>>> GetQuestions()
         {
             return Ok(await _questionRepository.GetQuestionsAsync());
         }

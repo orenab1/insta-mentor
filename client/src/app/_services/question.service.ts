@@ -2,15 +2,15 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { map } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
-import { question } from '../_models/question';
-
+import { Question } from '../_models/question';
+import { Comment } from '../_models/question';
 
 @Injectable({
   providedIn: 'root'
 })
 export class QuestionService {
   baseUrl = environment.apiUrl;
-  questions:question[]=[];
+  questions: Question[] = [];
 
   constructor(private http: HttpClient) { }
 
@@ -20,11 +20,11 @@ export class QuestionService {
 
   getQuestion(id: number) {
     const serverId = id ?? 0;
-    return this.http.get<question>(this.baseUrl + 'questions/' + serverId);
+    return this.http.get<Question>(this.baseUrl + 'questions/' + serverId);
   }
 
   getQuestions() {
-    return this.http.get<question[]>(this.baseUrl + 'questions').pipe(
+    return this.http.get<Question[]>(this.baseUrl + 'questions').pipe(
       map(questions => {
         this.questions = questions;
         return questions;

@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
+
 namespace DAL.DTOs
 {
     public class RegisterDto

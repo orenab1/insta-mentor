@@ -1,1 +1,26 @@
-<p>member-detail works!</p>
+<div *ngIf="member">
+    <div class="col-4">
+        <div class="card">
+            <img src="{{member.photoUrl || './assets/user.png'}}" alt="{{member.username}}" 
+                class="card-img-top img-thumbnail" style="width: 100px; height: 100px;">
+            <div class="card-body">
+                <div>
+                    <strong>username:</strong>
+                    <p>{{member.username}}</p>
+                </div>
+                <div>
+                    <strong>email:</strong>
+                    <p>{{member.email}}</p>
+                </div>
+                <div>
+                    <strong>title:</strong>
+                    <p>{{member.title}}</p>
+                </div>
+                <div>
+                    <strong>aboutMe:</strong>
+                    <p>{{member.aboutMe}}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { environment } from 'src/environments/environment';
-import { question } from '../../_models/question';
+import { Question } from '../../_models/question';
 import { QuestionService } from '../../_services/question.service';
 
 @Component({
@@ -11,19 +11,11 @@ import { QuestionService } from '../../_services/question.service';
   styleUrls: ['./ask-question.component.scss']
 })
 export class AskQuestionComponent implements OnInit {
-  model: question;
+  model: Question;
   id: number;
   routeSub: Subscription;
   baseUrl = environment.apiUrl;
-  isNew=false;
-  // ={
-  //   id:0,
-  //   header:'',
-  //   body:'',
-  //   comments:[],
-  //   offers:[]
-  // };
-
+  isNew = false;
 
   constructor(private questionService: QuestionService, private router: Router, private route: ActivatedRoute) {
 
@@ -33,8 +25,8 @@ export class AskQuestionComponent implements OnInit {
     this.routeSub = this.route.params.subscribe(params => {
 
       this.id = parseInt(params['id']) || 0;
-      
-      this.isNew=this.id===0;
+
+      this.isNew = this.id === 0;
       this.getQuestion();
     });
   }
@@ -63,7 +55,9 @@ export class AskQuestionComponent implements OnInit {
           header: '',
           body: '',
           comments: [],
-          offers: []
+          offers: [],
+          askerId: 0,
+          askerUsername: ''
         };
       } else {
         this.model = response;

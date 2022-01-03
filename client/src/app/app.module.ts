@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import {HttpClient, HttpClientModule, HTTP_INTERCEPTORS} from '@angular/common/http';
+import { HttpClient, HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -18,6 +18,7 @@ import { AskQuestionComponent } from './question/ask-question/ask-question.compo
 import { CommentsComponent } from './question/comments/comments.component';
 import { JwtInterceptor } from './_interceptors/jwt.interceptor';
 import { QuestionsComponent } from './question/questions/questions.component';
+import { OffersComponent } from './question/offers/offers.component';
 
 @NgModule({
   declarations: [
@@ -31,7 +32,8 @@ import { QuestionsComponent } from './question/questions/questions.component';
     MessagesComponent,
     AskQuestionComponent,
     CommentsComponent,
-    QuestionsComponent
+    QuestionsComponent,
+    OffersComponent
   ],
   imports: [
     BrowserModule,
@@ -43,7 +45,7 @@ import { QuestionsComponent } from './question/questions/questions.component';
   ],
   providers: [
     HttpClientModule,
-    {provide:HTTP_INTERCEPTORS, useClass:JwtInterceptor,multi:true}
+    { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true }
   ],
   bootstrap: [AppComponent]
 })

@@ -17,7 +17,9 @@ namespace API.Helpers
             CreateMap<MemberUpdateDto,AppUser>();
             
             CreateMap<Photo, PhotoDto>();
-            CreateMap<Question, QuestionDto>();
+            CreateMap<Question, QuestionDto>()
+                .ForMember(dest => dest.AskerUsername, opt => opt.MapFrom(src =>
+                    src.Asker.UserName));
             CreateMap<Comment, CommentDto>();
             CreateMap<Offer, OfferDto>();
         }

@@ -11,5 +11,9 @@ namespace DAL.DTOs
         public string Body { get; set; }
 
         public List<CommentDto> Comments { get; set; }
+
+        public int AskerId { get; set; }
+
+        public string AskerUsername { get; set; }
     }
 }

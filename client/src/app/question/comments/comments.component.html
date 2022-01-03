@@ -1,15 +1,14 @@
-
-
- <div *ngFor="let comment of comments">
+<div *ngFor="let comment of comments">
     <div>{{comment.id}}</div>
     <div>{{comment.text}}</div>
-</div> 
-
-<div>
-<button *ngIf="shouldDisplayCommentButton" type="button" (click)="displayAddForm()">Comment</button>
 </div>
 
-<form *ngIf="shouldDisplayAddForm" #commentForm="ngForm" (ngSubmit)="postCmment()" (ngSubmit)="postComment()" autocomplete="off">
+<div>
+    <button *ngIf="shouldDisplayCommentButton" type="button" (click)="displayAddForm()">Comment</button>
+</div>
+
+<form *ngIf="shouldDisplayAddForm" #commentForm="ngForm" (ngSubmit)="postCmment()" (ngSubmit)="postComment()"
+    autocomplete="off">
     <textarea name="text" (ngModel)="model.text">
 
     </textarea>

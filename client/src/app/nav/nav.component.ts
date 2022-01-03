@@ -3,6 +3,7 @@ import { Observable } from 'rxjs';
 import { AccountService } from '../_services/account.service';
 import { User } from '../_models/user';
 import { Router } from '@angular/router';
+import { take } from 'rxjs/operators';
 
 @Component({
   selector: 'app-nav',
@@ -10,17 +11,19 @@ import { Router } from '@angular/router';
   styleUrls: ['./nav.component.scss']
 })
 export class NavComponent implements OnInit {
-  model:any={}
+  user: User;
 
 
-  constructor(public accountService: AccountService, private router:Router) { }
+  constructor(public accountService: AccountService, private router:Router) { 
+    this.accountService.currentUser$.pipe(take(1)).subscribe(user => this.user = user);
+  }
 
   ngOnInit(): void {
   }
   
 
   login(){
-    this.accountService.login(this.model).subscribe(response =>{
+    this.accountService.login(this.user).subscribe(response =>{
       this.router.navigateByUrl('/members');
     },error =>{
       console.log(error);

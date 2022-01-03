@@ -17,4 +17,8 @@ export class MembersService {
   getMember(username:string) {
     return this.http.get<Member>(this.baseUrl + 'users/'+username);
   }
+
+  deletePhoto(photoId: number) {
+    return this.http.delete(this.baseUrl + 'users/delete-photo/' + photoId);
+  }
 }

@@ -6,4 +6,5 @@ export interface Member {
     aboutMe: string;
     photoUrl: string;
     created: Date;
+    photoId: number;
 }

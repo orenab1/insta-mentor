@@ -19,6 +19,9 @@ import { CommentsComponent } from './question/comments/comments.component';
 import { JwtInterceptor } from './_interceptors/jwt.interceptor';
 import { QuestionsComponent } from './question/questions/questions.component';
 import { OffersComponent } from './question/offers/offers.component';
+import { PhotoEditorComponent } from './members/photo-editor/photo-editor.component';
+import { FileUploadModule } from 'ng2-file-upload';
+import { RateComponent } from './rate/rate.component';
 
 @NgModule({
   declarations: [
@@ -33,7 +36,9 @@ import { OffersComponent } from './question/offers/offers.component';
     AskQuestionComponent,
     CommentsComponent,
     QuestionsComponent,
-    OffersComponent
+    OffersComponent,
+    PhotoEditorComponent,
+    RateComponent
   ],
   imports: [
     BrowserModule,
@@ -41,7 +46,8 @@ import { OffersComponent } from './question/offers/offers.component';
     HttpClientModule,
     BrowserAnimationsModule,
     FormsModule,
-    BsDropdownModule.forRoot()
+    BsDropdownModule.forRoot(),
+    FileUploadModule
   ],
   providers: [
     HttpClientModule,

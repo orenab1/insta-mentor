@@ -31,6 +31,8 @@
             <h4>Offers</h4>
             <app-offers *ngIf="model && !isNew;" [offers]="model.offers" [questionId]="id"></app-offers>
 
+            <app-review [questionId]="id"></app-review>
+
         <div *ngIf="isNew" class="form-group text-center">
             <button class="btn btn-success mr-2" type="submit">Publish</button>
             <button class="btn btn-default mr-2" (click)="cancel()">Cancel</button>

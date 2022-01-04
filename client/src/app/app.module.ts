@@ -21,7 +21,8 @@ import { QuestionsComponent } from './question/questions/questions.component';
 import { OffersComponent } from './question/offers/offers.component';
 import { PhotoEditorComponent } from './members/photo-editor/photo-editor.component';
 import { FileUploadModule } from 'ng2-file-upload';
-import { RateComponent } from './rate/rate.component';
+import { ReviewComponent } from './review/review.component';
+
 
 @NgModule({
   declarations: [
@@ -38,7 +39,7 @@ import { RateComponent } from './rate/rate.component';
     QuestionsComponent,
     OffersComponent,
     PhotoEditorComponent,
-    RateComponent
+    ReviewComponent
   ],
   imports: [
     BrowserModule,

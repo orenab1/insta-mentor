@@ -17,5 +17,7 @@ namespace DAL.Entities
         public int? AskerId { get; set; }
 
         public AppUser Asker { get; set; }
+
+        public ICollection<Review> Reviews { get; set; }
     }
 }

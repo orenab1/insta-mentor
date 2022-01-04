@@ -16,5 +16,7 @@ namespace DAL.Entities
 
         public AppUser Reviewer { get; set; }
         public AppUser Reviewee { get; set; }
+
+        public Question Question { get; set; }
     }
 }

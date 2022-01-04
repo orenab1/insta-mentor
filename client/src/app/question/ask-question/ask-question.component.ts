@@ -35,16 +35,29 @@ export class AskQuestionComponent implements OnInit {
     this.routeSub.unsubscribe();
   }
 
-  askQuestion() {
-    this.questionService.askQuestion(this.model).subscribe(response => {
-      this.router.navigate(['/ask-question/' + response]);
+  addOffer(){
+    this.questionService.makeOffer(this.id).subscribe(response => {
+      this.reloadCurrentRoute();
     }, error => {
       alert('error');
       console.log(error);
     });
+  }
 
+  askQuestion() {
+    this.questionService.askQuestion(this.model).subscribe(response => {
+      this.reloadCurrentRoute();
+    }, error => {
+      alert('error');
+      console.log(error);
+    });
+  }
 
-
+  reloadCurrentRoute() {
+    const currentUrl = this.router.url;
+    this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+      this.router.navigate([currentUrl]);
+    });
   }
 
   getQuestion() {

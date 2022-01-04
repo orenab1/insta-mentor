@@ -33,6 +33,10 @@ export class QuestionService {
   }
 
   postComment(model: Comment) {
-    return this.http.post(this.baseUrl + 'questions/postComment', model);
+    return this.http.post(this.baseUrl + 'questions/post-comment', model);
+  }
+
+  makeOffer(questionId: number) {
+    return this.http.post(this.baseUrl + 'questions/make-offer/', questionId);
   }
 }

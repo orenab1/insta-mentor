@@ -22,9 +22,14 @@
             <ng-template #bodyInput>
                <label *ngIf="model">{{model.body}}</label> 
             </ng-template>
+            <div></div>
+            <button (click)='addOffer()'>I CAN HELP!</button>
        
-
+            <h4>Comments</h4>
             <app-comments *ngIf="model && !isNew;" [comments]="model.comments" [questionId]="id"></app-comments>
+
+            <h4>Offers</h4>
+            <app-offers *ngIf="model && !isNew;" [offers]="model.offers" [questionId]="id"></app-offers>
 
         <div *ngIf="isNew" class="form-group text-center">
             <button class="btn btn-success mr-2" type="submit">Publish</button>

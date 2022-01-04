@@ -1,9 +1,7 @@
 namespace DAL.DTOs
 {
-    public class OfferDto
+    public class OfferInQuestionDto
     {
         public string Username { get; set; }
-
-        public int QuestionId { get; set; }
     }
 }

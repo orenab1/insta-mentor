@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { Offer } from 'src/app/_models/question';
+import { Component, Input, OnInit } from '@angular/core';
+import { OfferInQuestion } from 'src/app/_models/question';
 
 @Component({
   selector: 'app-offers',
@@ -7,7 +7,7 @@ import { Offer } from 'src/app/_models/question';
   styleUrls: ['./offers.component.scss']
 })
 export class OffersComponent implements OnInit {
-  offers:Offer[];
+  @Input() offers: OfferInQuestion[];
   constructor() { }
 
   ngOnInit(): void {

@@ -27,5 +27,8 @@ namespace DAL.Entities
         public EmailPrefrence EmailPrefrence { get; set; }
 
         public ICollection<Question> Questions { get; set; }
+
+        public ICollection<Review> ReviewsGiven { get; set; }
+        public ICollection<Review> ReviewsReceived { get; set; }
     }
 }

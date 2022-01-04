@@ -3,7 +3,7 @@ export interface Question {
     header: string;
     body: string;
     comments: Comment[];
-    offers: Offer[];
+    offers: OfferInQuestion[];
     askerId: number;
     askerUsername: string;
 }
@@ -13,10 +13,10 @@ export interface Comment {
     id: number;
     text: string;
     questionId: number;
-    commentorId: number;
+    commentorUsername: string;
 }
 
-export interface Offer {
+export interface OfferInQuestion {
     id: number;
-    text: string;
+    username: string;
 }

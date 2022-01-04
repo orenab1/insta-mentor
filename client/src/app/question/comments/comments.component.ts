@@ -13,7 +13,7 @@ export class CommentsComponent implements OnInit {
   @Input() questionId: number;
   shouldDisplayAddForm: boolean = false;
   shouldDisplayCommentButton: boolean = true;
-  model: Comment;
+  model: any={};
 
   constructor(private questionService: QuestionService, private router: Router) { }
 
@@ -30,8 +30,9 @@ export class CommentsComponent implements OnInit {
     alert(this.model);
     const model = {
     }
-    this.questionService.postComment(this.model).subscribe(response => {
-    });
+    // this.questionService.postComment(this.model).subscribe(response => {
+    //   this.reloadCurrentRoute();
+    // });
   }
 
   displayAddForm() {
@@ -42,7 +43,11 @@ export class CommentsComponent implements OnInit {
   post() {
     this.shouldDisplayAddForm = false;
     this.shouldDisplayCommentButton = true;
-    this.reloadCurrentRoute();
+    this.model.questionId=this.questionId;
+    this.questionService.postComment(this.model).subscribe(response => {
+    
+      this.reloadCurrentRoute();
+    });
   }
 
 

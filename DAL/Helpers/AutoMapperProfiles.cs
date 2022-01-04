@@ -23,7 +23,9 @@ namespace API.Helpers
                 .ForMember(dest => dest.AskerUsername, opt => opt.MapFrom(src =>
                     src.Asker.UserName));
             CreateMap<Comment, CommentDto>();
-            CreateMap<Offer, OfferDto>();
+            CreateMap<Offer, OfferInQuestionDto>()
+                .ForMember(dest => dest.Username, opt => opt.MapFrom(src =>
+                    src.Offerer.UserName));
         }
     }
 }

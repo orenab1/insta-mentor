@@ -7,9 +7,9 @@
     <button *ngIf="shouldDisplayCommentButton" type="button" (click)="displayAddForm()">Comment</button>
 </div>
 
-<form *ngIf="shouldDisplayAddForm" #commentForm="ngForm" (ngSubmit)="postCmment()" (ngSubmit)="postComment()"
+<form *ngIf="shouldDisplayAddForm" #commentForm="ngForm" (ngSubmit)="postCmment()"
     autocomplete="off">
-    <textarea name="text" (ngModel)="model.text">
+    <textarea name="text" [(ngModel)]="model.text">
 
     </textarea>
     <div class="form-group text-center">

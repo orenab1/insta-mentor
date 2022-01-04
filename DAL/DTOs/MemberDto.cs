@@ -14,6 +14,8 @@ namespace DAL.DTOs
         public string Title { get; set; }
 
         public string AboutMe { get; set; }
+        
+        public int PhotoId { get; set; }
 
         public string PhotoUrl { get; set; }
 

@@ -2,7 +2,11 @@
     <div class="col-4">
         <div class="card">
             <img src="{{member.photoUrl || './assets/user.png'}}" alt="{{member.username}}" 
-                class="card-img-top img-thumbnail" style="width: 100px; height: 100px;">
+                class="card-img-top img-thumbnail" style="width: 100px; height: 100px;"
+                class="rounded-circle">
+
+                <app-photo-editor [member]="member"></app-photo-editor>
+
             <div class="card-body">
                 <div>
                     <strong>username:</strong>
@@ -21,7 +25,7 @@
                     <p>{{member.aboutMe}}</p>
                 </div>
                 
-                <app-photo-editor [member]="member"></app-photo-editor>
+               
             </div>
         </div>
     </div>

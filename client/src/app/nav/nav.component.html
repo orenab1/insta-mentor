@@ -1,6 +1,6 @@
 <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
   <div class="container">
-    <a class="navbar-brand" routerLink='/' routerLinkActive='active'>Insta-Mentor</a>
+    <a class="navbar-brand" routerLink='/' routerLinkActive='active'>ZOOM ME</a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse"
       aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
@@ -19,7 +19,7 @@
           <a class="nav-link" aria-current="page" routerLink='/members' routerLinkActive='active'>Matches</a>
         </li>
 
-        
+
 
         <li class="nav-item">
           <a class="nav-link" routerLink='/lists' routerLinkActive='active'>Lists</a>
@@ -30,9 +30,12 @@
       </ul>
 
       <div class="dropdown" *ngIf="accountService.currentUser$ | async" dropdown>
-        <a class="dropdown-toggle text-light" dropdownToggle>Welcome {{user.username}}</a>
+        <img src="{{user.photoUrl || './assets/user.png'}}" alt="{{user.username}}" class="card-img-top img-thumbnail"
+          style="width: 30px; height: 30px;" class="rounded-circle">
+
+        <a class="dropdown-toggle text-light" dropdownToggle>Welcome {{user.username | titlecase}}</a>
         <div class="dropdown-menu mt-3" *dropdownMenu>
-          <a class="dropdown-item">Edit Profile</a>
+          <a class="dropdown-item"  routerLink='/members/{{user.username}}'>Edit Profile</a>
           <div class="dropdown-divider"></div>
           <a class="dropdown-item" (click)="logout()">Logout</a>
         </div>
@@ -40,9 +43,9 @@
 
       <form *ngIf="(accountService.currentUser$ | async) ===null" #loginForm="ngForm" class="d-flex"
         (ngSubmit)="login()" autocomplete="off">
-        <input name="username" [(ngModel)]="model.username" class="form-control me-2" type="text" placeholder="Username"
+        <input name="username" [(ngModel)]="user.username" class="form-control me-2" type="text" placeholder="Username"
           aria-label="Username">
-        <input class="form-control me-2" name="password" [(ngModel)]="model.password" type="password"
+        <input class="form-control me-2" name="password" [(ngModel)]="user.password" type="password"
           placeholder="Password" aria-label="Password">
         <button class="btn btn-outline-success" type="submit">Login</button>
       </form>

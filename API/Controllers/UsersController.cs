@@ -92,5 +92,27 @@ namespace API.Controllers
 
             return BadRequest("Problem addding photo");
         }
+
+        [HttpDelete("delete-photo")]
+        public async Task<ActionResult> DeletePhoto()
+        {
+            var user = await _userRepository.GetUserAsync(User.GetUsername());
+
+            var photo = user.Photo;
+
+            if (photo == null) return NotFound();
+
+            if (photo.PublicId != null)
+            {
+                var result = await _photoService.DeletePhotoAsync(photo.PublicId);
+                if (result.Error != null) return BadRequest(result.Error.Message);
+            }
+
+            user.Photo = null;
+
+            if (await _userRepository.SaveAllAsync()) return Ok();
+
+            return BadRequest("Failed to delete the photo");
+        }
     }
 }

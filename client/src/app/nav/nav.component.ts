@@ -11,11 +11,12 @@ import { take } from 'rxjs/operators';
   styleUrls: ['./nav.component.scss']
 })
 export class NavComponent implements OnInit {
-  user: User;
+  user: any={};
 
 
   constructor(public accountService: AccountService, private router:Router) { 
-    this.accountService.currentUser$.pipe(take(1)).subscribe(user => this.user = user);
+    this.accountService.currentUser$.pipe(take(1))
+      .subscribe(user => this.user = user);
   }
 
   ngOnInit(): void {

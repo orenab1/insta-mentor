@@ -13,7 +13,10 @@ import { environment } from 'src/environments/environment';
   styleUrls: ['./photo-editor.component.scss']
 })
 export class PhotoEditorComponent implements OnInit {
-  @Input() member: Member;
+  @Input() addPhotoUrlExtension: string;
+  @Input() onUploadSuccess: (response: any) => void;
+  @Input() onDeletePhoto: () => void;
+
   uploader: FileUploader;
   hasBaseDropzoneOver = false;
   baseUrl = environment.apiUrl;
@@ -27,22 +30,19 @@ export class PhotoEditorComponent implements OnInit {
 
   ngOnInit(): void {
     this.initializeUploader();
- }
+  }
 
-  // fileOverBase(e: any) {
-  //   this.hasBaseDropzoneOver = e;
-  // }
+  fileOverBase(e: any) {
+    this.hasBaseDropzoneOver = e;
+  }
 
   deletePhoto() {
-    this.memberService.deletePhoto().subscribe(() => {
-      this.member.photoUrl = './assets/user.png';
-      this.member.photoId = 0;
-    })
+    this.onDeletePhoto();
   }
 
   initializeUploader() {
     this.uploader = new FileUploader({
-      url: this.baseUrl + 'users/add-photo',
+      url: this.baseUrl + this.addPhotoUrlExtension,// 'users/add-photo',
       authToken: 'Bearer ' + this.user.token,
       isHTML5: true,
       allowedFileType: ['image'],
@@ -57,11 +57,7 @@ export class PhotoEditorComponent implements OnInit {
 
     this.uploader.onSuccessItem = (item, response, status, headers) => {
       if (response) {
-        const photo = JSON.parse(response);
-        this.member.photoUrl = photo.url;
-        this.member.photoId = photo.id;
-        this.user.photoUrl = photo.url;
-        this.accountService.setCurrentUser(this.user);
+        this.onUploadSuccess(response);
       }
     }
   }

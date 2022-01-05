@@ -14,7 +14,7 @@ namespace DAL.Interfaces
 
         Task<bool> PostCommentAsync(CommentDto commentDto);
 
-        Task<IEnumerable<QuestionDto>> GetQuestionsAsync();
+        Task<IEnumerable<QuestionSummaryDto>> GetQuestionsAsync();
         Task<bool> MakeOfferAsync(OfferDto offerDto);
     }
 }

@@ -2,7 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { map } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
-import { Question } from '../_models/question';
+import { Question, QuestionSummary } from '../_models/question';
 import { Comment } from '../_models/question';
 
 @Injectable({
@@ -10,7 +10,7 @@ import { Comment } from '../_models/question';
 })
 export class QuestionService {
   baseUrl = environment.apiUrl;
-  questions: Question[] = [];
+ // questions: Question[] = [];
 
   constructor(private http: HttpClient) { }
 
@@ -24,9 +24,9 @@ export class QuestionService {
   }
 
   getQuestions() {
-    return this.http.get<Question[]>(this.baseUrl + 'questions').pipe(
+    return this.http.get<QuestionSummary[]>(this.baseUrl + 'questions').pipe(
       map(questions => {
-        this.questions = questions;
+     //   this.questions = questions;
         return questions;
       })
     );

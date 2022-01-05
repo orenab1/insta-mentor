@@ -6,6 +6,20 @@ export interface Question {
     offers: OfferInQuestion[];
     askerId: number;
     askerUsername: string;
+    photoUrl: string;
+    photoId: number;
+}
+
+export interface QuestionSummary {
+    id: number;
+    header: string;
+    body: string;
+    numOfComments: number;
+    numOfOffers: number;
+    askerId: number;
+    askerUsername: string;
+    askerPhotoUrl: string;
+    askerPhotoId: number;
 }
 
 

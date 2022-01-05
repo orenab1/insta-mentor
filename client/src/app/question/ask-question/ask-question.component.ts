@@ -12,7 +12,7 @@ import { QuestionService } from '../../_services/question.service';
 })
 export class AskQuestionComponent implements OnInit {
   model: Question;
-  id: number;
+  id: number = 0;
   routeSub: Subscription;
   baseUrl = environment.apiUrl;
   isNew = false;
@@ -35,7 +35,7 @@ export class AskQuestionComponent implements OnInit {
     this.routeSub.unsubscribe();
   }
 
-  addOffer(){
+  addOffer() {
     this.questionService.makeOffer(this.id).subscribe(response => {
       this.reloadCurrentRoute();
     }, error => {
@@ -70,7 +70,9 @@ export class AskQuestionComponent implements OnInit {
           comments: [],
           offers: [],
           askerId: 0,
-          askerUsername: ''
+          askerUsername: '',
+          photoId: 0,
+          photoUrl: ''
         };
       } else {
         this.model = response;
@@ -82,5 +84,21 @@ export class AskQuestionComponent implements OnInit {
 
   cancel() {
 
+  }
+
+
+  onUploadPhotoSuccess(response: any) {
+    if (response) {
+      const photo = JSON.parse(response);
+      this.model.photoUrl = photo.url;
+      this.model.photoId = photo.id;
+    }
+  }
+
+  deletePhoto() {
+    // this.questionService.deletePhoto().subscribe(() => {
+    //   this.model.photoUrl = '';
+    //   this.model.photoId = 0;
+    // })
   }
 }

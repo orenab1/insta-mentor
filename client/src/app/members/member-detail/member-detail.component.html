@@ -5,7 +5,10 @@
                 class="card-img-top img-thumbnail" style="width: 100px; height: 100px;"
                 class="rounded-circle">
 
-                <app-photo-editor [member]="member"></app-photo-editor>
+                <app-photo-editor 
+                    [addPhotoUrlExtension]="'users/add-photo'" 
+                    [onUploadSuccess]="onUploadPhotoSuccess"
+                    [deletePhoto]="onDeletePhoto"></app-photo-editor>
 
             <div class="card-body">
                 <div>

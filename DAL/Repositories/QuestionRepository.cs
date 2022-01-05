@@ -101,10 +101,10 @@ namespace DAL.Repositories
             return await _context.SaveChangesAsync() > 0;
         }
 
-        public async Task<IEnumerable<QuestionDto>> GetQuestionsAsync()
+        public async Task<IEnumerable<QuestionSummaryDto>> GetQuestionsAsync()
         {
             return await _mapper
-                .ProjectTo<QuestionDto>(_context.Questions)
+                .ProjectTo<QuestionSummaryDto>(_context.Questions)
                 .ToListAsync();
         }
     }

@@ -2,7 +2,7 @@
     <div class="form-group mt-5">
         <label>Your Question</label>
 
-        <div>        
+        <div>
             <div *ngIf="isNew; else headerInput">
                 <input *ngIf="model" type="text" class="form-control" name="header" [(ngModel)]="model.header">
             </div>
@@ -11,27 +11,36 @@
             </ng-template>
         </div>
 
-        
+
         <div>
             <label>Some more details?</label>
         </div>
-            <div *ngIf="isNew; else bodyInput">
-                <input *ngIf="model" type="textarea" class="form-control" name="body" [(ngModel)]="model.body">
+        <div *ngIf="isNew; else bodyInput">
+            <input *ngIf="model" type="textarea" class="form-control" name="body" [(ngModel)]="model.body">
 
-            </div>
-            <ng-template #bodyInput>
-               <label *ngIf="model">{{model.body}}</label> 
-            </ng-template>
-            <div></div>
-            <button (click)='addOffer()'>I CAN HELP!</button>
-       
-            <h4>Comments</h4>
-            <app-comments *ngIf="model && !isNew;" [comments]="model.comments" [questionId]="id"></app-comments>
+        </div>
+        <ng-template #bodyInput>
+            <label *ngIf="model">{{model.body}}</label>
+        </ng-template>
+        <div>
+            <app-photo-editor 
+                [addPhotoUrlExtension]="'questions/add-photo/'+ (model.id || 0)"
+                [onUploadSuccess]="onUploadPhotoSuccess" 
+                [onDeletePhoto]="deletePhoto">
+            </app-photo-editor>
 
-            <h4>Offers</h4>
-            <app-offers *ngIf="model && !isNew;" [offers]="model.offers" [questionId]="id"></app-offers>
+        <button class="btn btn-success m-5">Save</button>
 
-            <app-review [questionId]="id"></app-review>
+        </div>
+        <button (click)='addOffer()'>I CAN HELP!</button>
+
+        <h4>Comments</h4>
+        <app-comments *ngIf="model && !isNew;" [comments]="model.comments" [questionId]="id"></app-comments>
+
+        <h4>Offers</h4>
+        <app-offers *ngIf="model && !isNew;" [offers]="model.offers" [questionId]="id"></app-offers>
+
+        <app-review [questionId]="id"></app-review>
 
         <div *ngIf="isNew" class="form-group text-center">
             <button class="btn btn-success mr-2" type="submit">Publish</button>

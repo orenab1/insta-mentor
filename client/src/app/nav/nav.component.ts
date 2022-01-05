@@ -4,6 +4,7 @@ import { AccountService } from '../_services/account.service';
 import { User } from '../_models/user';
 import { Router } from '@angular/router';
 import { take } from 'rxjs/operators';
+import { JsonpClientBackend } from '@angular/common/http';
 
 @Component({
   selector: 'app-nav',
@@ -24,6 +25,7 @@ export class NavComponent implements OnInit {
 
 
   login() {
+    console.log(JSON.stringify(this.user))
     this.accountService.login(this.user).subscribe(response => {
       this.router.navigateByUrl('/members');
     }, error => {

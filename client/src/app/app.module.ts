@@ -23,7 +23,6 @@ import { PhotoEditorComponent } from './members/photo-editor/photo-editor.compon
 import { FileUploadModule } from 'ng2-file-upload';
 import { ReviewComponent } from './review/review.component';
 
-
 @NgModule({
   declarations: [
     AppComponent,
@@ -39,7 +38,7 @@ import { ReviewComponent } from './review/review.component';
     QuestionsComponent,
     OffersComponent,
     PhotoEditorComponent,
-    ReviewComponent
+    ReviewComponent,
   ],
   imports: [
     BrowserModule,

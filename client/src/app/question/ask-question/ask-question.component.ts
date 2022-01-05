@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
+import { take } from 'rxjs/operators';
+import { AccountService } from 'src/app/_services/account.service';
 import { environment } from 'src/environments/environment';
 import { Question } from '../../_models/question';
 import { QuestionService } from '../../_services/question.service';
@@ -16,9 +18,17 @@ export class AskQuestionComponent implements OnInit {
   routeSub: Subscription;
   baseUrl = environment.apiUrl;
   isNew = false;
+  shouldDisplayComments = true;
+  currentUserUsername: string;
+  isCurrentUserQuestionOwner: boolean;
+  isInEditMode = false;
 
-  constructor(private questionService: QuestionService, private router: Router, private route: ActivatedRoute) {
-
+  constructor(
+    private questionService: QuestionService,
+    private router: Router,
+    private route: ActivatedRoute,
+    private accountService: AccountService) {
+    this.accountService.currentUser$.pipe(take(1)).subscribe(user => this.currentUserUsername = user.username);
   }
 
   ngOnInit(): void {
@@ -29,6 +39,14 @@ export class AskQuestionComponent implements OnInit {
       this.isNew = this.id === 0;
       this.getQuestion();
     });
+  }
+
+  toggleDisplayComments() {
+    this.shouldDisplayComments = !this.shouldDisplayComments;
+  }
+
+  toggleEditMode() {
+    this.isInEditMode = !this.isInEditMode;
   }
 
   ngOnDestroy() {
@@ -76,6 +94,10 @@ export class AskQuestionComponent implements OnInit {
         };
       } else {
         this.model = response;
+
+        this.isCurrentUserQuestionOwner =
+          this.model.askerUsername === this.currentUserUsername;
+
       }
     }, error => {
       console.log(error);

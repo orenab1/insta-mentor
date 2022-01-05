@@ -12,6 +12,7 @@ using API.Extensions;
 using AutoMapper;
 
 using Microsoft.AspNetCore.Http;
+using System.Configuration;
 
 namespace API.Controllers
 {
@@ -38,6 +39,9 @@ namespace API.Controllers
         [HttpPost("ask-question")]
         public async Task<ActionResult<QuestionDto>> AskQuestion(QuestionDto questionDto)
         {
+            var k=User.GetUsername();
+            AppUser user= await _userRepository.GetUserAsync(User.GetUsername());
+            questionDto.AskerId =user.Id;
             int id = await _questionRepository.AskQuestionAsync(questionDto);
 
             return Ok(id);
@@ -85,7 +89,7 @@ namespace API.Controllers
         [HttpPost("add-photo")]
         public async Task<ActionResult<PhotoDto>> AddPhoto(IFormFile file)
         {
-            var k = HttpContext.Request.Query["page"].ToString();
+            // var k = HttpContext.Request.Query["page"].ToString();
             var user = await _userRepository.GetUserAsync(User.GetUsername());
 
             var result = await _photoService.AddPhotoAsync(file);

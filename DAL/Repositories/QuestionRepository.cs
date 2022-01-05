@@ -37,10 +37,12 @@ namespace DAL.Repositories
 
         public async Task<int> AskQuestionAsync(QuestionDto questionDto)
         {
+
             var questionToSave = new Question
             {
                 Header = questionDto.Header,
-                Body = questionDto.Body
+                Body = questionDto.Body,
+                AskerId = questionDto.AskerId
             };
 
             _context.Questions.AddAsync(questionToSave);
@@ -57,8 +59,9 @@ namespace DAL.Repositories
             var question = _context.Questions.SingleOrDefault(x => x.Id == offerDto.QuestionId);
             var user = _context.Users.SingleOrDefault(x => x.UserName == offerDto.Username);
 
-            if (question.Offers ==null){
-                question.Offers=new List<Offer>();
+            if (question.Offers == null)
+            {
+                question.Offers = new List<Offer>();
             }
             question.Offers.Add(
                 new Offer

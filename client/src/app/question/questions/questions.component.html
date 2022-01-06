@@ -1,8 +1,10 @@
+
+            <rating-basic></rating-basic>
 <div>
     <i class="fa-regular fa-messages"></i>
     <button routerLink='/ask-question'>Ask a question</button>
     <div *ngFor="let question of questions">
-        <div class="mt-3 bg-light" routerLink='/ask-question/{{question.id}}'>
+        <div class="mt-3 bg-light" routerLink='/question/{{question.id}}'>
             <p class="fw-bold">
                 {{question.header}}
             </p>
@@ -21,8 +23,6 @@
                 <i class="fa fa-envelope" title="Offers"></i>
                 {{question.numOfOffers}}
             </span>
-
-            <i class="fa fa-pencil"></i>
         </div>
     </div>
 </div>

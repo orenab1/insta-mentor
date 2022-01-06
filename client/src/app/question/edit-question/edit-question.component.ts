@@ -8,11 +8,11 @@ import { Question } from '../../_models/question';
 import { QuestionService } from '../../_services/question.service';
 
 @Component({
-  selector: 'app-ask-question',
-  templateUrl: './ask-question.component.html',
-  styleUrls: ['./ask-question.component.scss']
+  selector: 'app-edit-question',
+  templateUrl: './edit-question.component.html',
+  styleUrls: ['./edit-question.component.scss']
 })
-export class AskQuestionComponent implements OnInit {
+export class EditQuestionComponent implements OnInit {
   model: Question;
   id: number = 0;
   routeSub: Subscription;
@@ -22,6 +22,7 @@ export class AskQuestionComponent implements OnInit {
   currentUserUsername: string;
   isCurrentUserQuestionOwner: boolean;
   isInEditMode = false;
+
 
   constructor(
     private questionService: QuestionService,
@@ -36,7 +37,11 @@ export class AskQuestionComponent implements OnInit {
 
       this.id = parseInt(params['id']) || 0;
 
-      this.isNew = this.id === 0;
+      if (this.id === 0) {
+        this.isInEditMode = true;
+        this.isNew = true;
+      }
+
       this.getQuestion();
     });
   }
@@ -45,38 +50,6 @@ export class AskQuestionComponent implements OnInit {
     this.shouldDisplayComments = !this.shouldDisplayComments;
   }
 
-  toggleEditMode() {
-    this.isInEditMode = !this.isInEditMode;
-  }
-
-  ngOnDestroy() {
-    this.routeSub.unsubscribe();
-  }
-
-  addOffer() {
-    this.questionService.makeOffer(this.id).subscribe(response => {
-      this.reloadCurrentRoute();
-    }, error => {
-      alert('error');
-      console.log(error);
-    });
-  }
-
-  askQuestion() {
-    this.questionService.askQuestion(this.model).subscribe(response => {
-      this.reloadCurrentRoute();
-    }, error => {
-      alert('error');
-      console.log(error);
-    });
-  }
-
-  reloadCurrentRoute() {
-    const currentUrl = this.router.url;
-    this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
-      this.router.navigate([currentUrl]);
-    });
-  }
 
   getQuestion() {
     this.questionService.getQuestion(this.id).subscribe(response => {
@@ -85,6 +58,7 @@ export class AskQuestionComponent implements OnInit {
           id: 0,
           header: '',
           body: '',
+          isSolved: false,
           comments: [],
           offers: [],
           askerId: 0,
@@ -104,8 +78,10 @@ export class AskQuestionComponent implements OnInit {
     });
   }
 
-  cancel() {
 
+
+  cancel() {
+    this.reloadCurrentRoute();
   }
 
 
@@ -118,9 +94,25 @@ export class AskQuestionComponent implements OnInit {
   }
 
   deletePhoto() {
-    // this.questionService.deletePhoto().subscribe(() => {
-    //   this.model.photoUrl = '';
-    //   this.model.photoId = 0;
-    // })
+  }
+
+  askQuestion() {
+    this.questionService.askQuestion(this.model).subscribe({
+      next: (questionId) => this.router.navigateByUrl('question/' + questionId),
+      error: (error) => console.log(error)
+    });
+  }
+
+  ngOnDestroy() {
+    this.routeSub.unsubscribe();
+  }
+
+
+
+  reloadCurrentRoute() {
+    const currentUrl = this.router.url;
+    this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+      this.router.navigate([currentUrl]);
+    });
   }
 }

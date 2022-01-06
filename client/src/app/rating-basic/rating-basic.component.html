@@ -1,3 +1,11 @@
-<!-- <ngb-rating [(rate)]="currentRate"></ngb-rating>
+<rating class="rating-c text-warning" [(ngModel)]="rate" [max]="max" [readonly]="isReadonly"
+        (keyup)="confirmSelection($event)"
+        (onHover)="hoveringOver($event)"></rating>
+<div class="card">
+</div>
+<button class="btn btn-primary" (click)="resetStars()">Reset rating and status</button>
+<button class="btn btn-primary ml-3 ms-3" (click)="isReadonly = !isReadonly">Toggle ReadOnly</button>
+<hr/>
+<b >{{starsAsText}}</b>
 <hr>
-<pre>Rate: <b>{{currentRate}}</b></pre> -->
+Rating: <b>{{rate}}</b>

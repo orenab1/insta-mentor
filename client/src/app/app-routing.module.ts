@@ -5,18 +5,20 @@ import { ListsComponent } from './lists/lists.component';
 import { MemberDetailComponent } from './members/member-detail/member-detail.component';
 import { MemberListComponent } from './members/member-list/member-list.component';
 import { MessagesComponent } from './messages/messages.component';
-import { AskQuestionComponent } from './question/ask-question/ask-question.component';
+import { QuestionComponent } from './question/display-question/question.component';
+import { EditQuestionComponent } from './question/edit-question/edit-question.component';
 import { QuestionsComponent } from './question/questions/questions.component';
 
 const routes: Routes = [
-  { path: '', component: HomeComponent },
+  { path: '', component: QuestionsComponent },
  // { path: 'members', component: MemberListComponent },
   { path: 'questions', component: QuestionsComponent },
   { path: 'members/:username', component: MemberDetailComponent },
   { path: 'lists', component: ListsComponent },
  // { path: 'messages', component: MessagesComponent },
-  { path: 'ask-question', component: AskQuestionComponent },
-  { path: 'ask-question/:id', component: AskQuestionComponent },
+  { path: 'edit-question', component: EditQuestionComponent },
+  { path: 'edit-question/:id', component: EditQuestionComponent },
+  { path: 'question/:id', component: QuestionComponent },
   { path: '**', component: HomeComponent, pathMatch: 'full' },
 
 ];

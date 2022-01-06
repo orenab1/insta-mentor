@@ -2,6 +2,7 @@ export interface Question {
     id: number;
     header: string;
     body: string;
+    isSolved: boolean;
     comments: Comment[];
     offers: OfferInQuestion[];
     askerId: number;

@@ -1,0 +1,78 @@
+<form *ngIf="model" #askQuestionForm="ngForm" (ngSubmit)="askQuestion()" autocomplete="off">
+
+    <div class="form-group mt-5">
+
+
+        <div *ngIf="isNew; else headerTitle">
+            <label><b>Your Question</b></label>
+        </div>
+        <ng-template #headerTitle>
+            <label><b>Question</b></label>
+        </ng-template>
+
+        <div>
+                <input *ngIf="model" type="text" class="form-control" name="header" [(ngModel)]="model.header">
+            </div>
+           
+        </div>
+
+        <div class="mt-4"></div>
+
+        <div>
+            <div *ngIf="isNew; else headerDescription">
+                <label><b>Some more details?</b></label>
+            </div>
+            <ng-template #headerDescription>
+                <label><b>Description</b></label>
+            </ng-template>
+        </div>
+
+
+        <div>
+            <input *ngIf="model" type="textarea" class="form-control" name="body" [(ngModel)]="model.body">
+        </div>
+        
+
+        <div>
+             <app-photo-editor [addPhotoUrlExtension]="'questions/add-photo/'+ (model.id || 0)"
+                [onUploadSuccess]="onUploadPhotoSuccess" [onDeletePhoto]="deletePhoto">
+            </app-photo-editor> 
+
+            <div class="mt-3"></div>
+            <div *ngIf="model">
+                -{{model.askerUsername}}
+            </div>
+            <div class="form-group text-center">
+                <button class="btn btn-success mr-2" type="submit">Publish</button>
+                <button class="btn btn-default mr-2" (click)="cancel()">Cancel</button>
+            </div>
+        </div>
+       
+        <ul class="nav nav-tabs mt-3">
+            <li class="nav-item">
+                <a class="nav-link " aria-current="page" (click)="toggleDisplayComments()"
+                    [ngClass]="{'active': !shouldDisplayComments}">Comments</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" tabindex="-1" (click)="toggleDisplayComments()"
+                    [ngClass]="{'active': shouldDisplayComments}">Offers</a>
+            </li>
+        </ul>
+
+
+
+        <div [hidden]="shouldDisplayComments">
+            <h4>Comments</h4>
+            <app-comments *ngIf="model && !isNew;" [comments]="model.comments" [questionId]="id"></app-comments>
+        </div>
+
+        <div [hidden]="!shouldDisplayComments">
+            <h4>Offers</h4>
+            <app-offers *ngIf="model && !isNew;" [offers]="model.offers" [questionId]="id"></app-offers>
+        </div>
+
+
+        
+</form>
+
+

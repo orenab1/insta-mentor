@@ -14,7 +14,7 @@ import { MemberListComponent } from './members/member-list/member-list.component
 import { MemberDetailComponent } from './members/member-detail/member-detail.component';
 import { ListsComponent } from './lists/lists.component';
 import { MessagesComponent } from './messages/messages.component';
-import { AskQuestionComponent } from './question/ask-question/ask-question.component';
+import { QuestionComponent } from './question/display-question/question.component';
 import { CommentsComponent } from './question/comments/comments.component';
 import { JwtInterceptor } from './_interceptors/jwt.interceptor';
 import { QuestionsComponent } from './question/questions/questions.component';
@@ -22,7 +22,11 @@ import { OffersComponent } from './question/offers/offers.component';
 import { PhotoEditorComponent } from './members/photo-editor/photo-editor.component';
 import { FileUploadModule } from 'ng2-file-upload';
 import { ReviewComponent } from './review/review.component';
+import { RatingModule } from 'ngx-bootstrap/rating';
 
+
+import { RatingBasicComponent } from './rating-basic/rating-basic.component';
+import { EditQuestionComponent } from './question/edit-question/edit-question.component'
 @NgModule({
   declarations: [
     AppComponent,
@@ -33,12 +37,14 @@ import { ReviewComponent } from './review/review.component';
     MemberDetailComponent,
     ListsComponent,
     MessagesComponent,
-    AskQuestionComponent,
+    QuestionComponent,
     CommentsComponent,
     QuestionsComponent,
     OffersComponent,
     PhotoEditorComponent,
     ReviewComponent,
+    RatingBasicComponent,
+    EditQuestionComponent
   ],
   imports: [
     BrowserModule,
@@ -47,6 +53,7 @@ import { ReviewComponent } from './review/review.component';
     BrowserAnimationsModule,
     FormsModule,
     BsDropdownModule.forRoot(),
+    RatingModule.forRoot(),
     FileUploadModule
   ],
   providers: [

@@ -10,6 +10,8 @@ namespace DAL.Entities
 
         public string Body { get; set; }
 
+        public bool IsSolved { get; set; }
+
         public ICollection<Comment> Comments { get; set; }
 
         public ICollection<Offer> Offers { get; set; }

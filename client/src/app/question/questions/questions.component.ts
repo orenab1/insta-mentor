@@ -20,7 +20,6 @@ export class QuestionsComponent implements OnInit {
     this.questionService.getQuestions().subscribe(response => {
       this.questions = response;
     }, error => {
-      alert('error');
       console.log(error);
     });
   }

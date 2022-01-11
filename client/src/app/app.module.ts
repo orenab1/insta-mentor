@@ -6,13 +6,12 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NavComponent } from './nav/nav.component';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { HomeComponent } from './home/home.component';
 import { RegisterComponent } from './register/register.component';
 import { MemberListComponent } from './members/member-list/member-list.component';
 import { MemberDetailComponent } from './members/member-detail/member-detail.component';
-import { ListsComponent } from './lists/lists.component';
 import { MessagesComponent } from './messages/messages.component';
 import { QuestionComponent } from './question/display-question/question.component';
 import { CommentsComponent } from './question/comments/comments.component';
@@ -26,7 +25,12 @@ import { RatingModule } from 'ngx-bootstrap/rating';
 
 
 import { RatingBasicComponent } from './rating-basic/rating-basic.component';
-import { EditQuestionComponent } from './question/edit-question/edit-question.component'
+import { EditQuestionComponent } from './question/edit-question/edit-question.component';
+import { PocComponent } from './poc/poc.component'
+
+import { TagInputModule } from 'ngx-chips';
+
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -35,7 +39,6 @@ import { EditQuestionComponent } from './question/edit-question/edit-question.co
     RegisterComponent,
     MemberListComponent,
     MemberDetailComponent,
-    ListsComponent,
     MessagesComponent,
     QuestionComponent,
     CommentsComponent,
@@ -44,7 +47,8 @@ import { EditQuestionComponent } from './question/edit-question/edit-question.co
     PhotoEditorComponent,
     ReviewComponent,
     RatingBasicComponent,
-    EditQuestionComponent
+    EditQuestionComponent,
+    PocComponent
   ],
   imports: [
     BrowserModule,
@@ -54,7 +58,10 @@ import { EditQuestionComponent } from './question/edit-question/edit-question.co
     FormsModule,
     BsDropdownModule.forRoot(),
     RatingModule.forRoot(),
-    FileUploadModule
+    FileUploadModule,
+    TagInputModule,
+    BrowserAnimationsModule,
+    ReactiveFormsModule
   ],
   providers: [
     HttpClientModule,

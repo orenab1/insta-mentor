@@ -14,6 +14,8 @@ export class RatingBasicComponent {
   starsAsText:string;
 
 
+  starsCountPercentage=84;
+
   confirmSelection(event: KeyboardEvent) {
     if (event.keyCode === 13 || event.key === 'Enter') {
       this.isReadonly = true;

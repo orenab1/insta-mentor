@@ -12,21 +12,15 @@
           <a class="nav-link" aria-current="page" routerLink='/questions'>All Questions</a>
         </li>
 
-        <li>Seppppp</li>
-
+        <li class="nav-item">
+          <a class="nav-link" aria-current="page" routerLink='/question/edit-question'>Ask Question</a>
+        </li>
 
         <li class="nav-item">
-          <a class="nav-link" aria-current="page" routerLink='/members' routerLinkActive='active'>Matches</a>
+          <a class="nav-link" aria-current="page" routerLink='/poc'>POCs</a>
         </li>
 
 
-
-        <li class="nav-item">
-          <a class="nav-link" routerLink='/lists' routerLinkActive='active'>Lists</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" routerLink='/messages' routerLinkActive='active'>Messages</a>
-        </li>
       </ul>
 
       <div class="dropdown" *ngIf="accountService.currentUser$ | async" dropdown>

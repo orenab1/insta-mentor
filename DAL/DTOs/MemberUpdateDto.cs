@@ -11,5 +11,10 @@ namespace DAL.DTOs
         public string AboutMe { get; set; }    
 
         public TagDto[] Tags { get; set; }  
+
+        public bool QuestionAskedOnMyTags { get; set; }
+        public bool OnlyNotifyOnCommunityQuestionAsked { get; set; }
+        public bool MyQuestionReceivedNewOffer { get; set; }
+        public bool MyQuestionReceivedNewComment { get; set; }
     }
 }

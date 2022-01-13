@@ -10,5 +10,9 @@ export interface Member {
     created: Date;
     photoId: number;
     tags: Tag[];
-    asdf:string[];
+    questionAskedOnMyTags: boolean;
+    onlyNotifyOnCommunityQuestionAsked: boolean;
+    myQuestionReceivedNewOffer: boolean;
+    myQuestionReceivedNewComment: boolean;
+
 }

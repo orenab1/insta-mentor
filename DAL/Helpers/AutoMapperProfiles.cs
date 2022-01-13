@@ -14,10 +14,21 @@ namespace API.Helpers
                 .ForMember(dest => dest.PhotoUrl, opt => opt.MapFrom(src =>
                     src.Photo.Url))
                 .ForMember(dest => dest.PhotoId, opt => opt.MapFrom(src =>
-                    src.Photo.Id));
+                    src.Photo.Id))
+                .ForMember(dest => dest.Tags, opt => opt.Ignore());
 
-            CreateMap<MemberUpdateDto,AppUser>();
-            
+            CreateMap<MemberUpdateDto,AppUser>()            
+                .ForMember(dest => dest.Tags, opt => opt.Ignore())
+                .ForMember(dest => dest.EmailPrefrence, opt => opt.MapFrom(src =>
+                    src));
+
+            CreateMap<MemberUpdateDto,EmailPrefrence>();
+
+             CreateMap<AppUser,MemberUpdateDto>()            
+                .ForMember(dest => dest.Tags, opt => opt.Ignore());
+                
+
+                
             CreateMap<Photo, PhotoDto>();
             CreateMap<Question, QuestionDto>()
                 .ForMember(dest => dest.AskerUsername, opt => opt.MapFrom(src =>

@@ -27,15 +27,42 @@
                     <input type="textarea" class="form-control" name="aboutMe" [(ngModel)]="member.aboutMe">
                 </div>
 
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" name='questionAskedOnMyTags' [(ngModel)]='member.questionAskedOnMyTags'>
+                    <label class="form-check-label" for="flexCheckChecked">
+                        A question is asked according to my tags
+                    </label>
+                  </div>
 
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox"name='onlyNotifyOnCommunityQuestionAsked' [(ngModel)]='member.onlyNotifyOnCommunityQuestionAsked'>
+                    <label class="form-check-label" for="flexCheckChecked">
+                        Only notify me when a question is asked in a community I'm a member of
+                    </label>
+                  </div>
+
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" name='myQuestionReceivedNewOffer' [(ngModel)]='member.myQuestionReceivedNewOffer'>
+                    <label class="form-check-label" for="flexCheckChecked">
+                        A question I asked gets a new offer
+                    </label>
+                  </div>
+
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" name='myQuestionReceivedNewComment' [(ngModel)]='member.myQuestionReceivedNewComment'>
+                    <label class="form-check-label" for="flexCheckChecked">
+                        A question I asked gets a new comment
+                    </label>
+                  </div>
+
+
+{{member | json}}
             </div>
 
             <div>
                 <strong>Tags</strong>
                 <tag-input name='tags' [(ngModel)]="member.tags" [theme]="'bootstrap'">
-                    <tag-input-dropdown 
-                        [autocompleteItems]="allTags"
-                        [showDropdownIfEmpty]="true">
+                    <tag-input-dropdown [autocompleteItems]="allTags" [showDropdownIfEmpty]="true">
                     </tag-input-dropdown>
                 </tag-input>
             </div>

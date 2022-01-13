@@ -57,20 +57,20 @@ namespace DAL.Repositories
         {
             var user = await _context.Users.SingleOrDefaultAsync(x => x.UserName == username);
 
-            return new MemberDto()
-            {
-                Id = user.Id,
-                AboutMe = user.AboutMe,
-                Email = user.Email,
-                Title = user.Title,
-                Username = user.UserName
-            };
+            // return new MemberDto()
+            // {
+            //     Id = user.Id,
+            //     AboutMe = user.AboutMe,
+            //     Email = user.Email,
+            //     Title = user.Title,
+            //     Username = user.UserName
+            // };
             // return await _context.Users.SingleOrDefaultAsync(x => x.UserName == username)
 
 
-            // return await _mapper
-            //     .ProjectTo<MemberDto>(_context.Users.Where(x => x.UserName == username))
-            //     .SingleOrDefaultAsync();
+            return await _mapper
+                .ProjectTo<MemberDto>(_context.Users.Where(x => x.UserName == username))
+                .SingleOrDefaultAsync();
 
         }
 

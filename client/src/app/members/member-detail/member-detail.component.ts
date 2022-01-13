@@ -50,17 +50,8 @@ export class MemberDetailComponent implements OnInit {
     });
   }
 
-  onUploadPhotoSuccess(response: any) {
-    if (response) {
-      const photo = JSON.parse(response);
-      this.member.photoUrl = photo.url;
-      this.member.photoId = photo.id;
-      this.user.photoUrl = photo.url;
-      this.accountService.setCurrentUser(this.user);
-    }
 
-
-  }
+  
 
   deletePhoto() {
     this.membersService.deletePhoto().subscribe(() => {

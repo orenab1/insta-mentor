@@ -11,9 +11,10 @@ namespace DAL.Entities
         [ForeignKey("AppUser")]
         public int AppUserId { get; set; }
 
-        public ICollection<Tag> Tags { get; set; }
-
-        public bool WantToRecieveEmails { get; set; }
+        public bool QuestionAskedOnMyTags { get; set; }
+        public bool OnlyNotifyOnCommunityQuestionAsked { get; set; }
+        public bool MyQuestionReceivedNewOffer { get; set; }
+        public bool MyQuestionReceivedNewComment { get; set; }
 
         public AppUser AppUser { get; set; }
 

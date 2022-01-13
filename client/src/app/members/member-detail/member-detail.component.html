@@ -26,6 +26,39 @@
                     <p>{{member.aboutMe}}</p>
                 </div>
 
+                <label>
+                    <strong>Email Prefrences</strong>
+                </label>
+
+
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" name='questionAskedOnMyTags' [(ngModel)]='member.questionAskedOnMyTags' disabled>
+                    <label class="form-check-label" for="flexCheckChecked">
+                        A question is asked according to my tags
+                    </label>
+                  </div>
+
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox"name='onlyNotifyOnCommunityQuestionAsked' [(ngModel)]='member.onlyNotifyOnCommunityQuestionAsked' disabled>
+                    <label class="form-check-label" for="flexCheckChecked">
+                        Only notify me when a question is asked in a community I'm a member of
+                    </label>
+                  </div>
+
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" name='myQuestionReceivedNewOffer' [(ngModel)]='member.myQuestionReceivedNewOffer' disabled>
+                    <label class="form-check-label" for="flexCheckChecked">
+                        A question I asked gets a new offer
+                    </label>
+                  </div>
+
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" name='myQuestionReceivedNewComment' [(ngModel)]='member.myQuestionReceivedNewComment' disabled>
+                    <label class="form-check-label" for="flexCheckChecked">
+                        A question I asked gets a new comment
+                    </label>
+                  </div>
+              
 
             </div>
 

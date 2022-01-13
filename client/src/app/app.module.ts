@@ -50,7 +50,7 @@ import { MemberEditComponent } from './members/member-edit/member-edit.component
     RatingBasicComponent,
     EditQuestionComponent,
     PocComponent,
-    MemberEditComponent
+    MemberEditComponent,
   ],
   imports: [
     BrowserModule,

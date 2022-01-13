@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { take } from 'rxjs/operators';
 import { Member } from 'src/app/_models/member';
@@ -43,7 +43,7 @@ export class MemberEditComponent implements OnInit {
   editMember() {
     this.membersService.updateUser(this.member).subscribe(() => {
       this.router.navigateByUrl('members/' + this.user.username)
-    });    
+    });
   }
 
 
@@ -51,17 +51,19 @@ export class MemberEditComponent implements OnInit {
 
   loadMember() {
     this.membersService.getMember(this.route.snapshot.paramMap.get('username')).subscribe(response => {
-      this.member = response;    
-      this.member.tags=[{
-        value:7,
-        display:'Angular'
+      this.member = response;
+      this.member.tags = [{
+        value: 7,
+        display: 'Angular'
       }];
     });
   }
 
-  onUploadPhotoSuccess(response: any) {
+  onUploadPhotoSuccess = (response: any) => {
     if (response) {
       const photo = JSON.parse(response);
+      console.log('member: ' + JSON.stringify(this.member));
+      console.log(response);
       this.member.photoUrl = photo.url;
       this.member.photoId = photo.id;
       this.user.photoUrl = photo.url;

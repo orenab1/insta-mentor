@@ -56,10 +56,50 @@ namespace API.Controllers
             var user = await _userRepository.GetUserAsync(username);
             _mapper.Map(memberUpdateDto, user);
 
+            await _userRepository.SaveAllAsync();
+
+            // var newUserTags = new List<UsersTags>();
+
+            // if (memberUpdateDto.Tags != null)
+            // {
+            //     foreach (TagDto tagDto in memberUpdateDto.Tags)
+            //     {
+            //         newUserTags.Add(new UsersTags
+            //         {
+            //             AppUserId = user.Id,
+            //             TagId = tagDto.Value
+            //         });
+            //     }
+            // }
+
+            // var prevUserTags = context.UserTags.Where(i => i.UserId = user.Id).ToList();
+
+            // if (prevUserTags != null && prevUserTags.Count > 0) context.UserTags.RemoveRange(prevUserTags);
+
+            // if (newUserTags.Count > 0) context.UserTags.AddRange(newUserTags);
+
+            // context.SaveChanges();
+
+
+
+
+            // if (memberUpdateDto.Tags != null)
+            // {
+            //     user.Tags = new List<UsersTags>();
+            //     foreach (TagDto tagDto in memberUpdateDto.Tags)
+            //     {
+            //         user.Tags.Add(new UsersTags
+            //         {
+            //             AppUserId = user.Id,
+            //             TagId = tagDto.Value
+            //         });
+            //     }
+            // }
+
             _userRepository.Update(user);
 
             if (await _userRepository.SaveAllAsync())
-                return  NoContent();
+                return NoContent();
 
             return BadRequest("Failed to update user");
         }

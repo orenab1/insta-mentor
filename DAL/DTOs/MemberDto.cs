@@ -23,6 +23,6 @@ namespace DAL.DTOs
 
         public TagDto[] Tags { get; set; }
 
-        //public EmailPrefrence EmailPrefrence { get; set; }
+        public EmailPrefrence EmailPrefrence { get; set; }
     }
 }

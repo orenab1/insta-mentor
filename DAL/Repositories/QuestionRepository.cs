@@ -45,13 +45,12 @@ namespace DAL.Repositories
                 AskerId = questionDto.AskerId
             };
 
-            _context.Questions.AddAsync(questionToSave);
+            await _context.Questions.AddAsync(questionToSave);
 
             await _context.SaveChangesAsync();
 
 
             return questionToSave.Id;
-
         }
 
         public async Task<bool> MakeOfferAsync(OfferDto offerDto)

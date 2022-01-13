@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using DAL.Entities;
+using System.Collections.Generic;
 
 namespace DAL
 {
@@ -19,6 +20,8 @@ namespace DAL
 
         public DbSet<Question> Questions{get;set;}
 
+         public DbSet<Tag> Tags{get;set;}
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
@@ -34,6 +37,42 @@ namespace DAL
                 .WithMany(l => l.ReviewsReceived)
                 .HasForeignKey(s => s.RevieweeId)
                 .OnDelete(DeleteBehavior.NoAction);
+
+            builder.Entity<Tag>().HasData(SeedTags());
+        }
+
+
+
+        private static List<Tag> SeedTags()
+        {
+            return new List<Tag>{new Tag
+            {
+                Id = 1,
+                Text = "SQL",
+                IsApproved = true,
+                //Creator = null,
+            },
+            new Tag
+            {
+                Id = 2,
+                Text = "Python",
+                IsApproved = true,
+             //   Creator = null,
+            },
+            new Tag
+            {
+                Id = 3,
+                Text = "React",
+                IsApproved = true,
+              //  Creator = null,
+            },
+            new Tag
+            {
+                Id = 4,
+                Text = "Angular",
+                IsApproved = true,
+             //   Creator = null,
+            }};
         }
     }
 

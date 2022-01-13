@@ -29,6 +29,7 @@ import { EditQuestionComponent } from './question/edit-question/edit-question.co
 import { PocComponent } from './poc/poc.component'
 
 import { TagInputModule } from 'ngx-chips';
+import { MemberEditComponent } from './members/member-edit/member-edit.component';
 
 
 @NgModule({
@@ -48,7 +49,8 @@ import { TagInputModule } from 'ngx-chips';
     ReviewComponent,
     RatingBasicComponent,
     EditQuestionComponent,
-    PocComponent
+    PocComponent,
+    MemberEditComponent
   ],
   imports: [
     BrowserModule,

@@ -1,3 +1,5 @@
+import { Tag } from "./tag";
+
 export interface Member {
     id: number;
     username: string;
@@ -7,4 +9,6 @@ export interface Member {
     photoUrl: string;
     created: Date;
     photoId: number;
+    tags: Tag[];
+    asdf:string[];
 }

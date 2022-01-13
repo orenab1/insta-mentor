@@ -3,14 +3,16 @@ using System;
 using DAL;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DAL.Data.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20220112082124_Tags_updated")]
+    partial class Tags_updated
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -224,54 +226,7 @@ namespace DAL.Data.Migrations
 
                     b.HasIndex("EmailPrefrenceAppUserId");
 
-                    b.ToTable("Tags");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            IsApproved = true,
-                            Text = "SQL"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            IsApproved = true,
-                            Text = "Python"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            IsApproved = true,
-                            Text = "React"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            IsApproved = true,
-                            Text = "Angular"
-                        });
-                });
-
-            modelBuilder.Entity("DAL.Entities.UsersTags", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("AppUserId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("TagId")
-                        .HasColumnType("INTEGER");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("AppUserId");
-
-                    b.HasIndex("TagId");
-
-                    b.ToTable("UsersTags");
+                    b.ToTable("Tag");
                 });
 
             modelBuilder.Entity("DAL.Entities.AppUser", b =>
@@ -373,25 +328,6 @@ namespace DAL.Data.Migrations
                     b.Navigation("Creator");
                 });
 
-            modelBuilder.Entity("DAL.Entities.UsersTags", b =>
-                {
-                    b.HasOne("DAL.Entities.AppUser", "AppUser")
-                        .WithMany("Tags")
-                        .HasForeignKey("AppUserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("DAL.Entities.Tag", "Tag")
-                        .WithMany("Users")
-                        .HasForeignKey("TagId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("AppUser");
-
-                    b.Navigation("Tag");
-                });
-
             modelBuilder.Entity("DAL.Entities.AppUser", b =>
                 {
                     b.Navigation("EmailPrefrence");
@@ -401,8 +337,6 @@ namespace DAL.Data.Migrations
                     b.Navigation("ReviewsGiven");
 
                     b.Navigation("ReviewsReceived");
-
-                    b.Navigation("Tags");
                 });
 
             modelBuilder.Entity("DAL.Entities.EmailPrefrence", b =>
@@ -417,11 +351,6 @@ namespace DAL.Data.Migrations
                     b.Navigation("Offers");
 
                     b.Navigation("Reviews");
-                });
-
-            modelBuilder.Entity("DAL.Entities.Tag", b =>
-                {
-                    b.Navigation("Users");
                 });
 #pragma warning restore 612, 618
         }

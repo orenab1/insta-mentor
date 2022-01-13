@@ -30,5 +30,7 @@ namespace DAL.Entities
 
         public ICollection<Review> ReviewsGiven { get; set; }
         public ICollection<Review> ReviewsReceived { get; set; }
+
+        public ICollection<UsersTags> Tags { get; set; } 
     }
 }

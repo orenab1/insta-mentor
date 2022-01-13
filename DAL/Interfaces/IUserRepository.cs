@@ -17,5 +17,7 @@ namespace DAL.Interfaces
         Task<IEnumerable<MemberDto>> GetMembersAsync();
 
         Task<MemberDto> GetMemberAsync(string username);
+
+       // Task<int> GetUserId(string username);
     }
 }

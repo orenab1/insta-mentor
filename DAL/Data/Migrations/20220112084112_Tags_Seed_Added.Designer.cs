@@ -3,14 +3,16 @@ using System;
 using DAL;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DAL.Data.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20220112084112_Tags_Seed_Added")]
+    partial class Tags_Seed_Added
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -224,7 +226,7 @@ namespace DAL.Data.Migrations
 
                     b.HasIndex("EmailPrefrenceAppUserId");
 
-                    b.ToTable("Tags");
+                    b.ToTable("Tag");
 
                     b.HasData(
                         new
@@ -251,27 +253,6 @@ namespace DAL.Data.Migrations
                             IsApproved = true,
                             Text = "Angular"
                         });
-                });
-
-            modelBuilder.Entity("DAL.Entities.UsersTags", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("AppUserId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("TagId")
-                        .HasColumnType("INTEGER");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("AppUserId");
-
-                    b.HasIndex("TagId");
-
-                    b.ToTable("UsersTags");
                 });
 
             modelBuilder.Entity("DAL.Entities.AppUser", b =>
@@ -373,25 +354,6 @@ namespace DAL.Data.Migrations
                     b.Navigation("Creator");
                 });
 
-            modelBuilder.Entity("DAL.Entities.UsersTags", b =>
-                {
-                    b.HasOne("DAL.Entities.AppUser", "AppUser")
-                        .WithMany("Tags")
-                        .HasForeignKey("AppUserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("DAL.Entities.Tag", "Tag")
-                        .WithMany("Users")
-                        .HasForeignKey("TagId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("AppUser");
-
-                    b.Navigation("Tag");
-                });
-
             modelBuilder.Entity("DAL.Entities.AppUser", b =>
                 {
                     b.Navigation("EmailPrefrence");
@@ -401,8 +363,6 @@ namespace DAL.Data.Migrations
                     b.Navigation("ReviewsGiven");
 
                     b.Navigation("ReviewsReceived");
-
-                    b.Navigation("Tags");
                 });
 
             modelBuilder.Entity("DAL.Entities.EmailPrefrence", b =>
@@ -417,11 +377,6 @@ namespace DAL.Data.Migrations
                     b.Navigation("Offers");
 
                     b.Navigation("Reviews");
-                });
-
-            modelBuilder.Entity("DAL.Entities.Tag", b =>
-                {
-                    b.Navigation("Users");
                 });
 #pragma warning restore 612, 618
         }

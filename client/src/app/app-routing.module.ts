@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { HomeComponent } from './home/home.component';
 import { MemberDetailComponent } from './members/member-detail/member-detail.component';
+import { MemberEditComponent } from './members/member-edit/member-edit.component';
 import { MemberListComponent } from './members/member-list/member-list.component';
 import { MessagesComponent } from './messages/messages.component';
 import { PocComponent } from './poc/poc.component';
@@ -14,6 +15,7 @@ const routes: Routes = [
  // { path: 'members', component: MemberListComponent },
   { path: 'questions', component: QuestionsComponent },
   { path: 'members/:username', component: MemberDetailComponent },
+  { path: 'member-edit/:username', component: MemberEditComponent },
   { path: 'poc', component: PocComponent },
   { path: 'edit-question', component: EditQuestionComponent },
   { path: 'edit-question/:id', component: EditQuestionComponent },

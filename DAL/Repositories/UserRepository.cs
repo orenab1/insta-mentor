@@ -19,7 +19,7 @@ namespace DAL.Repositories
         private readonly DataContext _context;
         private readonly IMapper _mapper;
 
-        public UserRepository(DataContext context,IMapper mapper)
+        public UserRepository(DataContext context, IMapper mapper)
         {
             this._context = context;
             this._mapper = mapper;
@@ -55,10 +55,30 @@ namespace DAL.Repositories
 
         public async Task<MemberDto> GetMemberAsync(string username)
         {
-            return await _mapper
-                .ProjectTo<MemberDto>(_context.Users.Where(x => x.UserName==username))
-                .SingleOrDefaultAsync();
+            var user = await _context.Users.SingleOrDefaultAsync(x => x.UserName == username);
+
+            return new MemberDto()
+            {
+                Id = user.Id,
+                AboutMe = user.AboutMe,
+                Email = user.Email,
+                Title = user.Title,
+                Username = user.UserName
+            };
+            // return await _context.Users.SingleOrDefaultAsync(x => x.UserName == username)
+
+
+            // return await _mapper
+            //     .ProjectTo<MemberDto>(_context.Users.Where(x => x.UserName == username))
+            //     .SingleOrDefaultAsync();
 
         }
+
+
+
+        // public async Task<int> GetUserId(string username)
+        // {
+        //     return await _context.Users.SingleOrDefaultAsync(x => x.UserName == username).Id;
+        // }
     }
 }

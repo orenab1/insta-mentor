@@ -21,6 +21,8 @@ namespace DAL.DTOs
 
         public DateTime Created { get; set; }
 
+        public TagDto[] Tags { get; set; }
+
         //public EmailPrefrence EmailPrefrence { get; set; }
     }
 }

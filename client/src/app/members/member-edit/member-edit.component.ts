@@ -9,11 +9,11 @@ import { CommonService } from 'src/app/_services/common.service';
 import { MembersService } from 'src/app/_services/members.service';
 
 @Component({
-  selector: 'app-member-detail',
-  templateUrl: './member-detail.component.html',
-  styleUrls: ['./member-detail.component.scss']
+  selector: 'app-member-edit',
+  templateUrl: './member-edit.component.html',
+  styleUrls: ['./member-edit.component.scss']
 })
-export class MemberDetailComponent implements OnInit {
+export class MemberEditComponent implements OnInit {
   member: Member;
   user: User;
   allTags: Tag[];
@@ -40,13 +40,22 @@ export class MemberDetailComponent implements OnInit {
   }
 
 
+  editMember() {
+    this.membersService.updateUser(this.member).subscribe(() => {
+      this.router.navigateByUrl('members/' + this.user.username)
+    });    
+  }
 
 
 
 
   loadMember() {
     this.membersService.getMember(this.route.snapshot.paramMap.get('username')).subscribe(response => {
-      this.member = response;
+      this.member = response;    
+      this.member.tags=[{
+        value:7,
+        display:'Angular'
+      }];
     });
   }
 
@@ -67,10 +76,6 @@ export class MemberDetailComponent implements OnInit {
       this.member.photoUrl = './assets/user.png';
       this.member.photoId = 0;
     })
-  }
-
-  edit() {
-    this.router.navigateByUrl('member-edit/' + this.route.snapshot.paramMap.get('username'));
   }
 }
 

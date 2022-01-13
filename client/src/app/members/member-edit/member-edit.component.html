@@ -1,0 +1,50 @@
+<form *ngIf="member" #editMemberForm="ngForm" (ngSubmit)="editMember()" autocomplete="off">
+
+    <i class="fa fa-pencil" (click)="edit()"></i>
+    <div class="col-4">
+        <div class="card">
+            <img src="{{member.photoUrl || './assets/user.png'}}" alt="{{member.username}}"
+                class="card-img-top img-thumbnail" style="width: 100px; height: 100px;" class="rounded-circle">
+
+            <app-photo-editor [addPhotoUrlExtension]="'users/add-photo'" [onUploadSuccess]="onUploadPhotoSuccess"
+                [deletePhoto]="onDeletePhoto"></app-photo-editor>
+
+            <div class="card-body">
+                <div>
+                    <strong>Username</strong>
+                    <input type="text" class="form-control" name="username" [(ngModel)]="member.username">
+                </div>
+                <div>
+                    <strong>Email</strong>
+                    <input type="email" class="form-control" name="email" [(ngModel)]="member.email">
+                </div>
+                <div>
+                    <strong>Title</strong>
+                    <input type="text" class="form-control" name="title" [(ngModel)]="member.title">
+                </div>
+                <div>
+                    <strong>About Me</strong>
+                    <input type="textarea" class="form-control" name="aboutMe" [(ngModel)]="member.aboutMe">
+                </div>
+
+
+            </div>
+
+            <div>
+                <strong>Tags</strong>
+                <tag-input name='tags' [(ngModel)]="member.tags" [theme]="'bootstrap'">
+                    <tag-input-dropdown 
+                        [autocompleteItems]="allTags"
+                        [showDropdownIfEmpty]="true">
+                    </tag-input-dropdown>
+                </tag-input>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="form-group text-center">
+        <button class="btn btn-success mr-2" type="submit">Publish</button>
+        <button class="btn btn-default mr-2" (click)="cancel()">Cancel</button>
+    </div>
+</form>

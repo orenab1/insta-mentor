@@ -1,7 +1,9 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { map } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { Member } from '../_models/member';
+import { User } from '../_models/user';
 
 @Injectable({
   providedIn: 'root'
@@ -20,5 +22,13 @@ export class MembersService {
 
   deletePhoto() {
     return this.http.delete(this.baseUrl + 'users/delete-photo');
+  }
+
+  updateUser(model: Member) {
+    return this.http.put(this.baseUrl + 'users/update-user', model).pipe(
+      map(() => {
+        
+      })
+    );
   }
 }

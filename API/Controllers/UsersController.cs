@@ -49,7 +49,7 @@ namespace API.Controllers
             return await _userRepository.GetMemberAsync(username);
         }
 
-        [HttpPut]
+        [HttpPut("update-user")]
         public async Task<ActionResult> UpdateUser(MemberUpdateDto memberUpdateDto)
         {
             var username = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
@@ -59,7 +59,7 @@ namespace API.Controllers
             _userRepository.Update(user);
 
             if (await _userRepository.SaveAllAsync())
-                return NoContent();
+                return  NoContent();
 
             return BadRequest("Failed to update user");
         }

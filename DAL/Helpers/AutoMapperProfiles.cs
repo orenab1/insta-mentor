@@ -35,6 +35,14 @@ namespace API.Helpers
             CreateMap<Offer, OfferInQuestionDto>()
                 .ForMember(dest => dest.Username, opt => opt.MapFrom(src =>
                     src.Offerer.UserName));
+
+            CreateMap<Tag, TagDto>()
+                .ForMember(dest => dest.Value, opt => opt.MapFrom(src =>
+                    src.Id))
+                .ForMember(dest => dest.Display, opt => opt.MapFrom(src =>
+                    src.Text));
+
+            
         }
     }
 }

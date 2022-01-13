@@ -1,35 +1,42 @@
+
+
 <div *ngIf="member">
+
+    <i class="fa fa-pencil" (click)="edit()"></i>
     <div class="col-4">
         <div class="card">
-            <img src="{{member.photoUrl || './assets/user.png'}}" alt="{{member.username}}" 
-                class="card-img-top img-thumbnail" style="width: 100px; height: 100px;"
-                class="rounded-circle">
-
-                <app-photo-editor 
-                    [addPhotoUrlExtension]="'users/add-photo'" 
-                    [onUploadSuccess]="onUploadPhotoSuccess"
-                    [deletePhoto]="onDeletePhoto"></app-photo-editor>
+            <img src="{{member.photoUrl || './assets/user.png'}}" alt="{{member.username}}"
+                class="card-img-top img-thumbnail" style="width: 100px; height: 100px;" class="rounded-circle">
 
             <div class="card-body">
                 <div>
-                    <strong>username:</strong>
+                    <strong>Username</strong>
                     <p>{{member.username}}</p>
                 </div>
                 <div>
-                    <strong>email:</strong>
+                    <strong>Email</strong>
                     <p>{{member.email}}</p>
                 </div>
                 <div>
-                    <strong>title:</strong>
+                    <strong>Title</strong>
                     <p>{{member.title}}</p>
                 </div>
                 <div>
-                    <strong>aboutMe:</strong>
+                    <strong>About Me</strong>
                     <p>{{member.aboutMe}}</p>
                 </div>
-                
-               
+
+
             </div>
+
+            <div>
+                <strong>Tags</strong>
+                <tag-input [ngModel]="" [theme]="'bootstrap'">
+                    <tag-input-dropdown [autocompleteItems]="allTags">
+                    </tag-input-dropdown>
+                </tag-input>
+            </div>
+
         </div>
     </div>
 </div>

@@ -11,6 +11,7 @@ using System.Security.Cryptography.X509Certificates;
 using AutoMapper;
 using DAL.DTOs;
 using System.Linq;
+using System;
 
 namespace DAL.Repositories
 {
@@ -29,10 +30,7 @@ namespace DAL.Repositories
         {
             _context.Entry(user).State = EntityState.Modified;
         }
-        public async Task<bool> SaveAllAsync()
-        {
-            return await _context.SaveChangesAsync() > 0;
-        }
+
         public async Task<IEnumerable<AppUser>> GetUsersAsync()
         {
             return await _context.Users.ToListAsync();
@@ -51,6 +49,13 @@ namespace DAL.Repositories
             return await _mapper
                 .ProjectTo<MemberDto>(_context.Users)
                 .ToListAsync();
+        }
+
+
+        public async void ChangeCurrentUserOnlineStatus(string username, bool isOnline)
+        {
+            var user = await _context.Users.SingleOrDefaultAsync(x => x.UserName == username);
+            user.IsOnline = isOnline;
         }
 
         public async Task<MemberDto> GetMemberAsync(string username)
@@ -74,6 +79,9 @@ namespace DAL.Repositories
 
         }
 
+        
+
+        
 
 
         // public async Task<int> GetUserId(string username)

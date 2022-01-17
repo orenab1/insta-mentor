@@ -4,8 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
 using API.Extensions;
-
-
+using DAL.Data;
 
 namespace API.Controllers
 {
@@ -13,24 +12,26 @@ namespace API.Controllers
     [Route("api/[controller]")]
     public class CommonController : ControllerBase
     {
-        private readonly ICommonRepository _commonRepository;
-        private readonly IUserRepository _userRepository;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public CommonController(ICommonRepository commonRepository, IUserRepository userRepository)
+        public CommonController(IUnitOfWork unitOfWork)
         {
-            this._userRepository = userRepository;
-            this._commonRepository = commonRepository;
+            this._unitOfWork = unitOfWork;
         }
-
-
 
         [HttpGet("get-tags")]
         public async Task<ActionResult> GetTags()
         {
             var userName = User.GetUsername();
-            var user = await _userRepository.GetUserAsync(User.GetUsername());
-            return Ok(await _commonRepository.GetTagsByCreatorOrApproved(user.Id));
+            var user = await _unitOfWork.UserRepository.GetUserAsync(User.GetUsername());
+            return Ok(await _unitOfWork.TagRepository.GetTagsByCreatorOrApproved(user.Id));
         }
 
+        [HttpGet("get-communities")]
+        public async Task<ActionResult> GetCommunities()
+        {
+            var userName = User.GetUsername();
+            return Ok(await _unitOfWork.CommunityRepository.GetCommunities());
+        }
     }
 }

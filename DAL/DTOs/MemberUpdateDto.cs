@@ -12,6 +12,8 @@ namespace DAL.DTOs
 
         public TagDto[] Tags { get; set; }  
 
+        public CommunityDto[] Communities { get; set; }
+
         public bool QuestionAskedOnMyTags { get; set; }
         public bool OnlyNotifyOnCommunityQuestionAsked { get; set; }
         public bool MyQuestionReceivedNewOffer { get; set; }

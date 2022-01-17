@@ -14,8 +14,8 @@ export class AccountService {
   currentUser$ = this.currentUserSource.asObservable();
 
   constructor(private http: HttpClient) { }
-  login(model: any) {
-  console.log(JSON.stringify(model));
+
+  login(model: any) {      
     return this.http.post(this.baseUrl + 'account/login', model)
       .pipe(
         map((response: User) => {
@@ -33,7 +33,6 @@ export class AccountService {
         if (user) {
           this.setCurrentUser(user);
         }
-
         return user;
       })
     )

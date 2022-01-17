@@ -4,8 +4,10 @@ using DAL.DTOs;
 
 namespace DAL.Interfaces
 {
-    public interface ICommonRepository
+    public interface ITagRepository
     {
         Task<IEnumerable<TagDto>> GetTagsByCreatorOrApproved(int creatorId);
+
+        Task<bool> UpdateTagsForUser(TagDto[] newTags, int userId);
     }
 }

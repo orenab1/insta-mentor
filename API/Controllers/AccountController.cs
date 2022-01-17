@@ -7,6 +7,14 @@ using DAL;
 using DAL.DTOs;
 using Microsoft.EntityFrameworkCore;
 using API.Interfaces;
+using System.Security.Claims;
+using System.Configuration;
+using System.Linq;
+using Microsoft.AspNetCore.Authorization;
+using System.Collections.Generic;
+using API.Extensions;
+using AutoMapper;
+using Microsoft.AspNetCore.Http;
 
 namespace API.Controllers
 {
@@ -47,7 +55,8 @@ namespace API.Controllers
             return new UserDto
             {
                 Username = user.UserName,
-                Token = _tokenService.CreateToken(user)
+                Token = _tokenService.CreateToken(user),
+                Id = user.Id
             };
         }
 
@@ -55,6 +64,15 @@ namespace API.Controllers
         [HttpPost("login")]
         public async Task<ActionResult<UserDto>> Login(LoginDto loginDto)
         {
+            // var identity = User.Identity as ClaimsIdentity;
+            // var claim = User.Claims == null ? null : User.Claims.FirstOrDefault();
+
+            // if (claim != null)
+            // {
+            //     identity.RemoveClaim(claim);
+            // }
+
+
             var user = await _context.Users
                 .Include(p => p.Photo)
                 .SingleOrDefaultAsync(x => x.UserName == loginDto.Username);
@@ -76,11 +94,14 @@ namespace API.Controllers
                 }
             }
 
+
+
             return new UserDto
             {
                 Username = user.UserName,
                 Token = _tokenService.CreateToken(user),
-                PhotoUrl = user.Photo.Url
+                PhotoUrl = user.Photo == null ? "" : user.Photo.Url,
+                Id = user.Id
             };
         }
 

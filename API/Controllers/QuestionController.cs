@@ -20,18 +20,16 @@ namespace API.Controllers
     [Route("api/[controller]")]
     public class QuestionsController : ControllerBase
     {
-        private readonly IQuestionRepository _questionRepository;
-        private readonly IUserRepository _userRepository;
+        private readonly IUnitOfWork _unitOfWork;
+        
         private readonly IPhotoService _photoService;
         private readonly IMapper _mapper;
 
-        public QuestionsController(IQuestionRepository questionRepository,
-        IUserRepository userRepository,
+        public QuestionsController(IUnitOfWork unitOfWork,
         IPhotoService photoService,
         IMapper mapper)
         {
-            this._userRepository = userRepository;
-            this._questionRepository = questionRepository;
+            this._unitOfWork = unitOfWork;
             this._photoService = photoService;
             this._mapper = mapper;
         }
@@ -39,9 +37,9 @@ namespace API.Controllers
         [HttpPost("ask-question")]
         public async Task<ActionResult<int>> AskQuestion(QuestionDto questionDto)
         {
-            AppUser user= await _userRepository.GetUserAsync(User.GetUsername());
+            AppUser user= await _unitOfWork.UserRepository.GetUserAsync(User.GetUsername());
             questionDto.AskerId =user.Id;
-            int id = await _questionRepository.AskQuestionAsync(questionDto);
+            int id = await _unitOfWork.QuestionRepository.AskQuestionAsync(questionDto);
 
             return Ok(id);
         }
@@ -50,16 +48,16 @@ namespace API.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<QuestionDto>> GetQuestion(int id)
         {
-            return await _questionRepository.GetQuestionAsync(id);
+            return await _unitOfWork.QuestionRepository.GetQuestionAsync(id);
         }
 
         [HttpPost("post-comment")]
         public async Task<ActionResult<CommentDto>> PostComment(CommentDto commentDto)
         {
             commentDto.CommentorUsername = User.GetUsername();
-            await _questionRepository.PostCommentAsync(commentDto);
+            await _unitOfWork.QuestionRepository.PostCommentAsync(commentDto);
 
-            //_questionRepository.SaveAllAsync();
+            //_unitOfWork.QuestionRepository.SaveAllAsync();
             return Ok();
         }
 
@@ -72,7 +70,7 @@ namespace API.Controllers
                 QuestionId = questionId
             };
 
-            await _questionRepository.MakeOfferAsync(offer);
+            await _unitOfWork.QuestionRepository.MakeOfferAsync(offer);
 
             return Ok();
         }
@@ -80,7 +78,7 @@ namespace API.Controllers
         [HttpGet()]
         public async Task<ActionResult<IEnumerable<QuestionDto>>> GetQuestions()
         {
-            return Ok(await _questionRepository.GetQuestionsAsync());
+            return Ok(await _unitOfWork.QuestionRepository.GetQuestionsAsync());
         }
 
 
@@ -89,7 +87,7 @@ namespace API.Controllers
         public async Task<ActionResult<PhotoDto>> AddPhoto(IFormFile file)
         {
             // var k = HttpContext.Request.Query["page"].ToString();
-            var user = await _userRepository.GetUserAsync(User.GetUsername());
+            var user = await _unitOfWork.UserRepository.GetUserAsync(User.GetUsername());
 
             var result = await _photoService.AddPhotoAsync(file);
 
@@ -104,7 +102,7 @@ namespace API.Controllers
 
             user.Photo = photo;
 
-            if (await _userRepository.SaveAllAsync())
+            if (await _unitOfWork.Complete())
             {
                 return CreatedAtRoute("GetUser",
                 new { username = user.UserName },
@@ -118,7 +116,7 @@ namespace API.Controllers
         [HttpDelete("delete-photo")]
         public async Task<ActionResult> DeletePhoto()
         {
-            var user = await _userRepository.GetUserAsync(User.GetUsername());
+            var user = await _unitOfWork.UserRepository.GetUserAsync(User.GetUsername());
 
             var photo = user.Photo;
 
@@ -132,7 +130,7 @@ namespace API.Controllers
 
             user.Photo = null;
 
-            if (await _userRepository.SaveAllAsync()) return Ok();
+            if (await _unitOfWork.Complete()) return Ok();
 
             return BadRequest("Failed to delete the photo");
         }

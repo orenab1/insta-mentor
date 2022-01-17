@@ -24,10 +24,9 @@ export class MembersService {
     return this.http.delete(this.baseUrl + 'users/delete-photo');
   }
 
-  updateUser(model: Member) {
-    return this.http.put(this.baseUrl + 'users/update-user', model).pipe(
-      map(() => {
-        
+  updateUser(member: Member) {
+    return this.http.put(this.baseUrl + 'users/update-user', member).pipe(
+      map(() => {        
       })
     );
   }

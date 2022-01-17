@@ -5,8 +5,6 @@ namespace DAL.DTOs
 {
     public class MemberDto
     {
-        public int Id { get; set; }
-
         public string Username { get; set; }
 
         public string Email { get; set; }
@@ -15,14 +13,16 @@ namespace DAL.DTOs
 
         public string AboutMe { get; set; }
         
-        public int PhotoId { get; set; }
+        public int? PhotoId { get; set; }
 
         public string PhotoUrl { get; set; }
 
-        public DateTime Created { get; set; }
+        public bool IsOnline { get; set; }
 
         public TagDto[] Tags { get; set; }
 
-        public EmailPrefrence EmailPrefrence { get; set; }
+        public CommunityDto[] Communities { get; set; }
+
+        public EmailPrefrenceDto EmailPrefrence { get; set; }
     }
 }

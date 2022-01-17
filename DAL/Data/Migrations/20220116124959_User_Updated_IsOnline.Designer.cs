@@ -3,14 +3,16 @@ using System;
 using DAL;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DAL.Data.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20220116124959_User_Updated_IsOnline")]
+    partial class User_Updated_IsOnline
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -81,31 +83,6 @@ namespace DAL.Data.Migrations
                     b.HasIndex("QuestionId");
 
                     b.ToTable("Comments");
-                });
-
-            modelBuilder.Entity("DAL.Entities.Community", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<DateTime>("Created")
-                        .HasColumnType("TEXT");
-
-                    b.Property<int?>("CreatorId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<bool>("IsApproved")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CreatorId");
-
-                    b.ToTable("Communities");
                 });
 
             modelBuilder.Entity("DAL.Entities.EmailPrefrence", b =>
@@ -243,9 +220,6 @@ namespace DAL.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<DateTime>("Created")
-                        .HasColumnType("TEXT");
-
                     b.Property<int?>("CreatorId")
                         .HasColumnType("INTEGER");
 
@@ -265,52 +239,27 @@ namespace DAL.Data.Migrations
                         new
                         {
                             Id = 1,
-                            Created = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             IsApproved = true,
                             Text = "SQL"
                         },
                         new
                         {
                             Id = 2,
-                            Created = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             IsApproved = true,
                             Text = "Python"
                         },
                         new
                         {
                             Id = 3,
-                            Created = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             IsApproved = true,
                             Text = "React"
                         },
                         new
                         {
                             Id = 4,
-                            Created = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             IsApproved = true,
                             Text = "Angular"
                         });
-                });
-
-            modelBuilder.Entity("DAL.Entities.UsersCommunities", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("AppUserId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("CommunityId")
-                        .HasColumnType("INTEGER");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("AppUserId");
-
-                    b.HasIndex("CommunityId");
-
-                    b.ToTable("UsersCommunities");
                 });
 
             modelBuilder.Entity("DAL.Entities.UsersTags", b =>
@@ -356,15 +305,6 @@ namespace DAL.Data.Migrations
                     b.Navigation("Commentor");
 
                     b.Navigation("Question");
-                });
-
-            modelBuilder.Entity("DAL.Entities.Community", b =>
-                {
-                    b.HasOne("DAL.Entities.AppUser", "Creator")
-                        .WithMany()
-                        .HasForeignKey("CreatorId");
-
-                    b.Navigation("Creator");
                 });
 
             modelBuilder.Entity("DAL.Entities.EmailPrefrence", b =>
@@ -438,25 +378,6 @@ namespace DAL.Data.Migrations
                     b.Navigation("Creator");
                 });
 
-            modelBuilder.Entity("DAL.Entities.UsersCommunities", b =>
-                {
-                    b.HasOne("DAL.Entities.AppUser", "AppUser")
-                        .WithMany("Communities")
-                        .HasForeignKey("AppUserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("DAL.Entities.Community", "Community")
-                        .WithMany("Users")
-                        .HasForeignKey("CommunityId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("AppUser");
-
-                    b.Navigation("Community");
-                });
-
             modelBuilder.Entity("DAL.Entities.UsersTags", b =>
                 {
                     b.HasOne("DAL.Entities.AppUser", "AppUser")
@@ -478,8 +399,6 @@ namespace DAL.Data.Migrations
 
             modelBuilder.Entity("DAL.Entities.AppUser", b =>
                 {
-                    b.Navigation("Communities");
-
                     b.Navigation("EmailPrefrence");
 
                     b.Navigation("Questions");
@@ -489,11 +408,6 @@ namespace DAL.Data.Migrations
                     b.Navigation("ReviewsReceived");
 
                     b.Navigation("Tags");
-                });
-
-            modelBuilder.Entity("DAL.Entities.Community", b =>
-                {
-                    b.Navigation("Users");
                 });
 
             modelBuilder.Entity("DAL.Entities.Question", b =>

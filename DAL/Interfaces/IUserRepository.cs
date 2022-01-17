@@ -9,7 +9,6 @@ namespace DAL.Interfaces
     public interface IUserRepository
     {
         void Update(AppUser user);
-        Task<bool> SaveAllAsync();
         Task<IEnumerable<AppUser>> GetUsersAsync();
 
         Task<AppUser> GetUserAsync(string username);
@@ -18,6 +17,6 @@ namespace DAL.Interfaces
 
         Task<MemberDto> GetMemberAsync(string username);
 
-       // Task<int> GetUserId(string username);
+        void ChangeCurrentUserOnlineStatus(string username, bool isOnline);       
     }
 }

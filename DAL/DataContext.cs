@@ -1,26 +1,32 @@
 using Microsoft.EntityFrameworkCore;
 using DAL.Entities;
 using System.Collections.Generic;
+using System;
 
 namespace DAL
 {
-    public class DataContext:DbContext
+    public class DataContext : DbContext
     {
         public DataContext()
         {
-            
+
         }
 
-        public DataContext(DbContextOptions<DataContext> options):base(options)
+        public DataContext(DbContextOptions<DataContext> options) : base(options)
         {
 
         }
 
-        public DbSet<AppUser> Users{get;set;}
+        public DbSet<AppUser> Users { get; set; }
+        public DbSet<UsersTags> UsersTags { get; set; }
 
-        public DbSet<Question> Questions{get;set;}
+        public DbSet<UsersCommunities> UsersCommunities { get; set; }
 
-         public DbSet<Tag> Tags{get;set;}
+        public DbSet<Question> Questions { get; set; }
+
+        public DbSet<Tag> Tags { get; set; }
+        public DbSet<Community> Communities { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -31,7 +37,7 @@ namespace DAL
                 .WithMany(l => l.ReviewsGiven)
                 .HasForeignKey(s => s.ReviewerId)
                 .OnDelete(DeleteBehavior.NoAction);
-            
+
             builder.Entity<Review>()
                 .HasOne(s => s.Reviewee)
                 .WithMany(l => l.ReviewsReceived)
@@ -40,6 +46,11 @@ namespace DAL
 
             builder.Entity<Tag>().HasData(SeedTags());
         }
+
+        //     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        // => optionsBuilder
+        //     .LogTo(Console.WriteLine)
+        //     .EnableDetailedErrors();
 
 
 
@@ -76,5 +87,5 @@ namespace DAL
         }
     }
 
-    
+
 }

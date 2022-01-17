@@ -16,6 +16,9 @@ using CloudinaryDotNet.Actions;
 using Microsoft.AspNetCore.Http;
 using API.Interfaces;
 using API.Extensions;
+using System.Security.Policy;
+using System;
+using System.Linq;
 
 namespace API.Controllers
 {
@@ -23,22 +26,22 @@ namespace API.Controllers
     [Route("api/[controller]")]
     public class UsersController : BaseApiController
     {
-        private readonly IUserRepository _userRepository;
+        private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
         private readonly IPhotoService _photoService;
 
-        public UsersController(IUserRepository userRepository, IMapper mapper, IPhotoService photoService)
+        public UsersController(IUnitOfWork unitOfWork, IMapper mapper, IPhotoService photoService)
         {
             this._mapper = mapper;
             this._photoService = photoService;
-            this._userRepository = userRepository;
+            this._unitOfWork = unitOfWork;
         }
 
         [AllowAnonymous]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<MemberDto>>> GetUsers()
         {
-            var users = await _userRepository.GetMembersAsync();
+            var users = await _unitOfWork.UserRepository.GetMembersAsync();
             return Ok(users);
         }
 
@@ -46,68 +49,52 @@ namespace API.Controllers
         [HttpGet("{username}", Name = "GetUser")]
         public async Task<ActionResult<MemberDto>> GetUser(string username)
         {
-            return await _userRepository.GetMemberAsync(username);
+            return await _unitOfWork.UserRepository.GetMemberAsync(username);
         }
 
         [HttpPut("update-user")]
         public async Task<ActionResult> UpdateUser(MemberUpdateDto memberUpdateDto)
         {
             var username = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            var user = await _userRepository.GetUserAsync(username);
+            AppUser user = await _unitOfWork.UserRepository.GetUserAsync(username);
+
+            TagDto[] newTags= memberUpdateDto.Tags.ToArray();
+            CommunityDto[] newCommunities= memberUpdateDto.Communities.ToArray();
+
+            memberUpdateDto.Tags = null;
+            memberUpdateDto.Communities = null;
+
+
             _mapper.Map(memberUpdateDto, user);
 
-            await _userRepository.SaveAllAsync();
+            await _unitOfWork.Complete();
 
-            // var newUserTags = new List<UsersTags>();
+            await _unitOfWork.TagRepository.UpdateTagsForUser(newTags, user.Id);
+            await _unitOfWork.CommunityRepository.UpdateCommunitiesForUser(newCommunities, user.Id);
 
-            // if (memberUpdateDto.Tags != null)
-            // {
-            //     foreach (TagDto tagDto in memberUpdateDto.Tags)
-            //     {
-            //         newUserTags.Add(new UsersTags
-            //         {
-            //             AppUserId = user.Id,
-            //             TagId = tagDto.Value
-            //         });
-            //     }
-            // }
+            _unitOfWork.UserRepository.Update(user);
 
-            // var prevUserTags = context.UserTags.Where(i => i.UserId = user.Id).ToList();
-
-            // if (prevUserTags != null && prevUserTags.Count > 0) context.UserTags.RemoveRange(prevUserTags);
-
-            // if (newUserTags.Count > 0) context.UserTags.AddRange(newUserTags);
-
-            // context.SaveChanges();
-
-
-
-
-            // if (memberUpdateDto.Tags != null)
-            // {
-            //     user.Tags = new List<UsersTags>();
-            //     foreach (TagDto tagDto in memberUpdateDto.Tags)
-            //     {
-            //         user.Tags.Add(new UsersTags
-            //         {
-            //             AppUserId = user.Id,
-            //             TagId = tagDto.Value
-            //         });
-            //     }
-            // }
-
-            _userRepository.Update(user);
-
-            if (await _userRepository.SaveAllAsync())
+            if (await _unitOfWork.Complete())
                 return NoContent();
 
             return BadRequest("Failed to update user");
         }
 
+
+        [HttpPut("{isOnline}", Name = "change-current-user-online-status")]
+        public async Task<ActionResult> ChangeCurrentUserOnlineStatus(bool isOnline)
+        {
+            var username = User.GetUsername();
+            Console.WriteLine(username);
+            _unitOfWork.UserRepository.ChangeCurrentUserOnlineStatus(User.GetUsername(), isOnline);
+            _unitOfWork.Complete();
+            return NoContent();
+        }
+
         [HttpPost("add-photo")]
         public async Task<ActionResult<PhotoDto>> AddPhoto(IFormFile file)
         {
-            var user = await _userRepository.GetUserAsync(User.GetUsername());
+            var user = await _unitOfWork.UserRepository.GetUserAsync(User.GetUsername());
 
             var result = await _photoService.AddPhotoAsync(file);
 
@@ -122,7 +109,7 @@ namespace API.Controllers
 
             user.Photo = photo;
 
-            if (await _userRepository.SaveAllAsync())
+            if (await _unitOfWork.Complete())
             {
                 return CreatedAtRoute("GetUser",
                 new { username = user.UserName },
@@ -136,7 +123,7 @@ namespace API.Controllers
         [HttpDelete("delete-photo")]
         public async Task<ActionResult> DeletePhoto()
         {
-            var user = await _userRepository.GetUserAsync(User.GetUsername());
+            var user = await _unitOfWork.UserRepository.GetUserAsync(User.GetUsername());
 
             var photo = user.Photo;
 
@@ -150,7 +137,7 @@ namespace API.Controllers
 
             user.Photo = null;
 
-            if (await _userRepository.SaveAllAsync()) return Ok();
+            if (await _unitOfWork.Complete()) return Ok();
 
             return BadRequest("Failed to delete the photo");
         }

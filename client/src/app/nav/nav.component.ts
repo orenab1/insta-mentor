@@ -12,7 +12,7 @@ import { JsonpClientBackend } from '@angular/common/http';
   styleUrls: ['./nav.component.scss']
 })
 export class NavComponent implements OnInit {
-  user: any = {};
+  user: any={};
 
 
   constructor(public accountService: AccountService, private router: Router) {
@@ -21,11 +21,17 @@ export class NavComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.user={
+      username:'',      
+    }
+    
   }
 
 
   login() {
+    console.log(JSON.stringify(this.user));
     this.accountService.login(this.user).subscribe(response => {
+      console.log(JSON.stringify(this.user));
       this.router.navigateByUrl('/questions');
     }, error => {
       console.log(error);

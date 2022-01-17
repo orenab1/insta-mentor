@@ -26,11 +26,14 @@ namespace DAL.Entities
 
         public EmailPrefrence EmailPrefrence { get; set; }
 
+        public bool IsOnline { get; set; }
+
         public ICollection<Question> Questions { get; set; }
 
         public ICollection<Review> ReviewsGiven { get; set; }
         public ICollection<Review> ReviewsReceived { get; set; }
 
         public ICollection<UsersTags> Tags { get; set; } 
+        public ICollection<UsersCommunities> Communities { get; set; }
     }
 }

@@ -3,14 +3,16 @@ using System;
 using DAL;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DAL.Data.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20220118080507_Review_updated_rating")]
+    partial class Review_updated_rating
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -189,9 +191,6 @@ namespace DAL.Data.Migrations
                     b.Property<string>("Header")
                         .HasColumnType("TEXT");
 
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("INTEGER");
-
                     b.Property<bool>("IsSolved")
                         .HasColumnType("INTEGER");
 
@@ -200,48 +199,6 @@ namespace DAL.Data.Migrations
                     b.HasIndex("AskerId");
 
                     b.ToTable("Questions");
-                });
-
-            modelBuilder.Entity("DAL.Entities.QuestionsCommunities", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("CommunityId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("QuestionId")
-                        .HasColumnType("INTEGER");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CommunityId");
-
-                    b.HasIndex("QuestionId");
-
-                    b.ToTable("QuestionsCommunities");
-                });
-
-            modelBuilder.Entity("DAL.Entities.QuestionsTags", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("QuestionId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("TagId")
-                        .HasColumnType("INTEGER");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("QuestionId");
-
-                    b.HasIndex("TagId");
-
-                    b.ToTable("QuestionsTags");
                 });
 
             modelBuilder.Entity("DAL.Entities.Review", b =>
@@ -279,7 +236,7 @@ namespace DAL.Data.Migrations
 
                     b.HasIndex("ReviewerId");
 
-                    b.ToTable("Reviews");
+                    b.ToTable("Review");
                 });
 
             modelBuilder.Entity("DAL.Entities.Tag", b =>
@@ -447,44 +404,6 @@ namespace DAL.Data.Migrations
                     b.Navigation("Asker");
                 });
 
-            modelBuilder.Entity("DAL.Entities.QuestionsCommunities", b =>
-                {
-                    b.HasOne("DAL.Entities.Community", "Community")
-                        .WithMany("Questions")
-                        .HasForeignKey("CommunityId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("DAL.Entities.Question", "Question")
-                        .WithMany("Communities")
-                        .HasForeignKey("QuestionId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Community");
-
-                    b.Navigation("Question");
-                });
-
-            modelBuilder.Entity("DAL.Entities.QuestionsTags", b =>
-                {
-                    b.HasOne("DAL.Entities.Question", "Question")
-                        .WithMany("Tags")
-                        .HasForeignKey("QuestionId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("DAL.Entities.Tag", "Tag")
-                        .WithMany("Questions")
-                        .HasForeignKey("TagId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Question");
-
-                    b.Navigation("Tag");
-                });
-
             modelBuilder.Entity("DAL.Entities.Review", b =>
                 {
                     b.HasOne("DAL.Entities.Question", "Question")
@@ -576,8 +495,6 @@ namespace DAL.Data.Migrations
 
             modelBuilder.Entity("DAL.Entities.Community", b =>
                 {
-                    b.Navigation("Questions");
-
                     b.Navigation("Users");
                 });
 
@@ -585,19 +502,13 @@ namespace DAL.Data.Migrations
                 {
                     b.Navigation("Comments");
 
-                    b.Navigation("Communities");
-
                     b.Navigation("Offers");
 
                     b.Navigation("Reviews");
-
-                    b.Navigation("Tags");
                 });
 
             modelBuilder.Entity("DAL.Entities.Tag", b =>
                 {
-                    b.Navigation("Questions");
-
                     b.Navigation("Users");
                 });
 #pragma warning restore 612, 618

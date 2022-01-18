@@ -31,24 +31,9 @@ namespace DAL.Repositories
         }
 
         public async Task<bool> UpdateTagsForUser(TagDto[] newTags, int userId)
-        {
-            var tagsNotCurrentlyInDB = newTags.Where(x => x.Value == 0);
-
-            foreach (TagDto tag in tagsNotCurrentlyInDB)
-            {
-                Tag newTag = new Tag
-                {
-                    Created = DateTime.Now,
-                    CreatorId = userId,
-                    IsApproved = false,
-                    Text = tag.Display
-                };
-
-                _context.Tags.Add(newTag);
-                _context.SaveChanges();
-
-                tag.Value = newTag.Id;
-            }
+        {   
+            AddTagsToDBAndAssignId(ref newTags, userId);
+           
 
             var newUserTags = new List<UsersTags>();
 
@@ -70,7 +55,29 @@ namespace DAL.Repositories
 
             if (newUserTags.Count > 0) _context.UsersTags.AddRange(newUserTags);
 
-            return _context.SaveChanges() > 0;
+            return await _context.SaveChangesAsync() > 0;
+        }
+
+
+        public void AddTagsToDBAndAssignId(ref TagDto[] tags, int creatorUserId)
+        {
+             var tagsNotCurrentlyInDB = tags.Where(x => x.Value == 0);
+
+            foreach (TagDto tag in tagsNotCurrentlyInDB)
+            {
+                Tag newTag = new Tag
+                {
+                    Created = DateTime.Now,
+                    CreatorId = creatorUserId,
+                    IsApproved = false,
+                    Text = tag.Display
+                };
+
+                _context.Tags.Add(newTag);
+                _context.SaveChanges();
+
+                tag.Value = newTag.Id;
+            }
         }
     }
 }

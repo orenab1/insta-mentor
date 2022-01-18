@@ -12,6 +12,7 @@ namespace DAL.Entities
         public AppUser Creator { get; set; }
 
         public ICollection<UsersCommunities> Users { get; set; }
+        public ICollection<QuestionsCommunities> Questions { get; set; }
 
         public DateTime Created { get; set; }
     }

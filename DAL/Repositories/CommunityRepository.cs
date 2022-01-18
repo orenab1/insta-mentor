@@ -71,7 +71,7 @@ namespace DAL.Repositories
 
             if (newUserCommunities.Count > 0) _context.UsersCommunities.AddRange(newUserCommunities);
 
-            return _context.SaveChanges() > 0;
+            return await _context.SaveChangesAsync() > 0;
         }
     }
 }

@@ -9,5 +9,7 @@ namespace DAL.Interfaces
         Task<IEnumerable<TagDto>> GetTagsByCreatorOrApproved(int creatorId);
 
         Task<bool> UpdateTagsForUser(TagDto[] newTags, int userId);
+
+        void AddTagsToDBAndAssignId(ref TagDto[] tags, int creatorUserId);
     }
 }

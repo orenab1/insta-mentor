@@ -6,11 +6,14 @@ namespace DAL.Entities
     public class Question
     {
         public int Id { get; set; }
+
         public string Header { get; set; }
 
         public string Body { get; set; }
 
         public bool IsSolved { get; set; }
+
+        public bool IsActive { get; set; }
 
         public ICollection<Comment> Comments { get; set; }
 
@@ -21,5 +24,8 @@ namespace DAL.Entities
         public AppUser Asker { get; set; }
 
         public ICollection<Review> Reviews { get; set; }
+
+        public ICollection<QuestionsTags> Tags { get; set; }
+        public ICollection<QuestionsCommunities> Communities { get; set; }
     }
 }

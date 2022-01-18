@@ -21,11 +21,11 @@ namespace API.Helpers
                 .ForMember(dest => dest.Display, opt => opt.MapFrom(src =>
                     src.Text));
 
-             CreateMap<TagDto, Tag>()
-                .ForMember(dest => dest.Id, opt => opt.MapFrom(src =>
-                    src.Value))
-                .ForMember(dest => dest.Text, opt => opt.MapFrom(src =>
-                    src.Display));
+            CreateMap<TagDto, Tag>()
+               .ForMember(dest => dest.Id, opt => opt.MapFrom(src =>
+                   src.Value))
+               .ForMember(dest => dest.Text, opt => opt.MapFrom(src =>
+                   src.Display));
 
             CreateMap<Community, CommunityDto>()
                 .ForMember(dest => dest.Value, opt => opt.MapFrom(src =>
@@ -48,7 +48,9 @@ namespace API.Helpers
                 .ForMember(dest => dest.PhotoUrl, opt => opt.MapFrom(src =>
                     src.Photo.Url))
                 .ForMember(dest => dest.PhotoId, opt => opt.MapFrom(src =>
-                    src.Photo.Id));
+                    src.Photo.Id))
+                .ForMember(dest => dest.Reviews, opt => opt.MapFrom(src =>
+                    src.ReviewsReceived));
 
             CreateMap<MemberUpdateDto, AppUser>();
 
@@ -62,13 +64,13 @@ namespace API.Helpers
                     src.Tag.Text));
 
 
-             CreateMap<TagDto, UsersTags>()
-                .ForMember(dest=>dest.Tag,
-                    opt=>opt.MapFrom(src => src));
+            CreateMap<TagDto, UsersTags>()
+               .ForMember(dest => dest.Tag,
+                   opt => opt.MapFrom(src => src));
 
             CreateMap<CommunityDto, UsersCommunities>()
-                .ForMember(dest=>dest.Community,
-                    opt=>opt.MapFrom(src => src));
+                .ForMember(dest => dest.Community,
+                    opt => opt.MapFrom(src => src));
 
             CreateMap<UsersCommunities, CommunityDto>()
                .ForMember(dest => dest.Value, opt => opt.MapFrom(src =>
@@ -87,6 +89,11 @@ namespace API.Helpers
 
         private void MapQuestion()
         {
+            CreateMap<QuestionFirstSaveDto, Question>()
+                .ForMember(dest => dest.Tags, opt => opt.Ignore())
+                .ForMember(dest => dest.Communities, opt => opt.Ignore());         
+
+
             CreateMap<Question, QuestionDto>()
                .ForMember(dest => dest.AskerUsername, opt => opt.MapFrom(src =>
                    src.Asker.UserName));
@@ -103,6 +110,21 @@ namespace API.Helpers
             CreateMap<Offer, OfferInQuestionDto>()
                 .ForMember(dest => dest.Username, opt => opt.MapFrom(src =>
                     src.Offerer.UserName));
+
+
+
+
+            CreateMap<TagDto, QuestionsTags>()
+              .ForMember(dest => dest.TagId,
+                  opt => opt.MapFrom(src => src.Value));
+
+            CreateMap<CommunityDto, QuestionsCommunities>()
+                .ForMember(dest => dest.CommunityId,
+                    opt => opt.MapFrom(src => src.Value));
+
+
+            CreateMap<ReviewDto, Review>();
+            CreateMap<Review, ReviewDto>();
         }
     }
 }

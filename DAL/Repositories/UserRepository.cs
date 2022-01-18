@@ -60,28 +60,22 @@ namespace DAL.Repositories
 
         public async Task<MemberDto> GetMemberAsync(string username)
         {
-            var user = await _context.Users.SingleOrDefaultAsync(x => x.UserName == username);
-
-            // return new MemberDto()
-            // {
-            //     Id = user.Id,
-            //     AboutMe = user.AboutMe,
-            //     Email = user.Email,
-            //     Title = user.Title,
-            //     Username = user.UserName
-            // };
-            // return await _context.Users.SingleOrDefaultAsync(x => x.UserName == username)
-
-
             return await _mapper
                 .ProjectTo<MemberDto>(_context.Users.Where(x => x.UserName == username))
                 .SingleOrDefaultAsync();
 
+            // List<ReviewDto> reviews = await _mapper.ProjectTo<ReviewDto>(
+            //     _context.Reviews.Where(x => x.RevieweeId == result.Id)
+            // ).ToListAsync();
+
+            // result.Reviews = reviews.ToArray();
+           // return result;
+
         }
 
-        
 
-        
+
+
 
 
         // public async Task<int> GetUserId(string username)

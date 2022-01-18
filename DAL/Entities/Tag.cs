@@ -14,6 +14,7 @@ namespace DAL.Entities
         public AppUser Creator { get; set; }
 
         public ICollection<UsersTags> Users { get; set; }
+        public ICollection<QuestionsTags> Questions { get; set; }
 
         public DateTime Created { get; set; }
     }

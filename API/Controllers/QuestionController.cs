@@ -13,6 +13,7 @@ using AutoMapper;
 
 using Microsoft.AspNetCore.Http;
 using System.Configuration;
+using System;
 
 namespace API.Controllers
 {
@@ -21,7 +22,7 @@ namespace API.Controllers
     public class QuestionsController : ControllerBase
     {
         private readonly IUnitOfWork _unitOfWork;
-        
+
         private readonly IPhotoService _photoService;
         private readonly IMapper _mapper;
 
@@ -35,11 +36,24 @@ namespace API.Controllers
         }
 
         [HttpPost("ask-question")]
-        public async Task<ActionResult<int>> AskQuestion(QuestionDto questionDto)
+        public async Task<ActionResult<int>> AskQuestion(QuestionFirstSaveDto questionFirstSaveDto)
         {
-            AppUser user= await _unitOfWork.UserRepository.GetUserAsync(User.GetUsername());
-            questionDto.AskerId =user.Id;
-            int id = await _unitOfWork.QuestionRepository.AskQuestionAsync(questionDto);
+            AppUser user = await _unitOfWork.UserRepository.GetUserAsync(User.GetUsername());
+            questionFirstSaveDto.AskerId = user.Id;
+
+
+
+
+
+
+
+
+
+
+
+
+
+            int id = await _unitOfWork.QuestionRepository.AskQuestionAsync(questionFirstSaveDto);
 
             return Ok(id);
         }
@@ -111,6 +125,13 @@ namespace API.Controllers
 
 
             return BadRequest("Problem addding photo");
+        }
+
+        [HttpPost("publish-review")]
+        public async Task<ActionResult> PublishReview(ReviewDto reviewDto)
+        {
+            await _unitOfWork.QuestionRepository.PublishReview(reviewDto);
+            return Ok();
         }
 
         [HttpDelete("delete-photo")]

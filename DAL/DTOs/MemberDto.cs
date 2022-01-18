@@ -5,6 +5,7 @@ namespace DAL.DTOs
 {
     public class MemberDto
     {
+        public int Id { get; set; }
         public string Username { get; set; }
 
         public string Email { get; set; }
@@ -22,6 +23,8 @@ namespace DAL.DTOs
         public TagDto[] Tags { get; set; }
 
         public CommunityDto[] Communities { get; set; }
+
+        public ReviewDto[] Reviews { get; set; }
 
         public EmailPrefrenceDto EmailPrefrence { get; set; }
     }

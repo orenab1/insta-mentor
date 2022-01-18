@@ -10,12 +10,14 @@ namespace DAL.Interfaces
     {
         Task<QuestionDto> GetQuestionAsync(int id);
 
-        Task<int> AskQuestionAsync(QuestionDto questionDto);
+        Task<int> AskQuestionAsync(QuestionFirstSaveDto questionDto);
 
         Task<bool> PostCommentAsync(CommentDto commentDto);
 
         Task<IEnumerable<QuestionSummaryDto>> GetQuestionsAsync();
         
         Task<bool> MakeOfferAsync(OfferDto offerDto);
+
+        Task PublishReview(ReviewDto reviewDto);
     }
 }

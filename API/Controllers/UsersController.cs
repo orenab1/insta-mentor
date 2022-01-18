@@ -87,7 +87,7 @@ namespace API.Controllers
             var username = User.GetUsername();
             Console.WriteLine(username);
             _unitOfWork.UserRepository.ChangeCurrentUserOnlineStatus(User.GetUsername(), isOnline);
-            _unitOfWork.Complete();
+            await _unitOfWork.Complete();
             return NoContent();
         }
 

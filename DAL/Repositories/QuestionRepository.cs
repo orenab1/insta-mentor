@@ -21,11 +21,13 @@ namespace DAL.Repositories
     {
         private readonly DataContext _context;
         private readonly IMapper _mapper;
+        private readonly ITagRepository _tagRepository;
 
-        public QuestionRepository(DataContext context, IMapper mapper)
+        public QuestionRepository(DataContext context, IMapper mapper, ITagRepository tagRepository)
         {
             this._context = context;
             this._mapper = mapper;
+            this._tagRepository = tagRepository;
         }
 
         public async Task<QuestionDto> GetQuestionAsync(int id)
@@ -35,22 +37,91 @@ namespace DAL.Repositories
                 .SingleOrDefaultAsync();
         }
 
-        public async Task<int> AskQuestionAsync(QuestionDto questionDto)
+        public async Task<int> AskQuestionAsync(QuestionFirstSaveDto questionFirstSaveDto)
         {
+            Question question = _mapper.Map<Question>(questionFirstSaveDto);
 
-            var questionToSave = new Question
-            {
-                Header = questionDto.Header,
-                Body = questionDto.Body,
-                AskerId = questionDto.AskerId
-            };
-
-            await _context.Questions.AddAsync(questionToSave);
+            await _context.Questions.AddAsync(question);
 
             await _context.SaveChangesAsync();
 
+            await UpdateTagsForQuestion(questionFirstSaveDto.Tags.ToArray(), questionFirstSaveDto.AskerId, question.Id);
 
-            return questionToSave.Id;
+            await UpdateCommunitiesForQuestion(questionFirstSaveDto.Communities.ToArray(),questionFirstSaveDto.AskerId,question.Id);
+            //this._tagRepository.AddTagsToDBAndAssignId(ref questionFirstSaveDto.Tags, questionFirstSaveDto.AskerId);
+
+
+
+            // questionFirstSaveDto.Tags.Where(x => x.Value == 0)
+
+            // foreach (TagDto tag in questionFirstSaveDto.Tags.Where(x => x.Value == 0))
+            // {
+            //     _context.Tags.Add(
+            //         new Tag
+            //     )
+            // }
+
+
+
+
+
+            // foreach (TagDto tag in questionFirstSaveDto.Tags)
+            // {
+            //     _context.QuestionsTags.Add(
+            //         new QuestionsTags
+            //         {
+            //             QuestionId = questionFirstSaveDto.Id,
+            //             TagId = tag.Value
+            //         }
+            //     );
+            // };
+
+
+            return questionFirstSaveDto.Id;
+        }
+
+
+        public async Task<bool> UpdateTagsForQuestion(TagDto[] newTags, int userId, int questionId)
+        {
+            Question question = await _context.Questions.SingleOrDefaultAsync(x => x.Id == questionId);
+
+            this._tagRepository.AddTagsToDBAndAssignId(ref newTags, userId);
+
+            question.Tags = new List<QuestionsTags>();
+
+            await _context.SaveChangesAsync();
+
+            foreach (TagDto tagDto in newTags)
+            {
+                question.Tags.Add(new QuestionsTags
+                {
+                    QuestionId = questionId,
+                    TagId = tagDto.Value
+                });
+            };
+
+           return await _context.SaveChangesAsync()>0;            
+        }
+
+
+        public async Task<bool> UpdateCommunitiesForQuestion(CommunityDto[] newCommunities, int userId, int questionId)
+        {
+            Question question = await _context.Questions.SingleOrDefaultAsync(x => x.Id == questionId);
+
+            question.Communities = new List<QuestionsCommunities>();
+
+            await _context.SaveChangesAsync();
+
+            foreach (CommunityDto communityDto in newCommunities)
+            {
+                question.Communities.Add(new QuestionsCommunities
+                {
+                    QuestionId = questionId,
+                    CommunityId = communityDto.Value
+                });
+            };
+
+           return await _context.SaveChangesAsync()>0;            
         }
 
         public async Task<bool> MakeOfferAsync(OfferDto offerDto)
@@ -108,6 +179,16 @@ namespace DAL.Repositories
             return await _mapper
                 .ProjectTo<QuestionSummaryDto>(_context.Questions)
                 .ToListAsync();
+        }
+
+
+        public async Task PublishReview(ReviewDto reviewDto)
+        {
+            Review review = _mapper.Map<Review>(reviewDto);
+            review.Created = DateTime.Now;
+            review.IsRevieweeAnswerer = true;
+            _context.Reviews.Add(review);
+            await _context.SaveChangesAsync();
         }
     }
 }

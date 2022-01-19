@@ -121,6 +121,16 @@ namespace API.Helpers
                  .ForMember(dest => dest.HowLongAgo, opt => opt.MapFrom(src =>
                     src.Created.AsLongAgo()));
 
+
+             CreateMap<Question, MyQuestionSummaryDto>()
+                .ForMember(dest => dest.NumOfOffers, opt => opt.MapFrom(src =>
+                    src.Offers.Count))
+                .ForMember(dest => dest.NumOfComments, opt => opt.MapFrom(src =>
+                    src.Comments.Count))
+                 .ForMember(dest => dest.HowLongAgo, opt => opt.MapFrom(src =>
+                    src.Created.AsLongAgo()))
+                .ForMember(dest => dest.HasAtLeastOneOnlineOfferer, opt => opt.Ignore());
+
             CreateMap<Comment, CommentDto>();
             CreateMap<Offer, OfferInQuestionDto>()
                 .ForMember(dest => dest.Username, opt => opt.MapFrom(src =>

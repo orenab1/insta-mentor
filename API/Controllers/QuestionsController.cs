@@ -19,7 +19,7 @@ using System;
 namespace API.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("api/[controller]/[action]")]
     public class QuestionsController : ControllerBase
     {
         private readonly IUnitOfWork _unitOfWork;
@@ -47,8 +47,28 @@ namespace API.Controllers
             return Ok(id);
         }
 
+
+        [Authorize]
+        [HttpPut]
+        [ActionName("change-question-active-status")]
+        public async Task<ActionResult> ChangeQuestionActiveStatus(ChangeQuestionActiveStatusDto dto)
+        {
+            _unitOfWork.QuestionRepository.ChangeQuestionActiveStatus(dto.QuestionId,dto.IsActive);
+            return NoContent();
+        }
+
+        [Authorize]
+        [HttpPut]
+        [ActionName("mark-question-as-solved")]
+        public async Task<ActionResult> MarkQuestionAsSolved(int questionId)
+        {
+            _unitOfWork.QuestionRepository.MarkQuestionAsSolved(questionId);
+            return NoContent();
+        }
+
         [Authorize]
         [HttpGet("{id}")]
+        [ActionName("get-question")]
         public async Task<ActionResult<QuestionDto>> GetQuestion(int id)
         {
             return await _unitOfWork.QuestionRepository.GetQuestionAsync(id);
@@ -78,7 +98,19 @@ namespace API.Controllers
             return Ok();
         }
 
+        [HttpGet]
+        [ActionName("my-questions")]
+        public async Task<ActionResult<IEnumerable<MyQuestionSummaryDto>>> GetMyQuestions()
+        {
+            var user = await _unitOfWork.UserRepository.GetMemberAsync(User.GetUsername());
+            return Ok(
+                await _unitOfWork.QuestionRepository
+                    .GetMyQuestionsAsync(user.Id)
+            );
+        }
+
         [HttpGet()]
+        [ActionName("questions")]
         public async Task<ActionResult<IEnumerable<QuestionDto>>> GetQuestions()
         {
             var user = await _unitOfWork.UserRepository.GetMemberAsync(User.GetUsername());
@@ -87,8 +119,6 @@ namespace API.Controllers
 
             return Ok(await _unitOfWork.QuestionRepository.GetQuestionsAsync(userTagsIds, userCommunitiesIds));
         }
-
-
 
         [HttpPost("add-photo")]
         public async Task<ActionResult<PhotoDto>> AddPhoto(IFormFile file)
@@ -120,7 +150,8 @@ namespace API.Controllers
             return BadRequest("Problem addding photo");
         }
 
-        [HttpPost("publish-review")]
+        [HttpPost]
+        [ActionName("publish-review")]
         public async Task<ActionResult> PublishReview(ReviewDto reviewDto)
         {
             await _unitOfWork.QuestionRepository.PublishReview(reviewDto);

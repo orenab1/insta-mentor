@@ -19,5 +19,11 @@ namespace DAL.Interfaces
         Task<bool> MakeOfferAsync(OfferDto offerDto);
 
         Task PublishReview(ReviewDto reviewDto);
+
+        Task<IEnumerable<MyQuestionSummaryDto>> GetMyQuestionsAsync(int userId);
+
+        Task<bool> ChangeQuestionActiveStatus(int questionId, bool isActive);
+
+        Task<bool> MarkQuestionAsSolved(int questionId);
     }
 }

@@ -64,13 +64,6 @@ namespace DAL.Repositories
                 .ProjectTo<MemberDto>(_context.Users.Where(x => x.UserName == username))
                 .SingleOrDefaultAsync();
 
-            // List<ReviewDto> reviews = await _mapper.ProjectTo<ReviewDto>(
-            //     _context.Reviews.Where(x => x.RevieweeId == result.Id)
-            // ).ToListAsync();
-
-            // result.Reviews = reviews.ToArray();
-           // return result;
-
         }
 
 

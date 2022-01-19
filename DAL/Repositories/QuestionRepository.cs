@@ -52,6 +52,20 @@ namespace DAL.Repositories
             return question.Id;
         }
 
+        public async Task<bool> ChangeQuestionActiveStatus(int questionId, bool isActive)
+        {
+            var question = await _context.Questions.SingleOrDefaultAsync(x => x.Id == questionId);
+            question.IsActive = isActive;
+            return await _context.SaveChangesAsync() > 0;
+        }
+
+        public async Task<bool> MarkQuestionAsSolved(int questionId)
+        {
+            var question = await _context.Questions.SingleOrDefaultAsync(x => x.Id == questionId);
+            question.IsSolved = true;
+            return await _context.SaveChangesAsync() > 0;
+        }
+
 
         public async Task<bool> UpdateTagsForQuestion(TagDto[] newTags, int userId, int questionId)
         {
@@ -146,10 +160,24 @@ namespace DAL.Repositories
             return await _context.SaveChangesAsync() > 0;
         }
 
+        public async Task<IEnumerable<MyQuestionSummaryDto>> GetMyQuestionsAsync(int userId)
+        {
+            var result = await _mapper
+                  .ProjectTo<MyQuestionSummaryDto>(
+                      _context.Questions.Where(q => q.AskerId == userId)
+                    )
+                  .ToListAsync();
+
+            return result.OrderBy(myQuestionSummary =>
+                myQuestionSummary.IsActive && !myQuestionSummary.IsSolved ? 0 :
+                1
+            ).ThenByDescending(myQuestionSummary => myQuestionSummary.Created);
+        }
+
         public async Task<IEnumerable<QuestionSummaryDto>> GetQuestionsAsync(int[] userTagsIds, int[] userCommunitiesIds)
         {
             var result = await _mapper
-                  .ProjectTo<QuestionSummaryDto>(_context.Questions)
+                  .ProjectTo<QuestionSummaryDto>(_context.Questions.Where(q => q.IsActive && !q.IsSolved))
                   .ToListAsync();
 
 
@@ -169,7 +197,7 @@ namespace DAL.Repositories
                 }
             }
 
-            return result.OrderBy(questionSummary =>               
+            return result.OrderBy(questionSummary =>
                 questionSummary.HasCommonCommunities && questionSummary.HasCommonTags ? 0 :
                     questionSummary.HasCommonTags ? 1 :
                     questionSummary.HasCommonCommunities ? 2 :

@@ -85,7 +85,6 @@ namespace API.Controllers
         public async Task<ActionResult> ChangeCurrentUserOnlineStatus(bool isOnline)
         {
             var username = User.GetUsername();
-            Console.WriteLine(username);
             _unitOfWork.UserRepository.ChangeCurrentUserOnlineStatus(User.GetUsername(), isOnline);
             await _unitOfWork.Complete();
             return NoContent();

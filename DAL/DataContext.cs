@@ -45,6 +45,10 @@ namespace DAL
                 .HasForeignKey(s => s.RevieweeId)
                 .OnDelete(DeleteBehavior.NoAction);
 
+            // builder.Entity<Question>()
+            //     .Property(b => b.Created)
+            //     .HasDefaultValueSql("getdate()");
+
             builder.Entity<Tag>().HasData(SeedTags());
         }
 

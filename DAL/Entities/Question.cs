@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -15,6 +16,8 @@ namespace DAL.Entities
 
         public bool IsActive { get; set; }
 
+        public bool IsPayed { get; set; }
+
         public ICollection<Comment> Comments { get; set; }
 
         public ICollection<Offer> Offers { get; set; }
@@ -23,9 +26,13 @@ namespace DAL.Entities
 
         public AppUser Asker { get; set; }
 
+        public DateTime Created { get; set; }
+
         public ICollection<Review> Reviews { get; set; }
 
         public ICollection<QuestionsTags> Tags { get; set; }
         public ICollection<QuestionsCommunities> Communities { get; set; }
+
+        
     }
 }

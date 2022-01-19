@@ -12,11 +12,25 @@ namespace DAL.DTOs
 
         public bool IsSolved { get; set; }
 
+        public bool IsPayed { get; set; }
+
+        public string AnsweredBy { get; set; }
+
+        public string LastOffererUsername { get; set; }
+
+        public bool IsActive { get; set; }
+
         public List<CommentDto> Comments { get; set; }
         public List<OfferInQuestionDto> Offers { get; set; }
+        public TagDto[] Tags { get; set; }
 
-        public int AskerId { get; set; }
+        public CommunityDto[] Communities { get; set; }
+
+        public bool IsCurrentUserQuestionAsker { get; set; }
 
         public string AskerUsername { get; set; }
+        public string AskerTitle { get; set; }
+        public float AskerAverageRating { get; set; }
+        public float AskerNumOfRatings { get; set; }
     }
 }

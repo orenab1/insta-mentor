@@ -47,37 +47,9 @@ namespace DAL.Repositories
 
             await UpdateTagsForQuestion(questionFirstSaveDto.Tags.ToArray(), questionFirstSaveDto.AskerId, question.Id);
 
-            await UpdateCommunitiesForQuestion(questionFirstSaveDto.Communities.ToArray(),questionFirstSaveDto.AskerId,question.Id);
-            //this._tagRepository.AddTagsToDBAndAssignId(ref questionFirstSaveDto.Tags, questionFirstSaveDto.AskerId);
+            await UpdateCommunitiesForQuestion(questionFirstSaveDto.Communities.ToArray(), questionFirstSaveDto.AskerId, question.Id);
 
-
-
-            // questionFirstSaveDto.Tags.Where(x => x.Value == 0)
-
-            // foreach (TagDto tag in questionFirstSaveDto.Tags.Where(x => x.Value == 0))
-            // {
-            //     _context.Tags.Add(
-            //         new Tag
-            //     )
-            // }
-
-
-
-
-
-            // foreach (TagDto tag in questionFirstSaveDto.Tags)
-            // {
-            //     _context.QuestionsTags.Add(
-            //         new QuestionsTags
-            //         {
-            //             QuestionId = questionFirstSaveDto.Id,
-            //             TagId = tag.Value
-            //         }
-            //     );
-            // };
-
-
-            return questionFirstSaveDto.Id;
+            return question.Id;
         }
 
 
@@ -100,7 +72,7 @@ namespace DAL.Repositories
                 });
             };
 
-           return await _context.SaveChangesAsync()>0;            
+            return await _context.SaveChangesAsync() > 0;
         }
 
 
@@ -121,7 +93,7 @@ namespace DAL.Repositories
                 });
             };
 
-           return await _context.SaveChangesAsync()>0;            
+            return await _context.SaveChangesAsync() > 0;
         }
 
         public async Task<bool> MakeOfferAsync(OfferDto offerDto)
@@ -174,11 +146,35 @@ namespace DAL.Repositories
             return await _context.SaveChangesAsync() > 0;
         }
 
-        public async Task<IEnumerable<QuestionSummaryDto>> GetQuestionsAsync()
+        public async Task<IEnumerable<QuestionSummaryDto>> GetQuestionsAsync(int[] userTagsIds, int[] userCommunitiesIds)
         {
-            return await _mapper
-                .ProjectTo<QuestionSummaryDto>(_context.Questions)
-                .ToListAsync();
+            var result = await _mapper
+                  .ProjectTo<QuestionSummaryDto>(_context.Questions)
+                  .ToListAsync();
+
+
+            if (userTagsIds != null)
+            {
+                foreach (var questionSummary in result)
+                {
+                    questionSummary.HasCommonTags = questionSummary.Tags.Select(x => x.Value).Intersect(userTagsIds).Any();
+                }
+            }
+
+            if (userCommunitiesIds != null)
+            {
+                foreach (var questionSummary in result)
+                {
+                    questionSummary.HasCommonCommunities = questionSummary.Communities.Select(x => x.Value).Intersect(userCommunitiesIds).Any();
+                }
+            }
+
+            return result.OrderBy(questionSummary =>               
+                questionSummary.HasCommonCommunities && questionSummary.HasCommonTags ? 0 :
+                    questionSummary.HasCommonTags ? 1 :
+                    questionSummary.HasCommonCommunities ? 2 :
+                    3
+            ).ThenByDescending(questionSummary => questionSummary.Created);
         }
 
 

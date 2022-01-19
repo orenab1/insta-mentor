@@ -10,6 +10,7 @@ using System.Security.Claims;
 using API.Interfaces;
 using API.Extensions;
 using AutoMapper;
+using System.Linq;
 
 using Microsoft.AspNetCore.Http;
 using System.Configuration;
@@ -40,18 +41,6 @@ namespace API.Controllers
         {
             AppUser user = await _unitOfWork.UserRepository.GetUserAsync(User.GetUsername());
             questionFirstSaveDto.AskerId = user.Id;
-
-
-
-
-
-
-
-
-
-
-
-
 
             int id = await _unitOfWork.QuestionRepository.AskQuestionAsync(questionFirstSaveDto);
 
@@ -92,7 +81,11 @@ namespace API.Controllers
         [HttpGet()]
         public async Task<ActionResult<IEnumerable<QuestionDto>>> GetQuestions()
         {
-            return Ok(await _unitOfWork.QuestionRepository.GetQuestionsAsync());
+            var user = await _unitOfWork.UserRepository.GetMemberAsync(User.GetUsername());
+            int[] userTagsIds = user.Tags?.Select(x => x.Value).ToArray();
+            int[] userCommunitiesIds = user.Communities?.Select(x => x.Value).ToArray();
+
+            return Ok(await _unitOfWork.QuestionRepository.GetQuestionsAsync(userTagsIds, userCommunitiesIds));
         }
 
 

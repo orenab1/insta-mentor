@@ -13,7 +13,7 @@ namespace DAL.DTOs
         public string Title { get; set; }
 
         public string AboutMe { get; set; }
-        
+
         public int? PhotoId { get; set; }
 
         public string PhotoUrl { get; set; }
@@ -27,5 +27,8 @@ namespace DAL.DTOs
         public ReviewDto[] Reviews { get; set; }
 
         public EmailPrefrenceDto EmailPrefrence { get; set; }
+
+        public float AskerAverageRating { get; set; }
+        public int AskerNumOfRatings { get; set; }
     }
 }

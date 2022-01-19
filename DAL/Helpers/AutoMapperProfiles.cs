@@ -3,6 +3,9 @@ using System.Runtime.InteropServices;
 using DAL.DTOs;
 using AutoMapper;
 using DAL.Entities;
+using System.Linq;
+using System;
+using DAL.Extensions;
 
 namespace API.Helpers
 {
@@ -40,6 +43,8 @@ namespace API.Helpers
                 .ForMember(dest => dest.Name, opt => opt.MapFrom(src =>
                     src.Display));
 
+
+
         }
 
         private void MapUser()
@@ -50,7 +55,13 @@ namespace API.Helpers
                 .ForMember(dest => dest.PhotoId, opt => opt.MapFrom(src =>
                     src.Photo.Id))
                 .ForMember(dest => dest.Reviews, opt => opt.MapFrom(src =>
-                    src.ReviewsReceived));
+                    src.ReviewsReceived))
+                .ForMember(dest => dest.AskerNumOfRatings, opt => opt.MapFrom(src =>
+                   src.ReviewsReceived != null ? src.ReviewsReceived.Count() : 0))
+                 .ForMember(dest => dest.AskerAverageRating, opt => opt.MapFrom(src =>
+                    src.ReviewsReceived != null ?
+                      (float)src.ReviewsReceived.Sum(r => r.Rating) / src.ReviewsReceived.Count :
+                      0));
 
             CreateMap<MemberUpdateDto, AppUser>();
 
@@ -91,7 +102,7 @@ namespace API.Helpers
         {
             CreateMap<QuestionFirstSaveDto, Question>()
                 .ForMember(dest => dest.Tags, opt => opt.Ignore())
-                .ForMember(dest => dest.Communities, opt => opt.Ignore());         
+                .ForMember(dest => dest.Communities, opt => opt.Ignore());
 
 
             CreateMap<Question, QuestionDto>()
@@ -101,10 +112,14 @@ namespace API.Helpers
             CreateMap<Question, QuestionSummaryDto>()
                 .ForMember(dest => dest.AskerUsername, opt => opt.MapFrom(src =>
                     src.Asker.UserName))
+                 .ForMember(dest => dest.AskerPhotoUrl, opt => opt.MapFrom(src =>
+                    src.Asker.Photo.Url))
                 .ForMember(dest => dest.NumOfOffers, opt => opt.MapFrom(src =>
                     src.Offers.Count))
                 .ForMember(dest => dest.NumOfComments, opt => opt.MapFrom(src =>
-                    src.Comments.Count));
+                    src.Comments.Count))
+                 .ForMember(dest => dest.HowLongAgo, opt => opt.MapFrom(src =>
+                    src.Created.AsLongAgo()));
 
             CreateMap<Comment, CommentDto>();
             CreateMap<Offer, OfferInQuestionDto>()
@@ -123,8 +138,25 @@ namespace API.Helpers
                     opt => opt.MapFrom(src => src.Value));
 
 
+            CreateMap<QuestionsTags, TagDto>()
+               .ForMember(dest => dest.Value, opt => opt.MapFrom(src =>
+                   src.Tag.Id))
+               .ForMember(dest => dest.Display, opt => opt.MapFrom(src =>
+                   src.Tag.Text));
+
+
+            CreateMap<QuestionsCommunities, CommunityDto>()
+               .ForMember(dest => dest.Value, opt => opt.MapFrom(src =>
+                   src.Community.Id))
+               .ForMember(dest => dest.Display, opt => opt.MapFrom(src =>
+                   src.Community.Name));
+
+
             CreateMap<ReviewDto, Review>();
             CreateMap<Review, ReviewDto>();
         }
+
+
+        
     }
 }

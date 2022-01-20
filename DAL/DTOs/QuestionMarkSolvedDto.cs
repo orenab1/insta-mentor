@@ -1,6 +1,6 @@
 namespace DAL.DTOs
 {
-    public class OfferDto
+    public class QuestionMarkSolvedDto
     {
         public int QuestionId { get; set; }
     }

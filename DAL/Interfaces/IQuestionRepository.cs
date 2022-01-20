@@ -12,11 +12,11 @@ namespace DAL.Interfaces
 
         Task<int> AskQuestionAsync(QuestionFirstSaveDto questionDto);
 
-        Task<bool> PostCommentAsync(CommentDto commentDto);
+        Task<bool> PostCommentAsync(AddCommentDto commentDto,int userId);
 
         Task<IEnumerable<QuestionSummaryDto>> GetQuestionsAsync(int[] userTagsIds, int[] userCommunitiesIds);
         
-        Task<bool> MakeOfferAsync(OfferDto offerDto);
+        Task<bool> MakeOfferAsync(int questionId,int userId);
 
         Task PublishReview(ReviewDto reviewDto);
 
@@ -25,5 +25,8 @@ namespace DAL.Interfaces
         Task<bool> ChangeQuestionActiveStatus(int questionId, bool isActive);
 
         Task<bool> MarkQuestionAsSolved(int questionId);
+
+        Task DeleteCommentAsync(int commentId,int userId);
+        Task DeleteOfferAsync(int offerId, int userId);
     }
 }

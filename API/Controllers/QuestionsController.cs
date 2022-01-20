@@ -53,16 +53,16 @@ namespace API.Controllers
         [ActionName("change-question-active-status")]
         public async Task<ActionResult> ChangeQuestionActiveStatus(ChangeQuestionActiveStatusDto dto)
         {
-            _unitOfWork.QuestionRepository.ChangeQuestionActiveStatus(dto.QuestionId,dto.IsActive);
+            await _unitOfWork.QuestionRepository.ChangeQuestionActiveStatus(dto.QuestionId, dto.IsActive);
             return NoContent();
         }
 
         [Authorize]
         [HttpPut]
         [ActionName("mark-question-as-solved")]
-        public async Task<ActionResult> MarkQuestionAsSolved(int questionId)
+        public async Task<ActionResult> MarkQuestionAsSolved(QuestionMarkSolvedDto questionMarkSolvedDto)
         {
-            _unitOfWork.QuestionRepository.MarkQuestionAsSolved(questionId);
+            await _unitOfWork.QuestionRepository.MarkQuestionAsSolved(questionMarkSolvedDto.QuestionId);
             return NoContent();
         }
 
@@ -74,26 +74,24 @@ namespace API.Controllers
             return await _unitOfWork.QuestionRepository.GetQuestionAsync(id);
         }
 
-        [HttpPost("post-comment")]
-        public async Task<ActionResult<CommentDto>> PostComment(CommentDto commentDto)
+        [HttpPost]
+        [ActionName("post-comment")]
+        public async Task<ActionResult> PostComment(AddCommentDto commentDto)
         {
-            commentDto.CommentorUsername = User.GetUsername();
-            await _unitOfWork.QuestionRepository.PostCommentAsync(commentDto);
+            var user = await _unitOfWork.UserRepository.GetMemberAsync(User.GetUsername());
 
-            //_unitOfWork.QuestionRepository.SaveAllAsync();
+            await _unitOfWork.QuestionRepository.PostCommentAsync(commentDto, user.Id);
+
             return Ok();
         }
 
-        [HttpPost("make-offer")]
-        public async Task<ActionResult> MakeOffer([FromBody] int questionId)
+        [HttpPost]
+        [ActionName("make-offer")]
+        public async Task<ActionResult> MakeOffer(OfferDto offerDto)
         {
-            OfferDto offer = new OfferDto
-            {
-                Username = User.GetUsername(),
-                QuestionId = questionId
-            };
+            var user = _unitOfWork.UserRepository.GetMemberAsync(User.GetUsername());
 
-            await _unitOfWork.QuestionRepository.MakeOfferAsync(offer);
+            await _unitOfWork.QuestionRepository.MakeOfferAsync(offerDto.QuestionId, user.Id);
 
             return Ok();
         }
@@ -156,6 +154,26 @@ namespace API.Controllers
         {
             await _unitOfWork.QuestionRepository.PublishReview(reviewDto);
             return Ok();
+        }
+
+        [HttpDelete]
+        [ActionName("delete-comment")]
+        public async Task<ActionResult> DeleteComment(int commentId)
+        {
+            var user = await _unitOfWork.UserRepository.GetMemberAsync(User.GetUsername());
+            _unitOfWork.QuestionRepository.DeleteCommentAsync(commentId, user.Id);
+
+            return NoContent();
+        }
+
+        [HttpDelete]
+        [ActionName("delete-offer")]
+        public async Task<ActionResult> DeleteOffer(int offerId)
+        {
+            var user = await _unitOfWork.UserRepository.GetMemberAsync(User.GetUsername());
+            _unitOfWork.QuestionRepository.DeleteOfferAsync(offerId, user.Id);
+
+            return NoContent();
         }
 
         [HttpDelete("delete-photo")]

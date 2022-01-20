@@ -107,7 +107,9 @@ namespace API.Helpers
 
             CreateMap<Question, QuestionDto>()
                .ForMember(dest => dest.AskerUsername, opt => opt.MapFrom(src =>
-                   src.Asker.UserName));
+                   src.Asker.UserName))                
+                .ForMember(dest => dest.Comments, opt => opt.MapFrom(src =>
+                    src.Comments.Where(x=>x.IsActive)));
 
             CreateMap<Question, QuestionSummaryDto>()
                 .ForMember(dest => dest.AskerUsername, opt => opt.MapFrom(src =>
@@ -117,7 +119,7 @@ namespace API.Helpers
                 .ForMember(dest => dest.NumOfOffers, opt => opt.MapFrom(src =>
                     src.Offers.Count))
                 .ForMember(dest => dest.NumOfComments, opt => opt.MapFrom(src =>
-                    src.Comments.Count))
+                    src.Comments.Where(x=>x.IsActive).Count()))
                  .ForMember(dest => dest.HowLongAgo, opt => opt.MapFrom(src =>
                     src.Created.AsLongAgo()));
 
@@ -126,7 +128,7 @@ namespace API.Helpers
                 .ForMember(dest => dest.NumOfOffers, opt => opt.MapFrom(src =>
                     src.Offers.Count))
                 .ForMember(dest => dest.NumOfComments, opt => opt.MapFrom(src =>
-                    src.Comments.Count))
+                    src.Comments.Where(x=>x.IsActive).Count()))
                  .ForMember(dest => dest.HowLongAgo, opt => opt.MapFrom(src =>
                     src.Created.AsLongAgo()))
                 .ForMember(dest => dest.HasAtLeastOneOnlineOfferer, opt => opt.Ignore());

@@ -110,54 +110,53 @@ namespace DAL.Repositories
             return await _context.SaveChangesAsync() > 0;
         }
 
-        public async Task<bool> MakeOfferAsync(OfferDto offerDto)
+        public async Task<bool> MakeOfferAsync(int questionId, int userId)
         {
-            var question = _context.Questions.SingleOrDefault(x => x.Id == offerDto.QuestionId);
-            var user = _context.Users.SingleOrDefault(x => x.UserName == offerDto.Username);
-
-            if (question.Offers == null)
-            {
-                question.Offers = new List<Offer>();
-            }
-            question.Offers.Add(
+            _context.Offers.Add(
                 new Offer
                 {
-                    Text = "",
                     Created = DateTime.Now,
-                    Question = question,
-                    Offerer = user
+                    OffererId = userId,
+                    QuestionId = questionId
                 }
             );
-
-
-            _context.Entry(question).State = EntityState.Modified;
 
             return await _context.SaveChangesAsync() > 0;
         }
 
-        public async Task<bool> PostCommentAsync(CommentDto commentDto)
+        public async Task<bool> PostCommentAsync(AddCommentDto commentDto, int userId)
         {
-            var question = _context.Questions.SingleOrDefault(x => x.Id == commentDto.QuestionId);
-            var user = _context.Users.SingleOrDefault(x => x.UserName == commentDto.CommentorUsername);
-
-            if (question.Comments == null)
-            {
-                question.Comments = new List<Comment>();
-            }
-            question.Comments.Add(
+            _context.Comments.Add(
                 new Comment
                 {
                     Text = commentDto.Text,
                     Created = DateTime.Now,
-                    Question = question,
-                    Commentor = user
+                    QuestionId = commentDto.QuestionId,
+                    CommentorId = userId
                 }
             );
 
 
-            _context.Entry(question).State = EntityState.Modified;
 
             return await _context.SaveChangesAsync() > 0;
+        }
+
+        public async Task DeleteCommentAsync(int commentId, int userId)
+        {
+            Comment comment = await _context.Comments.SingleOrDefaultAsync(x => x.Id == commentId);
+            if (comment.CommentorId != userId) throw new UnauthorizedAccessException();
+
+            comment.IsActive = false;
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task DeleteOfferAsync(int offerId, int userId)
+        {
+            Offer offer = await _context.Offers.SingleOrDefaultAsync(x => x.Id == offerId);
+            if (offer.OffererId != userId) throw new UnauthorizedAccessException();
+
+            _context.Offers.Remove(offer);
+            await _context.SaveChangesAsync();
         }
 
         public async Task<IEnumerable<MyQuestionSummaryDto>> GetMyQuestionsAsync(int userId)

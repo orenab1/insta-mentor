@@ -27,6 +27,8 @@ namespace DAL
         public DbSet<Tag> Tags { get; set; }
         public DbSet<Community> Communities { get; set; }
         public DbSet<Review> Reviews { get; set; }
+        public DbSet<Offer> Offers { get; set; }
+        public DbSet<Comment> Comments { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder builder)

@@ -21,6 +21,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using API.Extensions;
 using Microsoft.AspNetCore.Mvc.NewtonsoftJson;
+using API.SignalR;
 
 namespace API
 {
@@ -51,15 +52,20 @@ namespace API
             });
 
             services.AddCors(options =>
-        {
-            options.AddPolicy(name: MyAllowSpecificOrigins,
-                              builder =>
-                              {
-                                  builder.WithOrigins("https://localhost:4200").AllowAnyHeader().AllowAnyMethod();;
-                              });
-        });
+            {
+                options.AddPolicy(name: MyAllowSpecificOrigins,
+                                builder =>
+                                {
+                                    builder.WithOrigins("https://localhost:4200")
+                                    .AllowAnyHeader()
+                                    .AllowAnyMethod()
+                                    .AllowCredentials();
+                                });
+            });
 
             services.AddIdentityServices(_config);
+
+            services.AddSignalR();
        
         }
 
@@ -88,6 +94,7 @@ namespace API
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+                endpoints.MapHub<PresenceHub>("hubs/presence");
             });
         }
     }

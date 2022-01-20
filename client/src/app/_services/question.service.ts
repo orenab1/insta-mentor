@@ -24,11 +24,11 @@ export class QuestionService {
 
   getQuestion(id: number) {
     const serverId = id ?? 0;
-    return this.http.get<Question>(this.baseUrl + 'questions/' + serverId);
+    return this.http.get<Question>(this.baseUrl + 'questions/get-question/' + serverId);
   }
 
   getQuestions() {
-    return this.http.get<QuestionSummary[]>(this.baseUrl + 'questions').pipe(
+    return this.http.get<QuestionSummary[]>(this.baseUrl + 'questions/questions').pipe(
       map(questions => {
      //   this.questions = questions;
         return questions;

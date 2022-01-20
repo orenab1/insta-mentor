@@ -18,6 +18,8 @@ namespace DAL.DTOs
 
         public string PhotoUrl { get; set; }
 
+    //    public DateTime Created { get; set; }
+
         public bool IsOnline { get; set; }
 
         public TagDto[] Tags { get; set; }
@@ -28,7 +30,7 @@ namespace DAL.DTOs
 
         public EmailPrefrenceDto EmailPrefrence { get; set; }
 
-        public float AskerAverageRating { get; set; }
-        public int AskerNumOfRatings { get; set; }
+       public float AskerAverageRating { get; set; }
+       public int AskerNumOfRatings { get; set; }
     }
 }

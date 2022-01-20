@@ -109,7 +109,7 @@ namespace API.Controllers
 
         [HttpGet()]
         [ActionName("questions")]
-        public async Task<ActionResult<IEnumerable<QuestionDto>>> GetQuestions()
+        public async Task<ActionResult<IEnumerable<QuestionSummaryDto>>> GetQuestions()
         {
             var user = await _unitOfWork.UserRepository.GetMemberAsync(User.GetUsername());
             int[] userTagsIds = user.Tags?.Select(x => x.Value).ToArray();

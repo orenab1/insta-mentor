@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-poc',
@@ -9,7 +10,7 @@ export class PocComponent implements OnInit {
   items = [];
 
   placeholder=''
-  constructor() { }
+  constructor(private toastr: ToastrService) { }
 
   ngOnInit(): void {
     this.items=[
@@ -34,6 +35,13 @@ export class PocComponent implements OnInit {
         value:'5',
       },
     ]
+
+
+    this.toastr.success('Hello world!', 'Toastr fun!');
+    this.toastr.info('Hello world!', 'Toastr fun!');
+    this.toastr.show('Hello world!', 'Toastr fun!');
+    this.toastr.warning('Hello world!', 'Toastr fun!');
+    
   }
 
 }

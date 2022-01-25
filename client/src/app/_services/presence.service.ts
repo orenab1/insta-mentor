@@ -31,9 +31,9 @@ export class PresenceService {
 
     this.hubConnection.on('UserIsOnline', username => {
       alert(username+' connected');
-      // this.onlineUsers$.pipe(take(1)).subscribe(usernames => {
-      //   this.onlineUsersSource.next([...usernames, username])
-      // })
+      this.onlineUsers$.pipe(take(1)).subscribe(usernames => {
+        this.onlineUsersSource.next([...usernames, username])
+      })
     })
 
     this.hubConnection.on('UserIsOffline', username => {
@@ -44,6 +44,26 @@ export class PresenceService {
 
     this.hubConnection.on('GetOnlineUsers', (usernames: string[]) => {
       this.onlineUsersSource.next(usernames);
+    })
+          
+    this.hubConnection.on('NewOfferReceived', ({username, knownAs}) => {
+     
+    })
+
+    this.hubConnection.on('NewCommentReceived', ({username, knownAs}) => {
+     
+    })
+
+    this.hubConnection.on('AnswererLogsIn', ({username, knownAs}) => {
+     
+    })
+
+    this.hubConnection.on('AskerWantsToStartASession', ({username, knownAs}) => {
+     
+    })
+
+    this.hubConnection.on('QuestionIsAskedAccordingToCommunityAndTags', ({username, knownAs}) => {
+     
     })
 
     // this.hubConnection.on('NewMessageReceived', ({username, knownAs}) => {

@@ -19,7 +19,7 @@ const routes: Routes = [
   { path: 'members/:username', component: MemberDetailComponent },
   { path: 'member-edit/:username', component: MemberEditComponent },
   { path: 'poc', component: PocComponent },
-  { path: 'edit-question', component: EditQuestionComponent },
+  { path: 'question/edit-question', component: EditQuestionComponent },
   { path: 'edit-question/:id', component: EditQuestionComponent },
   { path: 'question/:id', component: QuestionComponent },
   { path: '**', component: HomeComponent, pathMatch: 'full' },

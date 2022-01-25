@@ -1,3 +1,6 @@
+import { Community } from "./Community";
+import { Tag } from "./tag";
+
 export interface Question {
     id: number;
     header: string;
@@ -20,7 +23,12 @@ export interface QuestionSummary {
     askerId: number;
     askerUsername: string;
     askerPhotoUrl: string;
-    askerPhotoId: number;
+    tags: Tag[];
+    communities: Community[];
+    isPayed: boolean;
+    hasCommonTags: boolean;
+    hasCommonCommunities: boolean;
+    howLongAgo: string;
 }
 
 

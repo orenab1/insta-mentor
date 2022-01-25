@@ -1,27 +1,29 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
+using API.Extensions;
+using API.Interfaces;
+using API.Services;
+using API.SignalR;
+using DAL;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.CookiePolicy;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.NewtonsoftJson;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using Microsoft.OpenApi.Models;
-using DAL;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Http;
-using API.Interfaces;
-using API.Services;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
-using System.Text;
-using API.Extensions;
-using Microsoft.AspNetCore.Mvc.NewtonsoftJson;
-using API.SignalR;
+using Microsoft.OpenApi.Models;
+using API.Settings;
 
 namespace API
 {
@@ -29,7 +31,9 @@ namespace API
     {
         private readonly IConfiguration _config;
 
-        private readonly string MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
+        private readonly string
+            MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
+
         public Startup(IConfiguration configuration)
         {
             _config = configuration;
@@ -40,33 +44,52 @@ namespace API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-           services.AddApplicationServices(_config);
+            // services
+            //     .Configure<CookiePolicyOptions>(options =>
+            //     {
+            //         options.MinimumSameSitePolicy = SameSiteMode.Unspecified;
+            //         options.OnAppendCookie = cookieContext =>
+            //             CheckSameSite(cookieContext.Context,
+            //             cookieContext.CookieOptions);
+            //         options.OnDeleteCookie = cookieContext =>
+            //             CheckSameSite(cookieContext.Context,
+            //             cookieContext.CookieOptions);
+            //     });
 
+            services.AddApplicationServices (_config);
 
-            services.AddControllers().AddNewtonsoftJson(options =>
-                options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
-            );
-            services.AddSwaggerGen(c =>
-            {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "API", Version = "v1" });
-            });
+            services
+                .AddControllers()
+                .AddNewtonsoftJson(options =>
+                    options.SerializerSettings.ReferenceLoopHandling =
+                        Newtonsoft.Json.ReferenceLoopHandling.Ignore);
+            services
+                .AddSwaggerGen(c =>
+                {
+                    c
+                        .SwaggerDoc("v1",
+                        new OpenApiInfo { Title = "API", Version = "v1" });
+                });
 
-            services.AddCors(options =>
-            {
-                options.AddPolicy(name: MyAllowSpecificOrigins,
-                                builder =>
-                                {
-                                    builder.WithOrigins("https://localhost:4200")
-                                    .AllowAnyHeader()
-                                    .AllowAnyMethod()
-                                    .AllowCredentials();
-                                });
-            });
+            services
+                .AddCors(options =>
+                {
+                    options
+                        .AddPolicy(name: MyAllowSpecificOrigins,
+                        builder =>
+                        {
+                            builder
+                                .WithOrigins("https://localhost:4200")
+                                .AllowAnyHeader()
+                                .AllowAnyMethod()
+                                .AllowCredentials();
+                        });
+                });
+            
 
             services.AddIdentityServices(_config);
 
             services.AddSignalR();
-       
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -76,26 +99,98 @@ namespace API
             {
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "API v1"));
+                app
+                    .UseSwaggerUI(c =>
+                        c
+                            .SwaggerEndpoint("/swagger/v1/swagger.json",
+                            "API v1"));
             }
 
             app.UseHttpsRedirection();
 
             app.UseRouting();
 
-             app.UseCors(MyAllowSpecificOrigins);
+            app.UseCors (MyAllowSpecificOrigins);
 
-           // app.UseCors(policy => policy.AllowAnyHeader().AllowAnyMethod().WithOrigins("http://localhost:4200/"));
-
-
+            // app.UseCors(policy => policy.AllowAnyHeader().AllowAnyMethod().WithOrigins("http://localhost:4200/"));
+          //  app.UseCookiePolicy();
             app.UseAuthentication();
             app.UseAuthorization();
 
-            app.UseEndpoints(endpoints =>
+            app
+                .UseEndpoints(endpoints =>
+                {
+                    endpoints.MapControllers();
+                    endpoints.MapHub<PresenceHub>("hubs/presence");
+                    endpoints.MapHub<NotificationHub>("hubs/notification");
+                });
+        }
+
+        private void CheckSameSite(
+            HttpContext httpContext,
+            CookieOptions options
+        )
+        {
+            if (options.SameSite == SameSiteMode.None)
             {
-                endpoints.MapControllers();
-                endpoints.MapHub<PresenceHub>("hubs/presence");
-            });
+                var userAgent =
+                    httpContext.Request.Headers["User-Agent"].ToString();
+                if (DisallowsSameSiteNone(userAgent))
+                {
+                    options.SameSite = SameSiteMode.Unspecified;
+                }
+            }
+        }
+
+        public static bool DisallowsSameSiteNone(string userAgent)
+        {
+            // Check if a null or empty string has been passed in, since this
+            // will cause further interrogation of the useragent to fail.
+            if (String.IsNullOrWhiteSpace(userAgent)) return false;
+
+            // Cover all iOS based browsers here. This includes:
+            // - Safari on iOS 12 for iPhone, iPod Touch, iPad
+            // - WkWebview on iOS 12 for iPhone, iPod Touch, iPad
+            // - Chrome on iOS 12 for iPhone, iPod Touch, iPad
+            // All of which are broken by SameSite=None, because they use the iOS networking
+            // stack.
+            if (
+                userAgent.Contains("CPU iPhone OS 12") ||
+                userAgent.Contains("iPad; CPU OS 12")
+            )
+            {
+                return true;
+            }
+
+            // Cover Mac OS X based browsers that use the Mac OS networking stack.
+
+            // This includes:
+            // - Safari on Mac OS X.
+            // This does not include:
+            // - Chrome on Mac OS X
+            // Because they do not use the Mac OS networking stack.
+            if (
+                userAgent.Contains("Macintosh; Intel Mac OS X 10_14") &&
+                userAgent.Contains("Version/") &&
+                userAgent.Contains("Safari")
+            )
+            {
+                return true;
+            }
+
+            // Cover Chrome 50-69, because some versions are broken by SameSite=None,
+
+            // and none in this range require it.
+            // Note: this covers some pre-Chromium Edge versions,
+
+            // but pre-Chromium Edge does not require SameSite=None.
+            if (userAgent.Contains("Chrome/5") || userAgent.Contains("Chrome/6")
+            )
+            {
+                return true;
+            }
+
+            return false;
         }
     }
 }

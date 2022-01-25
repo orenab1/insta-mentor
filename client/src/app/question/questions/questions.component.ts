@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Question, QuestionSummary } from 'src/app/_models/question';
+import { PresenceService } from 'src/app/_services/presence.service';
 import { QuestionService } from 'src/app/_services/question.service';
 
 @Component({
@@ -10,7 +11,7 @@ import { QuestionService } from 'src/app/_services/question.service';
 export class QuestionsComponent implements OnInit {
   questions: QuestionSummary[];
 
-  constructor(private questionService: QuestionService) { }
+  constructor(private questionService: QuestionService, public presenceService:PresenceService) { }
 
   ngOnInit(): void {
     this.loadQuestions();

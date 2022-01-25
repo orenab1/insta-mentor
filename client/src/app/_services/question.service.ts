@@ -41,6 +41,9 @@ export class QuestionService {
   }
 
   makeOffer(questionId: number) {
-    return this.http.post(this.baseUrl + 'questions/make-offer/', questionId);
+    var model={
+      questionId:questionId
+    }
+    return this.http.post(this.baseUrl + 'questions/make-offer/',model);
   }
 }

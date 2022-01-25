@@ -30,6 +30,9 @@ import { PocComponent } from './poc/poc.component'
 
 import { TagInputModule } from 'ngx-chips';
 import { MemberEditComponent } from './members/member-edit/member-edit.component';
+import { SocialLoginModule, SocialAuthServiceConfig } from 'angularx-social-login';
+import { GoogleLoginProvider } from 'angularx-social-login';
+import { ToastrModule } from 'ngx-toastr';
 
 
 @NgModule({
@@ -61,13 +64,32 @@ import { MemberEditComponent } from './members/member-edit/member-edit.component
     BsDropdownModule.forRoot(),
     RatingModule.forRoot(),
     FileUploadModule,
-    TagInputModule,
-    BrowserAnimationsModule,
-    ReactiveFormsModule
+    TagInputModule,    
+    ReactiveFormsModule,
+    SocialLoginModule,
+    ToastrModule.forRoot(),
   ],
   providers: [
     HttpClientModule,
-    { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true }
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: JwtInterceptor,
+      multi: true
+    },
+    {
+      provide: 'SocialAuthServiceConfig',
+      useValue: {
+        autoLogin: false,
+        providers: [
+          {
+            id: GoogleLoginProvider.PROVIDER_ID,
+            provider: new GoogleLoginProvider(
+              '155014635586-ir4obp64jsr2do7e2cdnh0msauq11lbo.apps.googleusercontent.com'
+            )
+          }
+        ]
+      } as SocialAuthServiceConfig,
+    } 
   ],
   bootstrap: [AppComponent]
 })

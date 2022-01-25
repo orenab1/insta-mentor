@@ -33,6 +33,7 @@ export class EditQuestionComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    alert('yo');
     this.routeSub = this.route.params.subscribe(params => {
 
       this.id = parseInt(params['id']) || 0;

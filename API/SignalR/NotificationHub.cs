@@ -2,6 +2,7 @@ using System;
 using System.Threading.Tasks;
 using API.Extensions;
 using API.Helpers;
+using API.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
@@ -9,19 +10,31 @@ using Microsoft.AspNetCore.SignalR;
 namespace API.SignalR
 {
     [Authorize]
-    public class NotificationHub : Hub
+    public class NotificationsHub : Hub
     {
         private readonly PresenceTracker _tracker;
 
-        private readonly IHubContext<PresenceHub> _presenceHub;
-
-        public NotificationHub(
-            PresenceTracker tracker,
-            IHubContext<PresenceHub> presenceHub
-        )
+        public NotificationsHub(PresenceTracker tracker)
         {
             _tracker = tracker;
-            _presenceHub = presenceHub;
+        }
+
+        public override async Task OnConnectedAsync()
+        {
+            await Clients
+                .Others
+                .SendAsync("UserIsOnline", Context.User.GetUsername());
+
+            await Clients.Caller.SendAsync("GetOnlineUsers", null);
+        }
+
+        public override async Task OnDisconnectedAsync(Exception exception)
+        {
+            await Clients
+                .Others
+                .SendAsync("UserIsOffline", Context.User.GetUsername());
+
+            await base.OnDisconnectedAsync(exception);
         }
 
         public async Task NewOfferReceived(string askerUsername, int questionId)
@@ -31,8 +44,7 @@ namespace API.SignalR
 
             if (connections != null)
             {
-                await _presenceHub
-                    .Clients
+                await Clients
                     .Clients(connections)
                     .SendAsync("NewOfferReceived",
                     new { questionId = questionId });

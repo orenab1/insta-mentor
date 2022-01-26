@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using API.Extensions;
 using API.Interfaces;
 using API.Services;
+using API.Settings;
 using API.SignalR;
 using DAL;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -16,6 +17,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.NewtonsoftJson;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -23,7 +25,6 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using API.Settings;
 
 namespace API
 {
@@ -44,17 +45,14 @@ namespace API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            // services
-            //     .Configure<CookiePolicyOptions>(options =>
-            //     {
-            //         options.MinimumSameSitePolicy = SameSiteMode.Unspecified;
-            //         options.OnAppendCookie = cookieContext =>
-            //             CheckSameSite(cookieContext.Context,
-            //             cookieContext.CookieOptions);
-            //         options.OnDeleteCookie = cookieContext =>
-            //             CheckSameSite(cookieContext.Context,
-            //             cookieContext.CookieOptions);
-            //     });
+            services
+                .Configure<CookiePolicyOptions>(options =>
+                {
+                    // This lambda determines whether user consent for non-essential cookies is needed for a given request.
+                    // options.CheckConsentNeeded = context => true;
+                    //options.MinimumSameSitePolicy = SameSiteMode.None;
+                    // options.Cookie.SameSite = SameSiteMode.None;
+                });
 
             services.AddApplicationServices (_config);
 
@@ -85,11 +83,29 @@ namespace API
                                 .AllowCredentials();
                         });
                 });
-            
 
-            services.AddIdentityServices(_config);
+            services.AddIdentityServices (_config);
 
             services.AddSignalR();
+
+            services
+                .AddAuthentication()
+                .AddFacebook(facebookOptions =>
+                {
+                    facebookOptions.AppId =
+                        "490846212400326";
+                    facebookOptions.AppSecret =
+                        "8bb6f6b0a64fcf5d88e6f48bfd10e026";
+                })
+                .AddGoogle(options =>
+                {
+                    //     IConfigurationSection googleAuthNSection =
+                    //         Configuration.GetSection("Authentication:Google");
+                    options.ClientId =
+                        "155014635586-ir4obp64jsr2do7e2cdnh0msauq11lbo.apps.googleusercontent.com";
+                    options.ClientSecret =
+                        "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";
+                });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -113,7 +129,7 @@ namespace API
             app.UseCors (MyAllowSpecificOrigins);
 
             // app.UseCors(policy => policy.AllowAnyHeader().AllowAnyMethod().WithOrigins("http://localhost:4200/"));
-          //  app.UseCookiePolicy();
+            //  app.UseCookiePolicy();
             app.UseAuthentication();
             app.UseAuthorization();
 
@@ -122,8 +138,21 @@ namespace API
                 {
                     endpoints.MapControllers();
                     endpoints.MapHub<PresenceHub>("hubs/presence");
-                    endpoints.MapHub<NotificationHub>("hubs/notification");
+                    endpoints.MapHub<NotificationsHub>("hubs/notifications");
                 });
+
+            // app
+            //     .Use(async (context, next) =>
+            //     {
+            //         var hubContext =
+            //             context
+            //                 .RequestServices
+            //                 .GetRequiredService<IHubContext<NotificationsHub>>();
+            //         if (next != null)
+            //         {
+            //             await next.Invoke();
+            //         }
+            //     });
         }
 
         private void CheckSameSite(
@@ -163,7 +192,6 @@ namespace API
             }
 
             // Cover Mac OS X based browsers that use the Mac OS networking stack.
-
             // This includes:
             // - Safari on Mac OS X.
             // This does not include:
@@ -179,10 +207,8 @@ namespace API
             }
 
             // Cover Chrome 50-69, because some versions are broken by SameSite=None,
-
             // and none in this range require it.
             // Note: this covers some pre-Chromium Edge versions,
-
             // but pre-Chromium Edge does not require SameSite=None.
             if (userAgent.Contains("Chrome/5") || userAgent.Contains("Chrome/6")
             )

@@ -4,7 +4,7 @@ import { ReplaySubject } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { User } from '../_models/user';
-import { PresenceService } from './presence.service';
+import { PresenceService } from './signalR/presence.service';
 
 @Injectable({
   providedIn: 'root'

@@ -23,7 +23,6 @@ namespace API.Extensions
         )
         {
             services.AddSingleton<PresenceTracker>();
-            services.AddSingleton<NotificationHub>();
             services.AddTransient<IMailService, MailService>();
             services.AddScoped<IMessagesService, MessagesService>();
             services

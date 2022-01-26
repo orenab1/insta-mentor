@@ -2,7 +2,7 @@ using System.Threading.Tasks;
 
 namespace API.Interfaces
 {
-    public interface INotificationHub
+    public interface INotificationsHub
     {
         Task NewOfferReceived(string askerUsername, int questionId);
     }

@@ -4,7 +4,7 @@ import { HubConnection, HubConnectionBuilder } from '@microsoft/signalr';
 import { BehaviorSubject } from 'rxjs';
 import { take } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
-import { User } from '../_models/user';
+import { User } from '../../_models/user';
 
 @Injectable({
   providedIn: 'root'
@@ -46,9 +46,7 @@ export class PresenceService {
       this.onlineUsersSource.next(usernames);
     })
           
-    this.hubConnection.on('NewOfferReceived', ({username, knownAs}) => {
-     
-    })
+    
 
     this.hubConnection.on('NewCommentReceived', ({username, knownAs}) => {
      

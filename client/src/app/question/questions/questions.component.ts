@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Question, QuestionSummary } from 'src/app/_models/question';
-import { PresenceService } from 'src/app/_services/presence.service';
+import { PresenceService } from 'src/app/_services/signalR/presence.service';
 import { QuestionService } from 'src/app/_services/question.service';
 
 @Component({

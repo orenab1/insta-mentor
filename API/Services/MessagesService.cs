@@ -1,10 +1,19 @@
+using System;
+using System.Runtime.Serialization;
+using System.Security.Policy;
 using System.Threading.Tasks;
+using API.Extensions;
+using API.Helpers;
 using API.Interfaces;
+using API.SignalR;
 using DAL;
 using DAL.DTOs;
 using DAL.Entities;
 using DAL.Interfaces;
 using DAL.Repositories;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 
 namespace API.Services
 {
@@ -14,10 +23,21 @@ namespace API.Services
 
         private readonly IMailService _mailService;
 
-        public MessagesService(IUnitOfWork unitOfWork, IMailService mailService)
+        private readonly IHubContext<NotificationsHub> _notificationsHubContext;
+
+        private readonly PresenceTracker _tracker;
+
+        public MessagesService(
+            IUnitOfWork unitOfWork,
+            IMailService mailService,
+            IHubContext<NotificationsHub> notificationsHubContext,
+            PresenceTracker tracker
+        )
         {
             this._unitOfWork = unitOfWork;
             this._mailService = mailService;
+            this._notificationsHubContext = notificationsHubContext;
+            this._tracker = tracker;
         }
 
         public async Task NotifyNewOfferAsync(int questionId)
@@ -43,8 +63,25 @@ namespace API.Services
                     });
             }
 
-            // if user is online
+            //if (user is online and not turn off is active )
             //  send notification
+            var connections =
+                await _tracker.GetConnectionsForUser("dave");
+              //  await _tracker.GetConnectionsForUser(asker.UserName);
+
+            if (connections != null)
+            {
+                await _notificationsHubContext
+                    .Clients
+                    .Clients(connections)
+                    .SendAsync("NewOfferReceived",
+                    new { questionId = questionId });
+            }
+
+            // await _notificationHubsContext.Clients.All.SendAsync(
+
+            // _notificationHubsContext
+            //     .NewOfferReceived(asker.UserName, questionId);
         }
     }
 }

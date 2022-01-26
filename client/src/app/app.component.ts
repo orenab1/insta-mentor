@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { AccountService } from './_services/account.service';
 import { User } from './_models/user';
-import { PresenceService } from './_services/presence.service';
+import { PresenceService } from './_services/signalR/presence.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { GoogleLoginProvider, SocialAuthService,SocialUser  } from 'angularx-social-login';
 

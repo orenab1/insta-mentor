@@ -23,6 +23,7 @@
     "@fortawesome/fontawesome-free": "^5.15.4",
     "@microsoft/signalr": "^6.0.1",
     "@ng-bootstrap/ng-bootstrap": "^12.0.0-beta.4",
+    "@types/gapi.auth2": "^0.0.56",
     "@types/jasminewd2": "^2.0.10",
     "angularx-social-login": "^4.0.1",
     "bootstrap": "^5.1.3",

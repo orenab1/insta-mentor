@@ -122,7 +122,7 @@ namespace API.Controllers
                 .QuestionRepository
                 .MakeOfferAsync(offerDto.QuestionId, user.Id))
                 {
-                    _messagesService.NotifyNewOfferAsync(offerDto.QuestionId);
+                    await _messagesService.NotifyNewOfferAsync(offerDto.QuestionId);
                 }           
 
             return Ok();

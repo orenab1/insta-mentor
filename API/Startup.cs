@@ -25,6 +25,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using System.IdentityModel.Tokens.Jwt;
 
 namespace API
 {
@@ -130,6 +131,8 @@ namespace API
 
             // app.UseCors(policy => policy.AllowAnyHeader().AllowAnyMethod().WithOrigins("http://localhost:4200/"));
             //  app.UseCookiePolicy();
+
+            JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
             app.UseAuthentication();
             app.UseAuthorization();
 
@@ -138,21 +141,11 @@ namespace API
                 {
                     endpoints.MapControllers();
                     endpoints.MapHub<PresenceHub>("hubs/presence");
+                    endpoints.MapHub<BroadcastHub>("hubs/notify");  
+                    endpoints.MapHub<PresenceHub>("hubs/message");
                     endpoints.MapHub<NotificationsHub>("hubs/notifications");
                 });
 
-            // app
-            //     .Use(async (context, next) =>
-            //     {
-            //         var hubContext =
-            //             context
-            //                 .RequestServices
-            //                 .GetRequiredService<IHubContext<NotificationsHub>>();
-            //         if (next != null)
-            //         {
-            //             await next.Invoke();
-            //         }
-            //     });
         }
 
         private void CheckSameSite(

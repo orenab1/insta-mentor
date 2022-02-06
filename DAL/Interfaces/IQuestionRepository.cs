@@ -28,5 +28,7 @@ namespace DAL.Interfaces
 
         Task DeleteCommentAsync(int commentId,int userId);
         Task DeleteOfferAsync(int offerId, int userId);
+
+        Task<IEnumerable<AskerQuestionDTO>> GetAskerUsernamesByOffererId(int userId);
     }
 }

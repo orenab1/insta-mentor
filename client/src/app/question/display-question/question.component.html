@@ -46,7 +46,7 @@
 
         <div [hidden]="shouldDisplayComments">
             <h4>Comments</h4>
-            <app-comments [comments]="model.comments" [questionId]="id"></app-comments>
+            <app-comments [comments]="model.comments" [questionId]="model.id"></app-comments>
         </div>
 
         <div [hidden]="!shouldDisplayComments">

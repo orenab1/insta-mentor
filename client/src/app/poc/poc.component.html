@@ -1,4 +1,16 @@
 <div class="mt-4" style="margin-top: 300px;">
+
+    <button class="btn btn-success" style="margin:60px;" (click)="startZoom()">Start Zoom Session</button>
+<div class="mt-4"></div>
+
+
+
+
+
+
+
+
+
     <rating-basic></rating-basic>
 
 
@@ -41,7 +53,6 @@
 <button type="button" *ngIf="user !=null" (click)="signOut()">Sign out</button>
 
 
-<button (click)="submitLogin()">Facebook Authentication</button>
 
 <div *ngIf="user !=null">
     You are signed in as {{user.getBasicProfile().getName()}}
@@ -53,15 +64,3 @@ https://www.bacancytechnology.com/blog/google-social-login-with-angular-11/
 
 <div>Pop up</div>
 <div>Loader</div>
-<div>Carousel
-    https://valor-software.com/ngx-bootstrap/#/components/carousel?tab=overview
-</div>
-
-<div>animated place holder
-    https://codepen.io/lmoroz/pen/jLMLRE
-</div>
-<div>(SignalR)
-    green dot on image
-</div>
-
-<button>Send Email</button>

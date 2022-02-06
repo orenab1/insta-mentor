@@ -1,6 +1,8 @@
 <div *ngFor="let offer of offers">
     <div>{{offer.id}}</div>
     <div>{{offer.username}}</div>
+
+    <button type="button" class="btn btn-primary" (click)="acceptOffer(offer.id)">Accept Offer</button>
 </div>
 
 oooooooooooooooooooooooooooooo

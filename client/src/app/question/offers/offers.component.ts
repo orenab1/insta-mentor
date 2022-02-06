@@ -13,4 +13,7 @@ export class OffersComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  acceptOffer(offerId:number){
+    alert('offer accepted!' +offerId);
+  }
 }

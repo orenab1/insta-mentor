@@ -10,7 +10,6 @@ import { Comment } from '../_models/question';
 })
 export class QuestionService {
   baseUrl = environment.apiUrl;
- // questions: Question[] = [];
 
   constructor(private http: HttpClient) { }
 
@@ -45,5 +44,12 @@ export class QuestionService {
       questionId:questionId
     }
     return this.http.post(this.baseUrl + 'questions/make-offer/',model);
+  }
+
+  acceptOffer(offerId:number) {
+    var model={
+      offerId:offerId
+    }
+    return this.http.post(this.baseUrl + 'questions/accept-offer/',model);
   }
 }

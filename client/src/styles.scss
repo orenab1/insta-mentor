@@ -14,3 +14,8 @@
 
 
 @import '~ngx-toastr/toastr';
+
+@font-face {
+    font-family: "Poppins-SemiBold";
+    src: local("Poppins-SemiBold"), url(./assets/fonts/Poppins-SemiBold.ttf) format("truetype");
+}

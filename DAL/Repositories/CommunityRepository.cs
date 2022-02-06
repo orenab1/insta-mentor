@@ -29,6 +29,13 @@ namespace DAL.Repositories
                 .ToListAsync();
         }
 
+        public async Task<IEnumerable<CommunitySummaryDto>> GetCommunitiesSummaries()
+        {
+            return await _mapper
+                .ProjectTo<CommunitySummaryDto>(_context.Communities)
+                .ToListAsync();
+        }
+
         public async Task<bool> UpdateCommunitiesForUser(CommunityDto[] newCommunities, int userId)
         {
             var CommunitiesNotCurrentlyInDB = newCommunities.Where(x => x.Value == 0);

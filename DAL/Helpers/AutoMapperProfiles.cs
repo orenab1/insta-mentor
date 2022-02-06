@@ -7,6 +7,7 @@ using System.Linq;
 using System;
 using DAL.Extensions;
 
+
 namespace API.Helpers
 {
     public class AutoMapperProfiles : Profile
@@ -35,6 +36,13 @@ namespace API.Helpers
                     src.Id))
                 .ForMember(dest => dest.Display, opt => opt.MapFrom(src =>
                     src.Name));
+
+
+             CreateMap<Community, CommunitySummaryDto>()
+                .ForMember(dest => dest.NumOfQuestionsAsked, opt => opt.MapFrom(src =>
+                    src.Questions.Where(x=>x.Question.IsActive).Count()))
+                .ForMember(dest => dest.NumOfMembers, opt => opt.MapFrom(src =>
+                    src.Users.Count));
 
 
             CreateMap<CommunityDto, Community>()

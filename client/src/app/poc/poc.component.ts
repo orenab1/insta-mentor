@@ -1,5 +1,6 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core'
 import { ToastrService } from 'ngx-toastr'
+import { QuestionService } from '../_services/question.service'
 import { GoogleSigninService } from '../_services/SignIn/google-signin.service'
 
 @Component({
@@ -17,6 +18,8 @@ export class PocComponent implements OnInit {
     private toastr: ToastrService,
     private googleSigninService: GoogleSigninService,
     private ref: ChangeDetectorRef,
+    private questionService: QuestionService
+    
   ) {}
 
   signIn() {
@@ -27,33 +30,20 @@ export class PocComponent implements OnInit {
     this.googleSigninService.signOut()
   }
 
+  startZoom(){
+    this.questionService.acceptOffer(50).subscribe(response => {
+    
+      alert('zoomed '+ response);
+    });
+  }
+
   ngOnInit(): void {
     this.googleSigninService.observable().subscribe((user) => {
       this.user = user
       this.ref.detectChanges()
     })
 
-    ;(window as any).fbAsyncInit = function () {
-      this.FB.init({
-        appId: '490846212400326',
-        cookie: true,
-        xfbml: true,
-        version: 'v3.1',
-      })
-      this.FB.AppEvents.logPageView()
-    }
-
-    ;(function (d, s, id) {
-      var js,
-        fjs = d.getElementsByTagName(s)[0]
-      if (d.getElementById(id)) {
-        return
-      }
-      js = d.createElement(s)
-      js.id = id
-      js.src = 'https://connect.facebook.net/en_US/sdk.js'
-      fjs.parentNode.insertBefore(js, fjs)
-    })(document, 'script', 'facebook-jssdk')
+  
 
     this.items = [
       {

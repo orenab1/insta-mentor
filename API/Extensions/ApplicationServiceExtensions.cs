@@ -31,6 +31,9 @@ namespace API.Extensions
             services
                 .Configure<MailSettings>(config
                     .GetSection("MailSettings"));
+             services
+                .Configure<ZoomSettings>(config
+                    .GetSection("ZoomSettings"));
             services.AddScoped<ITokenService, TokenService>();
             services.AddScoped<IPhotoService, PhotoService>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();

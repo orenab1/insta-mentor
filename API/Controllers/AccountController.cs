@@ -24,11 +24,13 @@ namespace API.Controllers
     {
         private readonly DataContext _context;
         private readonly ITokenService _tokenService;
+        private readonly IMessagesService _messagesService;
 
-        public AccountController(DataContext context, ITokenService tokenService)
+        public AccountController(DataContext context, ITokenService tokenService, IMessagesService messagesService)
         {
             _tokenService = tokenService;
             _context = context;
+            this._messagesService = messagesService;
         }
 
         [HttpPost("register")]
@@ -94,7 +96,7 @@ namespace API.Controllers
                 }
             }
 
-
+            await _messagesService.NotifyAskersOffererLoggedInAsync(user.Id);
 
             return new UserDto
             {

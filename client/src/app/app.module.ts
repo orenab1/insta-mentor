@@ -33,6 +33,8 @@ import { MemberEditComponent } from './members/member-edit/member-edit.component
 import { SocialLoginModule, SocialAuthServiceConfig } from 'angularx-social-login';
 import { GoogleLoginProvider } from 'angularx-social-login';
 import { ToastrModule } from 'ngx-toastr';
+import { NgxUiLoaderModule, NgxUiLoaderRouterModule } from 'ngx-ui-loader';
+import { CommunitiesComponent } from './communities/communities.component';
 
 
 @NgModule({
@@ -54,6 +56,8 @@ import { ToastrModule } from 'ngx-toastr';
     EditQuestionComponent,
     PocComponent,
     MemberEditComponent,
+    CommunitiesComponent,
+    
   ],
   imports: [
     BrowserModule,
@@ -68,6 +72,8 @@ import { ToastrModule } from 'ngx-toastr';
     ReactiveFormsModule,
     SocialLoginModule,
     ToastrModule.forRoot(),
+    NgxUiLoaderModule,
+    NgxUiLoaderRouterModule,
   ],
   providers: [
     HttpClientModule,

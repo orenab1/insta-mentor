@@ -8,6 +8,8 @@ namespace DAL.Interfaces
     {
         Task<IEnumerable<CommunityDto>> GetCommunities();
 
+        Task<IEnumerable<CommunitySummaryDto>> GetCommunitiesSummaries();
+
         Task<bool> UpdateCommunitiesForUser(CommunityDto[] newCommunities, int userId);
     }
 }

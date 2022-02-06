@@ -112,7 +112,6 @@ namespace DAL.Repositories
                     });
             }
 
-
             return await _context.SaveChangesAsync() > 0;
         }
 
@@ -142,7 +141,6 @@ namespace DAL.Repositories
                     });
             }
 
-
             return await _context.SaveChangesAsync() > 0;
         }
 
@@ -155,7 +153,6 @@ namespace DAL.Repositories
                     OffererId = userId,
                     QuestionId = questionId
                 });
-
 
             return await _context.SaveChangesAsync() > 0;
         }
@@ -222,7 +219,7 @@ namespace DAL.Repositories
 
         public async Task<IEnumerable<QuestionSummaryDto>>
         GetQuestionsAsync(int[] userTagsIds, int[] userCommunitiesIds)
-        {           
+        {
             var result =
                 await _mapper
                     .ProjectTo<QuestionSummaryDto>(_context
@@ -274,6 +271,20 @@ namespace DAL.Repositories
             review.IsRevieweeAnswerer = true;
             _context.Reviews.Add (review);
             await _context.SaveChangesAsync();
+        }
+
+        public async Task<IEnumerable<AskerQuestionDTO>>
+        GetAskerUsernamesByOffererId(int userId)
+        {
+            return _context
+                .Offers
+                .Where(o => o.OffererId == userId)
+                .Select(offer => offer.Question)
+                .Where(q => q.IsActive)
+                .Select(q =>new AskerQuestionDTO{ 
+                    AskerUsername=q.Asker.UserName,
+                    QuestionId=q.Id
+                });
         }
     }
 }

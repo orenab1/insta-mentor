@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { CommunitiesComponent } from './communities/communities.component';
 import { HomeComponent } from './home/home.component';
 import { MemberDetailComponent } from './members/member-detail/member-detail.component';
 import { MemberEditComponent } from './members/member-edit/member-edit.component';
@@ -14,6 +15,7 @@ import { RegisterComponent } from './register/register.component';
 const routes: Routes = [
   { path: '', component: QuestionsComponent },
  // { path: 'members', component: MemberListComponent },
+ { path: 'communities', component: CommunitiesComponent },
   { path: 'questions', component: QuestionsComponent },
   { path: 'register', component: RegisterComponent },
   { path: 'members/:username', component: MemberDetailComponent },

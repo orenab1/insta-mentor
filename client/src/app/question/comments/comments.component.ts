@@ -43,6 +43,8 @@ export class CommentsComponent implements OnInit {
   post() {
     this.shouldDisplayAddForm = false;
     this.shouldDisplayCommentButton = true;
+    alert('question id='+ this.questionId);
+    alert('this.model.questionId='+ this.model.questionId);
     this.model.questionId=this.questionId;
     this.questionService.postComment(this.model).subscribe(response => {
     

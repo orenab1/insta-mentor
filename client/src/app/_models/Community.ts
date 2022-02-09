@@ -10,4 +10,6 @@ export interface CommunitySummary {
   numOfMembers: number
   numOfQuestionsAsked: number
   bestTimeToGetAnswer: string
+  isCurrentUserCreator: boolean
+  isCurrentUserMember: boolean
 }

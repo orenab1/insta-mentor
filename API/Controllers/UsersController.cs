@@ -70,7 +70,7 @@ namespace API.Controllers
             await _unitOfWork.Complete();
 
             await _unitOfWork.TagRepository.UpdateTagsForUser(newTags, user.Id);
-            await _unitOfWork.CommunityRepository.UpdateCommunitiesForUser(newCommunities, user.Id);
+          //  await _unitOfWork.CommunityRepository.UpdateCommunitiesForUser(newCommunities, user.Id);
 
             _unitOfWork.UserRepository.Update(user);
 

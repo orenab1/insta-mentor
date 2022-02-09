@@ -21,9 +21,9 @@ export class NavComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // this.user={
-    //   username:'',      
-    // }
+    this.user={
+      username:'',      
+    }
     
   }
 

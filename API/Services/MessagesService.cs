@@ -132,5 +132,22 @@ namespace API.Services
                     .NewCommentReceived(questionId);
             }
         }
+
+        public async Task InviteToCommunity(int communityId, int userId, string username)
+        {
+            AppUser user =await _unitOfWork.UserRepository.GetUserAsync(username);
+
+            CommunityFullDto community=await _unitOfWork.CommunityRepository.GetCommunity(communityId, userId);
+
+            string subject=$"Hi, It's {user.UserName}! Check out the community {community.Name} {(community.IsCurrentUserCreator? "I created": "")} on ZOOMME.io";
+
+             _mailService
+                    .SendEmailAsync(new EmailDto {
+                        Subject = subject,
+                        Body =
+                            "You'll be able to ask me and others question there, and get LIVE answers on ZOOM.\n\n Check it out here!",
+                        To = user.Email
+                    });
+        }
     }
 }

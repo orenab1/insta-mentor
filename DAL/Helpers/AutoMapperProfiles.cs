@@ -38,7 +38,7 @@ namespace API.Helpers
                     src.Name));
 
 
-             CreateMap<Community, CommunitySummaryDto>()
+             CreateMap<Community, CommunityFullDto>()
                 .ForMember(dest => dest.NumOfQuestionsAsked, opt => opt.MapFrom(src =>
                     src.Questions.Where(x=>x.Question.IsActive).Count()))
                 .ForMember(dest => dest.NumOfMembers, opt => opt.MapFrom(src =>

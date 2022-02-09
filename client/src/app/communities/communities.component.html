@@ -1,9 +1,10 @@
-<div class="container mt-4">
-    <div class="row">
-        <div *ngFor="let community of communities" class="col-sm-3">
-                <div class="card">
+<div class="container mt-4" style="font-family: Poppins;">
+    <div class="row ">
+        <div *ngFor="let community of communities" 
+            class="col-xl-3 col-lg-4 col-md-6 col-12 mb-3 background-color:white">
+                <div class="card border-0" style='border-radius:25px; max-width:400px'>
                     <div class="card-body">
-                        <h5 class="card-title text-center">{{community.name}}                
+                        <h5 class="card-title text-center" style="font-family: Poppins-Bold;">{{community.name}}                
                         </h5>
 
                         <hr style="width:46px; color: #FF7B02; height:3px; opacity: 1;"  class="mx-auto" />
@@ -11,15 +12,30 @@
                         <p class="card-text">{{community.description}}
                         </p>
 
-                        <p class="card-text"> <span class="fw-bold" font-family="Poppins-SemiBold">{{community.numOfMembers}}</span> Members
+                        <p class="card-text"> <span class="fw-bold" font-family="Poppins-Bold">{{community.numOfMembers}}</span> Members
                         </p>
-                        <p class="card-text"><span class="fw-bold">{{community.numOfQuestionsAsked}}</span> Questions Asked
+                        <p class="card-text"><span  style="font-family:Poppins-Bold">{{community.numOfQuestionsAsked}}</span> Questions Asked
                         </p>
                         <p class="card-text" style="font-family:Poppins-SemiBold">Best time to get an answer: </p>
                         <p class="card-text" >{{community.bestTimeToGetAnswer}}
                         </p>
-                    </div>
+
+
+                        <div *ngIf='community.isCurrentUserMember else join' class="d-flex justify-content-between">
+                             <button type='button' class="btn btn-success" STYLE='min-width: 80px; font-size:14px;'>Invite</button>
+
+                             <button *ngIf='community.isCurrentUserCreator' type='button' class="btn btn-danger"  STYLE='min-width: 80px;  font-size:14px;'>Delete</button>
+
+                             <button type='button' class="btn btn-warning"  STYLE='min-width: 80px;  font-size:14px;'>Leave</button>
+                        </div>
+
+                        <ng-template #join>
+                            <div class="d-flex flex-column">
+                                <button type='button' class="btn btn-primary">Join</button>
+                            </div>
+                        </ng-template>
+                    </div>                   
                 </div>
             </div>
-    </div>
+        </div>
 </div>

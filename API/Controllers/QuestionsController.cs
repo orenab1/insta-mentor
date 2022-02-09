@@ -274,7 +274,7 @@ namespace API.Controllers
         [ActionName("delete-offer")]
         public async Task<ActionResult> DeleteOffer(int offerId)
         {
-            _unitOfWork.QuestionRepository.DeleteOfferAsync(offerId, User.GetUserId());
+            await _unitOfWork.QuestionRepository.DeleteOfferAsync(offerId, User.GetUserId());
 
             return NoContent();
         }

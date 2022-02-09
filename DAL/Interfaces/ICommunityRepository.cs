@@ -9,7 +9,7 @@ namespace DAL.Interfaces
     {
         Task<IEnumerable<CommunityDto>> GetCommunities();
 
-        List<CommunityFullDto> GetCommunitiesSummaries(int currentUserId);        
+        List<CommunityFullDto> GetCommunitiesFull(int currentUserId);        
 
         int GetNumOfUsersInCommunity(int communityId);
 

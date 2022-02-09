@@ -23,6 +23,9 @@ namespace DAL.DTOs
         // This is used for mapping
         public int CreatorId { get; set; }
 
+         // This is used for mapping
+        public bool IsActive { get; set; }
+
         public DateTime Created { get; set; }
     }
 }

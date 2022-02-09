@@ -1,0 +1,103 @@
+<div class="card border-0 community-card">
+  <div class="card-body">
+    <h5 class="card-title text-center bold-font">{{ community.name }}</h5>
+
+    <hr class="mx-auto seperator" />
+
+    <p class="card-text">{{ community.description }}</p>
+
+    <p class="card-text">
+      <span class="semi-bold-font">{{ community.numOfMembers }}</span>
+      Members
+    </p>
+    <p class="card-text">
+      <span class="semi-bold-font">{{ community.numOfQuestionsAsked }}</span>
+      Questions Asked
+    </p>
+    <p class="card-text semi-bold-font">Best time to get an answer:</p>
+    <p class="card-text">{{ community.bestTimeToGetAnswer }}</p>
+
+    <div
+      *ngIf="community.isCurrentUserMember; else joinTemp"
+      class="d-flex justify-content-between"
+    >
+      <button
+        type="button"
+        class="btn btn-success small-button"
+        (click)="invite()"
+      >
+        Invite
+      </button>
+
+      <button
+        *ngIf="community.isCurrentUserCreator"
+        type="button"
+        class="btn btn-danger small-button"
+        (click)="delete()"
+      >
+        Delete
+      </button>
+
+      <button type="button" class="btn btn-warning small-button">Leave</button>
+    </div>
+
+    <ng-template #joinTemp>
+      <div class="d-flex flex-column">
+        <button type="button" class="btn btn-primary" (click)="join()">
+          Join
+        </button>
+      </div>
+    </ng-template>
+  </div>
+</div>
+
+
+
+
+
+<ng-template #content let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title theme-color-font" id="modal-basic-title">
+      Invitation Sent
+    </h4>
+    <button
+      type="button"
+      class="close close-x-button"
+      aria-label="Close"
+      (click)="modal.dismiss('Cross click')"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form>
+      <div class="form-group">
+        We sent you an email with a link.
+        <br />
+        Please forward it to the person/people you would like to invite.
+        <br />
+        When your friends will click that link,
+        <br />
+        they will be directed to the ZOOMME.io Registration form.
+        <br />
+        After they'll register, they'll become members of this community
+        automatically.
+      </div>
+    </form>
+  </div>
+  <div class="container">
+    <div class="row border-top">
+      <div class="text-center">
+        <button
+          type="button"
+          class="btn btn-primary m-3 button-close"
+          (click)="modal.close('Save click')"
+        >
+          Done
+        </button>
+      </div>
+    </div>
+  </div>
+</ng-template>
+
+

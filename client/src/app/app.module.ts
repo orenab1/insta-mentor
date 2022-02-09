@@ -34,7 +34,8 @@ import { SocialLoginModule, SocialAuthServiceConfig } from 'angularx-social-logi
 import { GoogleLoginProvider } from 'angularx-social-login';
 import { ToastrModule } from 'ngx-toastr';
 import { NgxUiLoaderModule, NgxUiLoaderRouterModule } from 'ngx-ui-loader';
-import { CommunitiesComponent } from './communities/communities.component';
+import { CommunitiesComponent } from './_components/community/communities/communities.component';
+import { DisplayCommunityComponent } from './_components/community/display-community/display-community.component';
 
 
 @NgModule({
@@ -57,6 +58,7 @@ import { CommunitiesComponent } from './communities/communities.component';
     PocComponent,
     MemberEditComponent,
     CommunitiesComponent,
+    DisplayCommunityComponent,
     
   ],
   imports: [

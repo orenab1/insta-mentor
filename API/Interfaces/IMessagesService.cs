@@ -9,5 +9,7 @@ namespace API.Interfaces
         Task NotifyNewCommentAsync(int questionId);
 
         Task NotifyAskersOffererLoggedInAsync(int questionId);
+
+        Task InviteToCommunity(int communityId, int userId, string username);
     }
 }

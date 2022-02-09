@@ -15,7 +15,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace API.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("api/[controller]/[action]")]
     public class CommunitiesController : ControllerBase
     {
         private readonly IUnitOfWork _unitOfWork;
@@ -32,12 +32,12 @@ namespace API.Controllers
         }
 
         [HttpGet]
-        public ActionResult<IEnumerable<CommunityFullDto>>
-        GetCommunitiesSummaries()
+        [ActionName("all-communities")]
+        public ActionResult<IEnumerable<CommunityFullDto>> GetCommunities()
         {
             return Ok(_unitOfWork
                 .CommunityRepository
-                .GetCommunitiesSummaries(User.GetUserId()));
+                .GetCommunitiesFull(User.GetUserId()));
         }
 
         [HttpDelete]
@@ -47,7 +47,7 @@ namespace API.Controllers
             if (await CanDeleteCommunity(communityId) == false)
                 return Unauthorized();
 
-            await _unitOfWork.CommunityRepository.DeleteCommunity (communityId);
+            await _unitOfWork.CommunityRepository.DeleteCommunity(communityId);
 
             return NoContent();
         }
@@ -56,31 +56,34 @@ namespace API.Controllers
         [ActionName("leave")]
         public async Task<ActionResult> Leave(int communityId)
         {
-            await _unitOfWork
-                .CommunityRepository
-                .LeaveCommunity(communityId, User.GetUserId());
+            var success =
+                await _unitOfWork
+                    .CommunityRepository
+                    .LeaveCommunity(communityId, User.GetUserId());
 
-            return NoContent();
+            if (success) return Ok();
+            return BadRequest("Failed to leave");
         }
 
         [HttpPut]
         [ActionName("join")]
         public async Task<ActionResult> Join(int communityId)
         {
-            await _unitOfWork
-                .CommunityRepository
-                .JoinCommunity(communityId, User.GetUserId());
+            var success =
+                await _unitOfWork
+                    .CommunityRepository
+                    .JoinCommunity(communityId, User.GetUserId());
 
-            return NoContent();
+            if (success) return Ok();
+            return BadRequest("Failed to join");
         }
 
-        [HttpPost]
+        [HttpPut]
         [ActionName("invite")]
         public async Task<ActionResult> Invite(int communityId)
         {
-            await _unitOfWork
-                .CommunityRepository
-                .JoinCommunity(communityId, User.GetUserId());
+            await _messagesService
+                .InviteToCommunity(communityId,User.GetUserId(),User.GetUsername());
 
             return NoContent();
         }
@@ -89,14 +92,18 @@ namespace API.Controllers
         [ActionName("create")]
         public async Task<ActionResult> Create(AddCommunityDto addCommunityDto)
         {
-            await _unitOfWork
-                .CommunityRepository
-                .CreateCommunity(addCommunityDto, User.GetUserId());
-            return NoContent();
+            var canAdd = await CanAddCommunity(addCommunityDto.Name);
+            if (!canAdd) return BadRequest("You cannot create community");
+
+            if (
+                await _unitOfWork
+                    .CommunityRepository
+                    .CreateCommunity(addCommunityDto, User.GetUserId())
+            ) return Ok();
+            return BadRequest("Creating community failed");
         }
 
-        private async Task<bool>
-        CanAddCommunity(AddCommunityDto addCommunity)
+        private async Task<bool> CanAddCommunity(string addedCommunityName)
         {
             DateTime? lastCreatedCommunityByUser =
                 await _unitOfWork
@@ -114,14 +121,14 @@ namespace API.Controllers
                 return false;
             }
 
-            if (await _unitOfWork
+            if (
+                await _unitOfWork
                     .CommunityRepository
-                    .IsCommunityNameExists(addCommunity.Name))
-                    {
-                        return false;
-                    }
-
-            
+                    .IsCommunityNameExists(addedCommunityName)
+            )
+            {
+                return false;
+            }
 
             return true;
         }
@@ -138,7 +145,7 @@ namespace API.Controllers
             var community =
                 _unitOfWork
                     .CommunityRepository
-                    .GetCommunitiesSummaries(User.GetUserId())
+                    .GetCommunitiesFull(User.GetUserId())
                     .SingleOrDefault(x => x.Id == communityId);
 
             if (

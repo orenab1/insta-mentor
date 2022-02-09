@@ -30,6 +30,21 @@
     src: local("Poppins-Bold"), url(./assets/fonts/Poppins-Bold.ttf) format("truetype");
 }
 
+
+$base-theme-color:#FF7B02;
+
+.bold-font{
+    font-family: "Poppins-Bold" !important;
+}
+
+.semi-bold-font{
+    font-family: "Poppins-SemiBold" !important;
+}
+
+.theme-color-font{
+    color:$base-theme-color;
+}
+
 body{
 //    background-color:#eee;
     min-height: 100vh;
@@ -38,7 +53,6 @@ body{
     background:  no-repeat linear-gradient(45deg, rgba(255, 102, 0, 0.1) 0%, rgba(180,180,180,0.1) 47%);
 }
 
-$base-theme-color:#FF7B02;
 
 .btn-primary, .btn-primary:hover, .btn-primary:active, .btn-primary:visited, .btn-primary {
     background-color: $base-theme-color !important;

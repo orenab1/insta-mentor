@@ -145,7 +145,7 @@ namespace API.Services
                     .SendEmailAsync(new EmailDto {
                         Subject = subject,
                         Body =
-                            "You'll be able to ask me and others question there, and get LIVE answers on ZOOM.\n\n Check it out here!",
+                            "\nYou'll be able to ask me and others question there, and get LIVE answers on ZOOM.\n\nCheck it out here!",
                         To = user.Email
                     });
         }

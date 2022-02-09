@@ -27,6 +27,7 @@ namespace DAL.Repositories
         {
             return await _mapper
                 .ProjectTo<CommunityDto>(_context.Communities)
+                .Where(c => c.IsActive)
                 .ToListAsync();
         }
 
@@ -36,6 +37,7 @@ namespace DAL.Repositories
             var result =
                 await _mapper
                     .ProjectTo<CommunityFullDto>(_context.Communities)
+                    .Where(c => c.IsActive)
                     .SingleOrDefaultAsync(c => c.Id == communityId);
 
             result.IsCurrentUserCreator = result.CreatorId == currentUserId;
@@ -50,11 +52,12 @@ namespace DAL.Repositories
         }
 
         public List<CommunityFullDto>
-        GetCommunitiesSummaries(int currentUserId)
+        GetCommunitiesFull(int currentUserId)
         {
             List<CommunityFullDto> result =
                 _mapper
                     .ProjectTo<CommunityFullDto>(_context.Communities)
+                    .Where(c => c.IsActive)
                     .ToList();
 
             result
@@ -125,7 +128,7 @@ namespace DAL.Repositories
                     .SingleOrDefaultAsync(u =>
                         u.CommunityId == communityId && u.AppUserId == userId);
 
-            if (userCommunity == null) return false;
+            if (userCommunity != null) return false;
 
             _context
                 .UsersCommunities

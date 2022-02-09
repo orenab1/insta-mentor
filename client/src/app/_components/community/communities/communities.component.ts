@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { CommunitySummary } from '../_models/Community';
-import { CommunityService } from '../_services/community.service';
+import { CommunityFull } from '../../../_models/Community';
+import { CommunityService } from '../../../_services/community.service';
 
 @Component({
   selector: 'app-communities',
@@ -8,7 +8,7 @@ import { CommunityService } from '../_services/community.service';
   styleUrls: ['./communities.component.scss']
 })
 export class CommunitiesComponent implements OnInit {
-  communities:CommunitySummary[];
+  communities:CommunityFull[];
 
   constructor(private communityService: CommunityService) { 
   }

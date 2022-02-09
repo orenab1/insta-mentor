@@ -5,6 +5,7 @@ namespace DAL.DTOs
         public int Value { get; set; }
         public string Display { get; set; }
 
-        public bool IsApproved { get; set; }
+        // For filtering
+        public bool IsActive { get; set; }
     }
 }

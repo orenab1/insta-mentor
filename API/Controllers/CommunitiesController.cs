@@ -135,18 +135,20 @@ namespace API.Controllers
 
         private async Task<bool> CanDeleteCommunity(int communityId)
         {
-            var numOfUsersInCommunity =
-                _unitOfWork
-                    .CommunityRepository
-                    .GetNumOfUsersInCommunity(communityId);
+            // var numOfUsersInCommunity =
+            //     _unitOfWork
+            //         .CommunityRepository
+            //         .GetNumOfUsersInCommunity(communityId);
 
-            if (numOfUsersInCommunity > 5) return false;
+            // if (numOfUsersInCommunity > 5) return false;
 
             var community =
                 _unitOfWork
                     .CommunityRepository
                     .GetCommunitiesFull(User.GetUserId())
                     .SingleOrDefault(x => x.Id == communityId);
+
+            if (community.NumOfMembers > 5) return false;
 
             if (
                 community == null ||

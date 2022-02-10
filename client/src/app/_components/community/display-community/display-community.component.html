@@ -1,4 +1,4 @@
-<div class="card border-0 community-card">
+<div class="card border-0 community-card mx-auto">
   <div class="card-body">
     <h5 class="card-title text-center bold-font">{{ community.name }}</h5>
 
@@ -23,14 +23,14 @@
     >
       <button
         type="button"
-        class="btn btn-success small-button"
+        class="btn btn-success card-button"
         (click)="invite()"
-      >
+        [class.small-button]="canUserDeleteCommunity">
         Invite
       </button>
 
       <button
-        *ngIf="community.isCurrentUserCreator"
+        *ngIf="canUserDeleteCommunity"
         type="button"
         class="btn btn-danger small-button"
         (click)="delete()"
@@ -38,7 +38,7 @@
         Delete
       </button>
 
-      <button type="button" class="btn btn-warning small-button">Leave</button>
+      <button type="button" class="btn btn-warning card-button" [class.small-button]="canUserDeleteCommunity">Leave</button>
     </div>
 
     <ng-template #joinTemp>

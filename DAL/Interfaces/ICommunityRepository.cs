@@ -11,7 +11,7 @@ namespace DAL.Interfaces
 
         List<CommunityFullDto> GetCommunitiesFull(int currentUserId);        
 
-        int GetNumOfUsersInCommunity(int communityId);
+        //int GetNumOfUsersInCommunity(int communityId);
 
         Task<bool> DeleteCommunity(int communityId);
 

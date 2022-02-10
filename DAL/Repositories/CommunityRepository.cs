@@ -76,13 +76,13 @@ namespace DAL.Repositories
             return result;
         }
 
-        public int GetNumOfUsersInCommunity(int communityId)
-        {
-            return _context
-                .UsersCommunities
-                .Where(u => u.CommunityId == communityId)
-                .Count();
-        }
+        // public int GetNumOfUsersInCommunity(int communityId)
+        // {
+        //     return _context
+        //         .UsersCommunities
+        //         .Where(u => u.CommunityId == communityId)
+        //         .Count();
+        // }
 
         public async Task<bool> DeleteCommunity(int communityId)
         {

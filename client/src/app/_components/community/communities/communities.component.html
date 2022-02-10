@@ -24,15 +24,32 @@
         <app-display-community [community]="community"></app-display-community>
       </div>
 
-      <div class="card border-0 community-card theme-color-font" style="cursor: pointer">
-        <div class="card-body text-center" style="font-size: 90px;">
-          <!-- display : flex; align-items : center;-->
-          <div style=" line-height: 35px;margin-top:130px;">
-            +
-            <div style="font-size: 14px; line-height:22px;margin-top:12px;">
-              Create a New
-              <br />
-              Community!
+      <div class="col-lg-4 col-md-6 col-xl-3 col-12 mb-3">
+        <div
+          class="card border-0 community-card theme-color-font add-community-card mb-3 mx-auto"
+          style="cursor: pointer; height: 100%; min-height: 337px;"
+          [class.show-text]="mouseOveredAdd"
+          (mouseout)="mouseOveredAdd = false"
+          (mouseover)="mouseOveredAdd = true"
+        >
+          <div
+            class="card-body text-center"
+            style="font-size: 90px; padding: 0px;"
+          >
+            <!-- display : flex; align-items : center;-->
+            <div
+              style="line-height: 35px; margin-top: 130px;"
+              class="add-container"
+            >
+              +
+              <div
+                style="font-size: 14px; line-height: 22px; margin-top: 12px;"
+                class="add-text semi-bold-font"
+              >
+                Create a New
+                <br />
+                Community!
+              </div>
             </div>
           </div>
         </div>

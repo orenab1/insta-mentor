@@ -11,11 +11,17 @@ import { Router } from '@angular/router';
 })
 export class DisplayCommunityComponent implements OnInit {
   @Input() community: CommunityFull;
+  canUserDeleteCommunity:boolean=false;
+
   @ViewChild('content', { static: false }) private content;
 
   constructor(private communityService: CommunityService,private modalService: NgbModal,private router: Router) { }
 
   ngOnInit(): void {
+    this.canUserDeleteCommunity=
+    this.community.isCurrentUserCreator && 
+    this.community.isCurrentUserMember &&
+    this.community.numOfMembers<5;
   }
 
   invite(){

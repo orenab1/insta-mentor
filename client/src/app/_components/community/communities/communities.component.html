@@ -29,14 +29,15 @@
           class="card border-0 community-card theme-color-font add-community-card mb-3 mx-auto"
           style="cursor: pointer; height: 100%; min-height: 337px;"
           [class.show-text]="mouseOveredAdd"
+          [class.display-add-teaser]="isAddMode"
           (mouseout)="mouseOveredAdd = false"
           (mouseover)="mouseOveredAdd = true"
+          (click)="isAddMode=true;"
         >
           <div
-            class="card-body text-center"
+            class="card-body text-center add-teaser-container"
             style="font-size: 90px; padding: 0px;"
           >
-            <!-- display : flex; align-items : center;-->
             <div
               style="line-height: 35px; margin-top: 130px;"
               class="add-container"
@@ -51,6 +52,44 @@
                 Community!
               </div>
             </div>
+          </div>
+
+          <div class="add-content-container card-body" style='color:black;' [class.display-add-content]="!isAddMode">
+            <h5 class="card-title text-center bold-font">New Community</h5>
+
+            <hr class="mx-auto seperator" />
+        
+            <p class="card-text">Name</p>
+            <input type="text" class="" style="
+            background-color: #FAFAFA;
+            border-radius: 6px;
+            border: 0px;" [(ngModel)]='communityName'/>
+            <p class="card-text">Description</p>
+            <textarea class="" style="
+            background-color: #FAFAFA;
+            border-radius: 6px;
+            border: 0px;" [(ngModel)]='communityDesc' maxlength="5"></textarea>
+{{communityDesc.length}}
+            
+
+            <div
+           
+            class="d-flex justify-content-between"
+          >
+            <button
+              type="button"
+              class="btn btn-success card-button"
+             >
+              Invite
+            </button>
+      
+           
+      
+            <button type="button" class="btn btn-warning card-button" >Leave</button>
+          </div>
+
+          
+
           </div>
         </div>
       </div>

@@ -9,6 +9,9 @@ import { CommunityService } from '../../../_services/community.service';
 })
 export class CommunitiesComponent implements OnInit {
   mouseOveredAdd:boolean;
+  isAddMode:boolean = false;
+  communityName:string='';
+  communityDesc:string='';
 
   communities:CommunityFull[];
 

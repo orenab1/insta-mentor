@@ -24,3 +24,19 @@
     transition: all .2s ease-in-out;
     transform: scale(1.1);
 }
+
+.display-add-teaser .add-teaser-container{
+    display: none !important;
+}
+
+.display-add-content{
+    display: none !important;
+}
+
+
+.seperator{
+    width:46px; 
+    color: #FF7B02; 
+    height:3px; 
+    opacity: 1;
+}

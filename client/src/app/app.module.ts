@@ -11,7 +11,7 @@ import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { HomeComponent } from './home/home.component';
 import { RegisterComponent } from './register/register.component';
 import { MemberListComponent } from './members/member-list/member-list.component';
-import { MemberDetailComponent } from './members/member-detail/member-detail.component';
+import { DisplayUserComponent } from './_components/user/display-user/display-user.component';
 import { MessagesComponent } from './messages/messages.component';
 import { QuestionComponent } from './question/display-question/question.component';
 import { CommentsComponent } from './question/comments/comments.component';
@@ -29,7 +29,7 @@ import { EditQuestionComponent } from './question/edit-question/edit-question.co
 import { PocComponent } from './poc/poc.component'
 
 import { TagInputModule } from 'ngx-chips';
-import { MemberEditComponent } from './members/member-edit/member-edit.component';
+import { EditUserComponent } from './_components/user/edit-user/edit-user.component';
 import { SocialLoginModule, SocialAuthServiceConfig } from 'angularx-social-login';
 import { GoogleLoginProvider } from 'angularx-social-login';
 import { ToastrModule } from 'ngx-toastr';
@@ -46,7 +46,7 @@ import { AddCommunityComponent } from './_components/community/add-community/add
     HomeComponent,
     RegisterComponent,
     MemberListComponent,
-    MemberDetailComponent,
+    DisplayUserComponent,
     MessagesComponent,
     QuestionComponent,
     CommentsComponent,
@@ -57,7 +57,7 @@ import { AddCommunityComponent } from './_components/community/add-community/add
     RatingBasicComponent,
     EditQuestionComponent,
     PocComponent,
-    MemberEditComponent,
+    EditUserComponent,
     CommunitiesComponent,
     DisplayCommunityComponent,
     AddCommunityComponent,

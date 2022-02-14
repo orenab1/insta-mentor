@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { take } from 'rxjs/operators';
 import { Member } from 'src/app/_models/member';
@@ -9,14 +9,15 @@ import { CommonService } from 'src/app/_services/common.service';
 import { MembersService } from 'src/app/_services/members.service';
 
 @Component({
-  selector: 'app-member-edit',
-  templateUrl: './member-edit.component.html',
-  styleUrls: ['./member-edit.component.scss']
+  selector: 'app-member-detail',
+  templateUrl: './display-user.component.html',
+  styleUrls: ['./display-user.component.scss']
 })
-export class MemberEditComponent implements OnInit {
+export class DisplayUserComponent implements OnInit {
   member: Member;
   user: User;
   allTags: Tag[];
+  communitiesAsString:string;
 
 
   constructor(private membersService: MembersService, private route: ActivatedRoute,
@@ -40,11 +41,6 @@ export class MemberEditComponent implements OnInit {
   }
 
 
-  editMember() {
-    this.membersService.updateUser(this.member).subscribe(() => {
-      this.router.navigateByUrl('members/' + this.user.username)
-    });
-  }
 
 
 
@@ -52,32 +48,26 @@ export class MemberEditComponent implements OnInit {
   loadMember() {
     this.membersService.getMember(this.route.snapshot.paramMap.get('username')).subscribe(response => {
       this.member = response;
-      this.member.tags = [{
-        value: 7,
-        display: 'Angular'
-      }];
+      if (!this.member.aboutMe){
+        this.member.aboutMe='Nothing to tell yet'
+      }
+
+      this.communitiesAsString=this.member.communities.map((item)=>item.display).join(', ')
     });
   }
 
-  onUploadPhotoSuccess = (response: any) => {
-    if (response) {
-      const photo = JSON.parse(response);
-      console.log('member: ' + JSON.stringify(this.member));
-      console.log(response);
-      this.member.photoUrl = photo.url;
-      this.member.photoId = photo.id;
-      this.user.photoUrl = photo.url;
-      this.accountService.setCurrentUser(this.user);
-    }
 
-
-  }
+  
 
   deletePhoto() {
     this.membersService.deletePhoto().subscribe(() => {
       this.member.photoUrl = './assets/user.png';
       this.member.photoId = 0;
     })
+  }
+
+  edit() {
+    this.router.navigateByUrl('edit-user/' + this.route.snapshot.paramMap.get('username'));
   }
 }
 

@@ -1,0 +1,65 @@
+<div *ngIf="member">
+  <div class="container my-5">
+    <div class="row">
+      <div class="card col-4">
+        <div class="card-body text-center">
+          <div class="my-4">
+            <h5 class="semi-bold-font text-center">Details</h5>
+            <hr class="seperator mx-auto" />
+          </div>
+
+          <img
+            src="{{ member.photoUrl || './assets/user.png' }}"
+            alt="{{ member.username }}"
+            class="rounded-circle card-img-top mx-auto"
+            style="width: 100px; height: 100px;"
+          />
+
+          <div class="text-center mt-3 semi-bold-font" style="font-size: 18px;">
+            {{ member.username }}
+          </div>
+          <div class="text-center my-1" style="color: #8497b5;">
+            {{ member.title }}
+          </div>
+
+          <div class="my-3">
+            <div
+              *ngFor="let tag of member.tags"
+              class="tag-display px-2 mx-2"
+              style="display: inline-block;"
+            >
+              {{ tag.display }}
+            </div>
+          </div>
+
+          <div class="mt-3 bold-font" style="font-size: 16px; text-align: left">
+            My Communities
+          </div>
+
+          <div  style="text-align: left">
+            {{ communitiesAsString }}
+          </div>
+        </div>
+      </div>
+      <div class="col">
+        <div class="card mb-3">
+          <div class="card-body">
+            <div class="my-4">
+              <h5 class="semi-bold-font text-center">About Me</h5>
+              <hr class="seperator mx-auto" />
+            </div>
+            <p>{{ member.aboutMe }}</p>
+          </div>
+        </div>
+        <div class="card">
+          <div>
+            <div class="my-4">
+              <h5 class="semi-bold-font text-center">Reviews</h5>
+              <hr class="seperator mx-auto" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

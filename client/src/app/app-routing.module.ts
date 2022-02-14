@@ -2,8 +2,8 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { CommunitiesComponent } from './_components/community/communities/communities.component';
 import { HomeComponent } from './home/home.component';
-import { MemberDetailComponent } from './members/member-detail/member-detail.component';
-import { MemberEditComponent } from './members/member-edit/member-edit.component';
+import { DisplayUserComponent } from './_components/user/display-user/display-user.component';
+import { EditUserComponent } from './_components/user/edit-user/edit-user.component';
 import { MemberListComponent } from './members/member-list/member-list.component';
 import { MessagesComponent } from './messages/messages.component';
 import { PocComponent } from './poc/poc.component';
@@ -18,8 +18,8 @@ const routes: Routes = [
  { path: 'communities', component: CommunitiesComponent },
   { path: 'questions', component: QuestionsComponent },
   { path: 'register', component: RegisterComponent },
-  { path: 'members/:username', component: MemberDetailComponent },
-  { path: 'member-edit/:username', component: MemberEditComponent },
+  { path: 'users/:username', component: DisplayUserComponent },
+  { path: 'edit-user/:username', component: EditUserComponent },
   { path: 'poc', component: PocComponent },
   { path: 'question/edit-question', component: EditQuestionComponent },
   { path: 'edit-question/:id', component: EditQuestionComponent },

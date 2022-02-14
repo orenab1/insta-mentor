@@ -106,6 +106,13 @@ namespace API.Controllers
             return BadRequest("Creating community failed");
         }
 
+         [HttpGet("get-communities-tags")]
+        public async Task<ActionResult> GetCommunitiesTags()
+        {
+            var userName = User.GetUsername();
+            return Ok(await _unitOfWork.CommunityRepository.GetCommunities());
+        }
+
         private async Task<bool> CanAddCommunity(string addedCommunityName)
         {
             DateTime? lastCreatedCommunityByUser =
@@ -113,16 +120,16 @@ namespace API.Controllers
                     .CommunityRepository
                     .LastCreatedCommunity(User.GetUserId());
 
-            // if (
-            //     (
-            //     lastCreatedCommunityByUser.HasValue &&
-            //     (DateTime.Now - lastCreatedCommunityByUser.Value).TotalHours <
-            //     24
-            //     )
-            // )
-            // {
-            //     return false;
-            // }
+            if (
+                (
+                lastCreatedCommunityByUser.HasValue &&
+                (DateTime.Now - lastCreatedCommunityByUser.Value).TotalHours <
+                24
+                )
+            )
+            {
+                return false;
+            }
 
             if (
                 await _unitOfWork

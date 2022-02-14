@@ -1,3 +1,4 @@
+import { Community } from "./Community";
 import { Tag } from "./tag";
 
 export interface Member {
@@ -10,6 +11,7 @@ export interface Member {
     created: Date;
     photoId: number;
     tags: Tag[];
+    communities:Community[];
     questionAskedOnMyTags: boolean;
     onlyNotifyOnCommunityQuestionAsked: boolean;
     myQuestionReceivedNewOffer: boolean;

@@ -27,11 +27,6 @@ namespace API.Controllers
             return Ok(await _unitOfWork.TagRepository.GetTagsByCreatorOrApproved(user.Id));
         }
 
-        [HttpGet("get-communities")]
-        public async Task<ActionResult> GetCommunities()
-        {
-            var userName = User.GetUsername();
-            return Ok(await _unitOfWork.CommunityRepository.GetCommunities());
-        }
+       
     }
 }

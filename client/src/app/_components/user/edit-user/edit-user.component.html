@@ -1,11 +1,20 @@
+
+<div class="container mt-5">
+    <div class="row aligns-items-center">
+      <div class="text-center"><h3>Settings</h3></div>
+    </div>
+  </div>
+
+
 <form
   *ngIf="member"
   #editMemberForm="ngForm"
   (ngSubmit)="editMember()"
   autocomplete="off"
-  class="my-5 row d-flex justify-content-center container"
+  class="my-3 row d-flex justify-content-center container"
+  style="margin-left:0px;"
 >
-  <div class="row  justify-content-center">
+  <div class="row justify-content-center">
     <div class="col-xl-5 col-lg-7 col-md-10 col-sm-12">
       <div class="card p-3">
         <div class="mb-3 align-bottom mx-auto">
@@ -67,6 +76,37 @@
             />
           </div>
 
+          <div class="form-group mt-4">
+            <label for="aboutMe">Tags</label>
+            <tag-input
+              name="tags"
+              [(ngModel)]="member.tags"
+              [theme]="'bootstrap'"
+            >
+              <tag-input-dropdown
+                [autocompleteItems]="allTags"
+                [showDropdownIfEmpty]="true"
+              ></tag-input-dropdown>
+            </tag-input>
+          </div>
+
+
+          <div class="form-group mt-4">
+            <label for="aboutMe">Communities</label>
+            <tag-input
+              name="communities"
+              [(ngModel)]="member.communities"
+              [theme]="'bootstrap'"
+            >
+              <tag-input-dropdown
+                [autocompleteItems]="allCommunities"
+                [showDropdownIfEmpty]="true"
+                [placeholder]="community"
+              ></tag-input-dropdown>
+            </tag-input>
+          </div>
+
+
           <div class="form-group mt-5">
             <label>
               <strong>Notify me whenver..</strong>
@@ -121,34 +161,19 @@
               </label>
             </div>
 
-            <div class="form-group mt-4">
-              <label for="aboutMe">Tags</label>
-              <tag-input
-                name="tags"
-                [(ngModel)]="member.tags"
-                [theme]="'bootstrap'"
+            <div class="d-flex justify-content-between mt-5">
+              <button class="btn btn-success mr-2 card-button" type="submit">
+                Save
+              </button>
+              <button
+                class="btn btn-warning mr-2 card-button"
+                (click)="cancel()"
               >
-                <tag-input-dropdown
-                  [autocompleteItems]="allTags"
-                  [showDropdownIfEmpty]="true"
-                ></tag-input-dropdown>
-              </tag-input>
-
-              <div       
-              class="d-flex justify-content-between mt-4"
-            >
-                <button class="btn btn-success mr-2  card-button" type="submit">Save</button>
-                <button class="btn btn-warning  mr-2 card-button" (click)="cancel()">
-                  Cancel
-                </button>
-              </div>
+                Cancel
+              </button>
             </div>
           </div>
         </div>
-
-
-
-    
       </div>
     </div>
   </div>

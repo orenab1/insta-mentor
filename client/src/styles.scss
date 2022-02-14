@@ -101,3 +101,17 @@ div.ng2-tags-container tag{
 tag-input-form{
     margin-top:10px;
 }
+
+.ng2-tag-input__text-input{
+    height:32px !important;    
+}
+
+div.ng2-tag-input{
+    border-bottom: none !important;
+}
+
+div.tag-display{    
+    color: #0001FD;
+    border-radius: 11px;
+    background-color: #F2F6FD;
+}

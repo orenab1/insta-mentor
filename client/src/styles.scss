@@ -41,12 +41,23 @@ $base-theme-color:#FF7B02;
     font-family: "Poppins-SemiBold" !important;
 }
 
+%semi-bold-font{
+    font-family: "Poppins-SemiBold" !important;
+}
+
+
 .theme-color-font{
     color:$base-theme-color;
 }
 
+.seperator{
+    width:46px; 
+    color: #FF7B02; 
+    height:3px !important; 
+    opacity: 1;
+}
+
 body{
-//    background-color:#eee;
     min-height: 100vh;
     font-family: "Poppins";
     background:  no-repeat rgb(255,142,65);
@@ -63,4 +74,30 @@ body{
 
 .btn {
     border-radius:25px !important;
+}
+
+.card textarea,.card input{
+    background-color: #f1f1f1;
+    border-radius: 6px; border: 0px;
+}
+
+.card{
+    border-radius:25px; 
+    border:none;
+}
+
+label{
+    @extend %semi-bold-font;
+}
+
+div.ng2-tags-container tag{
+    margin-top:10px;
+    color: white  !important;
+    background-color: gray !important;
+    opacity: 1  !important;
+    border-radius: 15px  !important;
+}
+
+tag-input-form{
+    margin-top:10px;
 }

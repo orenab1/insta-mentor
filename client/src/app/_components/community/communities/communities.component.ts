@@ -8,10 +8,6 @@ import { CommunityService } from '../../../_services/community.service';
   styleUrls: ['./communities.component.scss']
 })
 export class CommunitiesComponent implements OnInit {
-  mouseOveredAdd:boolean;
-  isAddMode:boolean = false;
-  communityName:string='';
-  communityDesc:string='';
 
   communities:CommunityFull[];
 

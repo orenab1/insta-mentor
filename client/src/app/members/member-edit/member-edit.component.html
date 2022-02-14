@@ -1,77 +1,155 @@
-<form *ngIf="member" #editMemberForm="ngForm" (ngSubmit)="editMember()" autocomplete="off">
+<form
+  *ngIf="member"
+  #editMemberForm="ngForm"
+  (ngSubmit)="editMember()"
+  autocomplete="off"
+  class="my-5 row d-flex justify-content-center container"
+>
+  <div class="row  justify-content-center">
+    <div class="col-xl-5 col-lg-7 col-md-10 col-sm-12">
+      <div class="card p-3">
+        <div class="mb-3 align-bottom mx-auto">
+          <img
+            src="{{ member.photoUrl || './assets/user.png' }}"
+            alt="{{ member.username }}"
+            class="card-img-top img-thumbnail"
+            style="width: 100px; height: 100px;"
+            class="rounded-circle"
+          />
 
-    <i class="fa fa-pencil" (click)="edit()"></i>
-    <div class="col-4">
-        <div class="card">
-            <img src="{{member.photoUrl || './assets/user.png'}}" alt="{{member.username}}"
-                class="card-img-top img-thumbnail" style="width: 100px; height: 100px;" class="rounded-circle">
-
+          <div class="pencil-wrapper">
+            <i class="fa fa-pencil" (click)="edit()"></i>
+          </div>
+          <!-- 
             <app-photo-editor [addPhotoUrlExtension]="'users/add-photo'" [onUploadSuccess]="onUploadPhotoSuccess"
-                [deletePhoto]="onDeletePhoto"></app-photo-editor>
-
-            <div class="card-body">
-                <div>
-                    <strong>Username</strong>
-                    <input type="text" class="form-control" name="username" [(ngModel)]="member.username">
-                </div>
-                <div>
-                    <strong>Email</strong>
-                    <input type="email" class="form-control" name="email" [(ngModel)]="member.email">
-                </div>
-                <div>
-                    <strong>Title</strong>
-                    <input type="text" class="form-control" name="title" [(ngModel)]="member.title">
-                </div>
-                <div>
-                    <strong>About Me</strong>
-                    <input type="textarea" class="form-control" name="aboutMe" [(ngModel)]="member.aboutMe">
-                </div>
-
-                <div class="form-check">
-                    <input class="form-check-input" type="checkbox" name='questionAskedOnMyTags' [(ngModel)]='member.questionAskedOnMyTags'>
-                    <label class="form-check-label" for="flexCheckChecked">
-                        A question is asked according to my tags
-                    </label>
-                  </div>
-
-                  <div class="form-check">
-                    <input class="form-check-input" type="checkbox"name='onlyNotifyOnCommunityQuestionAsked' [(ngModel)]='member.onlyNotifyOnCommunityQuestionAsked'>
-                    <label class="form-check-label" for="flexCheckChecked">
-                        Only notify me when a question is asked in a community I'm a member of
-                    </label>
-                  </div>
-
-                  <div class="form-check">
-                    <input class="form-check-input" type="checkbox" name='myQuestionReceivedNewOffer' [(ngModel)]='member.myQuestionReceivedNewOffer'>
-                    <label class="form-check-label" for="flexCheckChecked">
-                        A question I asked gets a new offer
-                    </label>
-                  </div>
-
-                  <div class="form-check">
-                    <input class="form-check-input" type="checkbox" name='myQuestionReceivedNewComment' [(ngModel)]='member.myQuestionReceivedNewComment'>
-                    <label class="form-check-label" for="flexCheckChecked">
-                        A question I asked gets a new comment
-                    </label>
-                  </div>
-
-
-{{member | json}}
-            </div>
-
-            <div>
-                <strong>Tags</strong>
-                <tag-input name='tags' [(ngModel)]="member.tags" [theme]="'bootstrap'">
-                    <tag-input-dropdown [autocompleteItems]="allTags" [showDropdownIfEmpty]="true">
-                    </tag-input-dropdown>
-                </tag-input>
-            </div>
-
+                [deletePhoto]="onDeletePhoto"></app-photo-editor> -->
         </div>
-    </div>
+        <div class="card-body">
+          <div>
+            <div class="form-group">
+              <label for="exampleInputEmail1">Username</label>
+              <input
+                type="text"
+                class="form-control"
+                name="username"
+                [(ngModel)]="member.username"
+              />
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="email">Email address</label>
+            <input
+              type="email"
+              class="form-control"
+              name="email"
+              id="email"
+              [(ngModel)]="member.email"
+            />
+          </div>
+          <div class="form-group">
+            <label for="title">Title</label>
+            <input
+              type="text"
+              class="form-control"
+              name="title"
+              id="title"
+              [(ngModel)]="member.title"
+            />
+          </div>
+          <div class="form-group">
+            <label for="aboutMe">About Me</label>
+            <input
+              type="textarea"
+              class="form-control"
+              name="aboutMe"
+              id="aboutMe"
+              [(ngModel)]="member.aboutMe"
+            />
+          </div>
 
-    <div class="form-group text-center">
-        <button class="btn btn-success mr-2" type="submit">Publish</button>
-        <button class="btn btn-default mr-2" (click)="cancel()">Cancel</button>
+          <div class="form-group mt-5">
+            <label>
+              <strong>Notify me whenver..</strong>
+            </label>
+
+            <div class="form-check">
+              <input
+                class="form-check-input"
+                type="checkbox"
+                name="questionAskedOnMyTags"
+                [(ngModel)]="member.questionAskedOnMyTags"
+              />
+              <label class="form-check-label" for="flexCheckChecked">
+                A question is asked according to my tags
+              </label>
+            </div>
+
+            <div class="form-check">
+              <input
+                class="form-check-input"
+                type="checkbox"
+                name="onlyNotifyOnCommunityQuestionAsked"
+                [(ngModel)]="member.onlyNotifyOnCommunityQuestionAsked"
+              />
+              <label class="form-check-label" for="flexCheckChecked">
+                Only notify me when a question is asked in a community I'm a
+                member of
+              </label>
+            </div>
+
+            <div class="form-check">
+              <input
+                class="form-check-input"
+                type="checkbox"
+                name="myQuestionReceivedNewOffer"
+                [(ngModel)]="member.myQuestionReceivedNewOffer"
+              />
+              <label class="form-check-label" for="flexCheckChecked">
+                A question I asked gets a new offer
+              </label>
+            </div>
+
+            <div class="form-check">
+              <input
+                class="form-check-input"
+                type="checkbox"
+                name="myQuestionReceivedNewComment"
+                [(ngModel)]="member.myQuestionReceivedNewComment"
+              />
+              <label class="form-check-label" for="flexCheckChecked">
+                A question I asked gets a new comment
+              </label>
+            </div>
+
+            <div class="form-group mt-4">
+              <label for="aboutMe">Tags</label>
+              <tag-input
+                name="tags"
+                [(ngModel)]="member.tags"
+                [theme]="'bootstrap'"
+              >
+                <tag-input-dropdown
+                  [autocompleteItems]="allTags"
+                  [showDropdownIfEmpty]="true"
+                ></tag-input-dropdown>
+              </tag-input>
+
+              <div       
+              class="d-flex justify-content-between mt-4"
+            >
+                <button class="btn btn-success mr-2  card-button" type="submit">Save</button>
+                <button class="btn btn-warning  mr-2 card-button" (click)="cancel()">
+                  Cancel
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+
+    
+      </div>
     </div>
+  </div>
 </form>

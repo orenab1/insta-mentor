@@ -3,6 +3,12 @@ export interface Community {
   display: string
 }
 
+export interface AddCommunity {
+  name: string
+  description: string
+}
+
+
 export interface CommunityFull {
   id: number
   name: string

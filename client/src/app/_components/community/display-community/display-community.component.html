@@ -7,7 +7,7 @@
     <p class="card-text">{{ community.description }}</p>
 
     <p class="card-text">
-      <span class="semi-bold-font">{{ community.numOfMembers }}</span>
+      <span class="semi-bold-font" >{{ community.numOfMembers }}</span>
       Members
     </p>
     <p class="card-text">
@@ -19,7 +19,7 @@
 
     <div
       *ngIf="community.isCurrentUserMember; else joinTemp"
-      class="d-flex justify-content-between"
+      class="d-flex justify-content-between "
     >
       <button
         type="button"
@@ -41,7 +41,7 @@
       <button type="button" class="btn btn-warning card-button" [class.small-button]="canUserDeleteCommunity">Leave</button>
     </div>
 
-    <ng-template #joinTemp>
+    <ng-template #joinTemp class="align-text-bottom">
       <div class="d-flex flex-column">
         <button type="button" class="btn btn-primary" (click)="join()">
           Join

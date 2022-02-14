@@ -1,42 +1,4 @@
 .community-card{
-    border-radius:25px; 
+  //  border-radius:25px; 
     max-width:300px;
-}
-
-// .add-community-card:hover{
-//     display:block !important;
-// }
-
-
-.add-text{
-    opacity: 0;
-    transition: all .2s ease-in-out;
-}
-
-
-.show-text .add-text{
-    opacity: 1;
-    transition: all .2s ease-in-out;
- 
-}
-
-.show-text  .add-container{
-    transition: all .2s ease-in-out;
-    transform: scale(1.1);
-}
-
-.display-add-teaser .add-teaser-container{
-    display: none !important;
-}
-
-.display-add-content{
-    display: none !important;
-}
-
-
-.seperator{
-    width:46px; 
-    color: #FF7B02; 
-    height:3px; 
-    opacity: 1;
 }

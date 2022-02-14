@@ -37,7 +37,10 @@ namespace API.Controllers
         {
             return Ok(_unitOfWork
                 .CommunityRepository
-                .GetCommunitiesFull(User.GetUserId()));
+                .GetCommunitiesFull(User.GetUserId())
+                .OrderBy(x => x.IsCurrentUserCreator && x.IsCurrentUserMember? 0:
+                    x.IsCurrentUserMember? 1 : 2)
+                .ThenBy(x =>x.Created));
         }
 
         [HttpDelete]
@@ -110,16 +113,16 @@ namespace API.Controllers
                     .CommunityRepository
                     .LastCreatedCommunity(User.GetUserId());
 
-            if (
-                (
-                lastCreatedCommunityByUser.HasValue &&
-                (DateTime.Now - lastCreatedCommunityByUser.Value).TotalHours <
-                24
-                )
-            )
-            {
-                return false;
-            }
+            // if (
+            //     (
+            //     lastCreatedCommunityByUser.HasValue &&
+            //     (DateTime.Now - lastCreatedCommunityByUser.Value).TotalHours <
+            //     24
+            //     )
+            // )
+            // {
+            //     return false;
+            // }
 
             if (
                 await _unitOfWork
@@ -135,13 +138,6 @@ namespace API.Controllers
 
         private async Task<bool> CanDeleteCommunity(int communityId)
         {
-            // var numOfUsersInCommunity =
-            //     _unitOfWork
-            //         .CommunityRepository
-            //         .GetNumOfUsersInCommunity(communityId);
-
-            // if (numOfUsersInCommunity > 5) return false;
-
             var community =
                 _unitOfWork
                     .CommunityRepository

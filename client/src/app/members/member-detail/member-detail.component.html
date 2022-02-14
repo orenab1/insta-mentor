@@ -2,12 +2,17 @@
 
 <div *ngIf="member">
 
-    <i class="fa fa-pencil" (click)="edit()"></i>
-    <div class="col-4">
-        <div class="card">
-            <img src="{{member.photoUrl || './assets/user.png'}}" alt="{{member.username}}"
-                class="card-img-top img-thumbnail" style="width: 100px; height: 100px;" class="rounded-circle">
+   
+    <div class="col-5">
+        <div class="card  p-3">
+            <div class="mb-3 align-bottom mx-auto">
+            
+                <img src="{{member.photoUrl || './assets/user.png'}}" alt="{{member.username}}"
+                class="card-img-top img-thumbnail " style="width: 100px; height: 100px;" class="rounded-circle">
 
+                <div class='pencil-wrapper'><i class="fa fa-pencil" (click)="edit()"></i></div>
+            </div>
+            
             <div class="card-body">
                 <div>
                     <strong>Username</strong>
@@ -27,7 +32,7 @@
                 </div>
 
                 <label>
-                    <strong>Email Prefrences</strong>
+                    <strong>Notify me whenver..</strong>
                 </label>
 
 

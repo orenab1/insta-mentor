@@ -36,6 +36,7 @@ import { ToastrModule } from 'ngx-toastr';
 import { NgxUiLoaderModule, NgxUiLoaderRouterModule } from 'ngx-ui-loader';
 import { CommunitiesComponent } from './_components/community/communities/communities.component';
 import { DisplayCommunityComponent } from './_components/community/display-community/display-community.component';
+import { AddCommunityComponent } from './_components/community/add-community/add-community.component';
 
 
 @NgModule({
@@ -59,6 +60,7 @@ import { DisplayCommunityComponent } from './_components/community/display-commu
     MemberEditComponent,
     CommunitiesComponent,
     DisplayCommunityComponent,
+    AddCommunityComponent,
     
   ],
   imports: [

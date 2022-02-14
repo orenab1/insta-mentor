@@ -1,16 +1,6 @@
 <div class="container mt-5">
   <div class="row aligns-items-center">
     <div class="text-center"><h3>Communities</h3></div>
-
-    <!-- <div class="text-end">
-      <button
-        type="button"
-        class="btn btn-primary semi-bold-font align-self-end"
-        style="font-size: 15px; max-width: 250px; margin-top:-70px;"
-      >
-        Create a New Community!
-      </button>
-    </div> -->
   </div>
 </div>
 
@@ -23,76 +13,8 @@
       >
         <app-display-community [community]="community"></app-display-community>
       </div>
-
-      <div class="col-lg-4 col-md-6 col-xl-3 col-12 mb-3">
-        <div
-          class="card border-0 community-card theme-color-font add-community-card mb-3 mx-auto"
-          style="cursor: pointer; height: 100%; min-height: 337px;"
-          [class.show-text]="mouseOveredAdd"
-          [class.display-add-teaser]="isAddMode"
-          (mouseout)="mouseOveredAdd = false"
-          (mouseover)="mouseOveredAdd = true"
-          (click)="isAddMode=true;"
-        >
-          <div
-            class="card-body text-center add-teaser-container"
-            style="font-size: 90px; padding: 0px;"
-          >
-            <div
-              style="line-height: 35px; margin-top: 130px;"
-              class="add-container"
-            >
-              +
-              <div
-                style="font-size: 14px; line-height: 22px; margin-top: 12px;"
-                class="add-text semi-bold-font"
-              >
-                Create a New
-                <br />
-                Community!
-              </div>
-            </div>
-          </div>
-
-          <div class="add-content-container card-body" style='color:black;' [class.display-add-content]="!isAddMode">
-            <h5 class="card-title text-center bold-font">New Community</h5>
-
-            <hr class="mx-auto seperator" />
-        
-            <p class="card-text">Name</p>
-            <input type="text" class="" style="
-            background-color: #FAFAFA;
-            border-radius: 6px;
-            border: 0px;" [(ngModel)]='communityName'/>
-            <p class="card-text">Description</p>
-            <textarea class="" style="
-            background-color: #FAFAFA;
-            border-radius: 6px;
-            border: 0px;" [(ngModel)]='communityDesc' maxlength="5"></textarea>
-{{communityDesc.length}}
-            
-
-            <div
-           
-            class="d-flex justify-content-between"
-          >
-            <button
-              type="button"
-              class="btn btn-success card-button"
-             >
-              Invite
-            </button>
-      
-           
-      
-            <button type="button" class="btn btn-warning card-button" >Leave</button>
-          </div>
-
-          
-
-          </div>
-        </div>
-      </div>
+      <app-add-community class="col-lg-4 col-md-6 col-xl-3 col-12 mb-3"></app-add-community>
+   
     </div>
   </div>
 </div>

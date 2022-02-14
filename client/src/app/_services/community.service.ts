@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { map } from 'rxjs';
 import { environment } from 'src/environments/environment';
-import { CommunityFull } from '../_models/Community';
+import { AddCommunity, CommunityFull } from '../_models/Community';
 
 @Injectable({
   providedIn: 'root'
@@ -19,6 +19,10 @@ export class CommunityService {
         return communities;
       })
     );
+  }
+
+  createCommunity(addCommunity:AddCommunity){
+    return this.http.post(this.baseUrl+'communities/create',addCommunity);         
   }
 
   inviteToCommunity(communityId:number){

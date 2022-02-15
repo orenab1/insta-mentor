@@ -1,51 +1,144 @@
-<div>
-    <i class="fa-regular fa-messages"></i>
-    <button routerLink='/ask-question'>Ask a question</button>
-    <div *ngFor="let question of questions">
-        <div class="mt-3 bg-light" routerLink='/question/{{question.id}}'>
-            <p class="fw-bold">
-                {{question.header}}
-            </p>
-            <div>
-                {{question.body}}
-            </div>
-            <div routerLink='/members/{{question.askerUsername}}' [class.is-online]="(presenceService.onlineUsers$ | async).includes(question.askerUsername)">
-          <i class="fa fa-user mr-2"></i>
-                 {{question.askerUsername}}
-            </div>
-
-            <span [ngClass]="question.numOfComments>0? 'has-content': 'has-no-content'">
-                <i class="fa fa-comments" title="Comments"></i>
-                {{question.numOfComments}}
-            </span>
-            <span [ngClass]="question.numOfOffers>0? 'has-content': 'has-no-content'">
-                <i class="fa fa-envelope" title="Offers"></i>
-                {{question.numOfOffers}}
-            </span>
-
-            <span [ngClass]="question.hasCommonCommunities? 'has-content': 'has-no-content'">
-                <i class="fa fa-users" title="Offers"></i>
-            </span>
-
-            <span [ngClass]="question.hasCommonTags? 'has-content': 'has-no-content'">
-                <i class="fa fa-tag" title="Offers"></i>
-            </span>
-
-
-
-            <span *ngFor="let tag of question.tags">
-                <span style="background-color: blanchedalmond;">{{tag.display}} </span>
-                <span style="width: 20px; background-color: lightgray;">;;;</span>
-            </span>
-
-            <span *ngFor="let community of question.communities">
-                <span style="background-color:lightpink;">{{community.display}} </span>
-                <span style="width: 20px; background-color: lightgray;">;;;</span>
-            </span>
-
-            <span>
-                {{question.howLongAgo}}
-            </span>
+<div class="container mt-5">
+  <div class="col-xl-8 col-lg-6">
+    <div *ngFor="let question of questions" style="background-color:white; border-radius:10px;" class=' my-2 p-2'>
+      <div class="first-question-row d-flex justify-content-between">
+        <div class="user semi-bold-font">
+            <img
+            src="{{ question.askerPhotoUrl || './assets/user.png' }}"
+            alt="{{ question.askerUsername }}"
+            class="card-img-top mr-3 rounded-circle"
+            style="width: 30px; height: 30px; margin-right:10px; margin-bottom: 5px;"
+          />
+            <span style='font-size:14px;'>{{ question.askerUsername }}</span>
         </div>
+        
+        <div class='d-flex justify-content-end'>
+            <div *ngIf="question.hasCommonTags">
+                <img
+                src='./assets/tag.png'
+                alt="Common Communities"
+                title='You have common communities with this question!'
+                class="card-img-top mr-3"
+                style="width: 15px; height: 15px; margin-right:10px;"
+                          />
+            </div>
+            <div *ngIf="question.hasCommonCommunities">
+                <img
+                src='./assets/community.png'
+                alt="Payed"
+                title='Payed'
+                class="card-img-top mr-3"
+                style="width: 20px; height: 20px; margin-right:10px;"
+                          />
+            </div>
+            <div>
+                <img
+                src='./assets/dollar.png'
+                alt="Payed"
+                title='Payed'
+                class="rounded-circle card-img-top mr-3"
+                style="width: 15px; height: 15px; margin-right:10px;"
+                          />
+            </div>
+            
+            <div class="top-right-details faded-text" style='font-size:10px; margin-top: 5px;'>{{question.howLongAgo}}</div>
+        </div>
+
+        
+      </div>
+
+      <div class='d-flex flex-row'>
+          <div style="
+          
+    margin-top: 8px;
+    height: 5px;
+    width: 5px;
+    background-color: #FF7B02;
+    margin-right: 5px;" class='rounded-circle'></div>
+          <div class='bold-font'>{{question.header}}</div>
+      </div>
+      <div class='faded-text' style='margin-left:10px;'>{{question.body}}</div>
+
+      <div>
+          <div style='
+          color: #009572;
+          border-radius: 11px;
+          background-color: #bfffd9;
+          font-size:12px;
+          display:inline-block;
+          padding:1px 3px;'
+      
+          >
+              <5 mins.
+          </div>
+      </div>
     </div>
+  </div>
+
+  <div *ngFor="let question of questions">
+    <div class="mt-3 bg-light" routerLink="/question/{{ question.id }}">
+      <p class="fw-bold">
+        {{ question.header }}
+      </p>
+      <div>
+        {{ question.body }}
+      </div>
+      <div
+        routerLink="/members/{{ question.askerUsername }}"
+        [class.is-online]="
+          (presenceService.onlineUsers$ | async).includes(
+            question.askerUsername
+          )
+        "
+      >
+        <i class="fa fa-user mr-2"></i>
+        {{ question.askerUsername }}
+      </div>
+
+      <span
+        [ngClass]="
+          question.numOfComments > 0 ? 'has-content' : 'has-no-content'
+        "
+      >
+        <i class="fa fa-comments" title="Comments"></i>
+        {{ question.numOfComments }}
+      </span>
+      <span
+        [ngClass]="question.numOfOffers > 0 ? 'has-content' : 'has-no-content'"
+      >
+        <i class="fa fa-envelope" title="Offers"></i>
+        {{ question.numOfOffers }}
+      </span>
+
+      <span
+        [ngClass]="
+          question.hasCommonCommunities ? 'has-content' : 'has-no-content'
+        "
+      >
+        <i class="fa fa-users" title="Offers"></i>
+      </span>
+
+      <span
+        [ngClass]="question.hasCommonTags ? 'has-content' : 'has-no-content'"
+      >
+        <i class="fa fa-tag" title="Offers"></i>
+      </span>
+
+      <span *ngFor="let tag of question.tags">
+        <span style="background-color: blanchedalmond;">{{ tag.display }}</span>
+        <span style="width: 20px; background-color: lightgray;">;;;</span>
+      </span>
+
+      <span *ngFor="let community of question.communities">
+        <span style="background-color: lightpink;">
+          {{ community.display }}
+        </span>
+        <span style="width: 20px; background-color: lightgray;">;;;</span>
+      </span>
+
+      <span>
+        {{ question.howLongAgo }}
+      </span>
+    </div>
+  </div>
 </div>

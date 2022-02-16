@@ -1,11 +1,59 @@
-.has-content{
-    color:blue;
+.has-content {
+  color: blue;
 }
 
-.has-no-content{
-    color: gray;
+.has-no-content {
+  opacity: 0.5;
 }
 
-.is-online{
-    color: rgb(1, 189, 42);
+.is-online {
+  color: rgb(1, 189, 42);
+}
+
+.short-bg {
+  background: rgb(255, 255, 255);
+  background: linear-gradient(
+    45deg,
+    rgba(255, 255, 255, 1) 0%,
+    rgba(247, 255, 250, 1) 64%,
+    rgba(191, 255, 217, 0.41780462184873945) 100%
+  );
+}
+
+.medium-bg {
+  background: linear-gradient(
+    45deg,
+    rgba(255, 255, 255, 1) 0%,
+    rgba(255, 239, 190, 0.10968137254901966) 64%,
+    rgba(255, 226, 138, 0.21052170868347342) 100%
+  );
+}
+
+.long-bg {
+  background: linear-gradient(
+    45deg,
+    rgba(255, 255, 255, 1) 0%,
+    rgba(255, 219, 190, 0.10968137254901966) 64%,
+    rgba(255, 138, 138, 0.21052170868347342) 100%
+  );
+}
+
+.short-tag {
+  background-color: #bfffd9;
+  color: #009572;
+}
+
+.medium-tag {
+    background-color: #ffe28a;
+    color: #954d4d;
+}
+
+.long-tag {
+  background-color: #ffdbbe;
+  color: #ff0000;
+}
+
+.bottom-tag{
+    margin-left:8px;
+    font-size: 12px;
 }

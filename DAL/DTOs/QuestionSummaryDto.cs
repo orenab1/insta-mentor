@@ -23,7 +23,11 @@ namespace DAL.DTOs
 
         public string HowLongAgo { get; set; }
 
+        public int Length { get; set; }
+
         // Used for ordering
         public DateTime Created { get; set; }
+
+        
     }
 }

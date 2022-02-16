@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
+using DAL.Enums;
 
 namespace DAL.Entities
 {
@@ -27,6 +28,8 @@ namespace DAL.Entities
         public AppUser Asker { get; set; }
 
         public DateTime Created { get; set; }
+
+        public QuestionLength Length { get; set; }
 
         public ICollection<Review> Reviews { get; set; }
 

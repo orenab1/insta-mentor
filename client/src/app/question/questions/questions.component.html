@@ -1,81 +1,215 @@
-<div class="container mt-5">
-  <div class="col-xl-8 col-lg-6">
-    <div *ngFor="let question of questions" style="background-color:white; border-radius:10px;" class=' my-2 p-2'>
-      <div class="first-question-row d-flex justify-content-between">
-        <div class="user semi-bold-font">
-            <img
-            src="{{ question.askerPhotoUrl || './assets/user.png' }}"
-            alt="{{ question.askerUsername }}"
-            class="card-img-top mr-3 rounded-circle"
-            style="width: 30px; height: 30px; margin-right:10px; margin-bottom: 5px;"
-          />
-            <span style='font-size:14px;'>{{ question.askerUsername }}</span>
-        </div>
-        
-        <div class='d-flex justify-content-end'>
-            <div *ngIf="question.hasCommonTags">
-                <img
-                src='./assets/tag.png'
-                alt="Common Communities"
-                title='You have common communities with this question!'
-                class="card-img-top mr-3"
-                style="width: 15px; height: 15px; margin-right:10px;"
-                          />
-            </div>
-            <div *ngIf="question.hasCommonCommunities">
-                <img
-                src='./assets/community.png'
-                alt="Payed"
-                title='Payed'
-                class="card-img-top mr-3"
-                style="width: 20px; height: 20px; margin-right:10px;"
-                          />
-            </div>
-            <div>
-                <img
-                src='./assets/dollar.png'
-                alt="Payed"
-                title='Payed'
-                class="rounded-circle card-img-top mr-3"
-                style="width: 15px; height: 15px; margin-right:10px;"
-                          />
-            </div>
-            
-            <div class="top-right-details faded-text" style='font-size:10px; margin-top: 5px;'>{{question.howLongAgo}}</div>
-        </div>
-
-        
-      </div>
-
-      <div class='d-flex flex-row'>
-          <div style="
-          
-    margin-top: 8px;
-    height: 5px;
-    width: 5px;
-    background-color: #FF7B02;
-    margin-right: 5px;" class='rounded-circle'></div>
-          <div class='bold-font'>{{question.header}}</div>
-      </div>
-      <div class='faded-text' style='margin-left:10px;'>{{question.body}}</div>
-
-      <div>
-          <div style='
-          color: #009572;
-          border-radius: 11px;
-          background-color: #bfffd9;
-          font-size:12px;
-          display:inline-block;
-          padding:1px 3px;'
-      
-          >
-              <5 mins.
+<div class="mt-5">
+  <div *ngIf="!isFromMyQuestionsRoute" class="container-fluid">
+    <div class="row" style="padding-top: 40px;">
+      <div class="col-lg-1"></div>
+      <div class="col-lg-5" style="align-items: center; display: flex;">
+        <div>
+          <div style="font-size: 30px; margin-bottom: 25px;" class="bold-font">
+            Zoom Q&A Communities
           </div>
+
+          <button
+            style="
+              background-color: #ff7b02;
+              color: white;
+              border: 0px;
+              border-radius: 25px;
+              width: 200px;
+              height: 40px;
+            "
+            class="semi-bold-font"
+          >
+            ASK ANYTHING
+          </button>
+        </div>
       </div>
+      <div class="col-lg-1"></div>
+
+      <div class="col-lg-4 d-none d-lg-block">
+        <img
+          src="./assets/cover.jpg"
+          alt="cover"
+          class="img-fluid"
+          style="margin-right: 10px; margin-bottom: 5px; border-radius: 20px;"
+        />
+      </div>
+      <div class="col-lg-1"></div>
     </div>
   </div>
+</div>
+<div class="container mt-5">
+  <div *ngIf="isFromMyQuestionsRoute" style="margin-top: 85px;"></div>
+  <div class="row">
+    <div class="col-lg-1 col-xl-2"></div>
+    <div class="col-xs-12 col-md-12 col-lg-10 col-xl-8">
+      <div class="text-center">
+        <h3 *ngIf="!isFromMyQuestionsRoute" class="semi-bold-font mb-4">
+          Questions
+        </h3>
+        <h3 *ngIf="isFromMyQuestionsRoute" class="semi-bold-font mb-4">
+          My Questions
+        </h3>
+      </div>
+      <div
+        *ngFor="let question of questions"
+        style="background-color: white; border-radius: 10px;"
+        class="my-2 p-2 short-bg"
+        [ngClass]="{
+          'short-bg': question.length == 1,
+          'medium-bg': question.length == 2,
+          'long-bg': question.length == 3
+        }"
+      >
+        <div class="first-question-row d-flex justify-content-between">
+          <div class="user semi-bold-font">
+            <img
+              src="{{ question.askerPhotoUrl || './assets/user.png' }}"
+              alt="{{ question.askerUsername }}"
+              class="card-img-top mr-3 rounded-circle"
+              style="
+                width: 30px;
+                height: 30px;
+                margin-right: 10px;
+                margin-bottom: 5px;
+              "
+            />
+            <span style="font-size: 14px;">{{ question.askerUsername }}</span>
+          </div>
 
-  <div *ngFor="let question of questions">
+          <div class="d-flex justify-content-end">
+            <div *ngIf="question.hasCommonTags">
+              <img
+                src="./assets/tag.png"
+                alt="Common Communities"
+                title="You have common tags with this question"
+                class="card-img-top mr-3"
+                style="width: 15px; height: 15px; margin-right: 10px;"
+              />
+            </div>
+            <div *ngIf="question.hasCommonCommunities">
+              <img
+                src="./assets/community.png"
+                alt="Payed"
+                title="You have common communities with this question"
+                class="card-img-top mr-3"
+                style="width: 20px; height: 20px; margin-right: 10px;"
+              />
+            </div>
+            <div>
+              <img
+                src="./assets/dollar.png"
+                alt="Payed"
+                title="Payed"
+                class="rounded-circle card-img-top mr-3"
+                style="width: 15px; height: 15px; margin-right: 10px;"
+              />
+            </div>
+
+            <div
+              class="top-right-details faded-text"
+              style="font-size: 10px; margin-top: 5px;"
+            >
+              {{ question.howLongAgo }}
+            </div>
+          </div>
+        </div>
+
+        <div class="d-flex flex-row">
+          <div
+            style="
+              margin-top: 8px;
+              height: 5px;
+              width: 5px;
+              background-color: #ff7b02;
+              margin-right: 5px;
+            "
+            class="rounded-circle"
+          ></div>
+          <div class="bold-font">{{ question.header }}</div>
+        </div>
+        <div class="faded-text" style="margin-left: 10px; margin-bottom: 5px;">
+          {{ question.body }}
+        </div>
+
+        <div class="d-flex" style="margin-left: 10px;">
+          <div
+            style="
+              border-radius: 11px;
+              font-size: 12px;
+              display: inline-block;
+              padding: 3px 5px;
+              min-width: 64px;
+              height: 23px;
+            "
+            [ngClass]="{
+              'short-tag': question.length == 1,
+              'medium-tag': question.length == 2,
+              'long-tag': question.length == 3
+            }"
+          >
+            {{ question.lengthAsString }}
+          </div>
+
+          <div
+            class="bottom-tag"
+            style="padding-top: 2px; min-width: 25px;"
+            [class.has-no-content]="question.numOfComments == 0"
+          >
+            <img
+              style="width: 14px; margin-top: -1px;"
+              src="./assets/comments.png"
+            />
+            {{ question.numOfComments }}
+          </div>
+          <div
+            class="bottom-tag"
+            style="padding-top: 2px; min-width: 25px;"
+            [class.has-no-content]="question.numOfOffers == 0"
+          >
+            <img
+              style="width: 14px; margin-top: -1px;"
+              src="./assets/envelope.png"
+            />
+            {{ question.numOfOffers }}
+          </div>
+
+          <div
+            *ngIf="question.communities.length > 0"
+            class="bottom-tag d-flex"
+          >
+            <div class="d-flex">
+              <img
+                style="
+                  height: 14px;
+                  width: 14px;
+                  margin-top: 3px;
+                  margin-right: 2px;
+                "
+                src="./assets/community-not-common.png"
+              />
+              <div style="margin-top: 2px;">
+                {{ question.communities[0].display }}
+              </div>
+              <div *ngIf="question.communities.length > 1">
+                ..
+              </div>
+            </div>
+          </div>
+
+          <div class="d-flex" style="flex-wrap: wrap;">
+            <div
+              *ngFor="let tag of question.tags  | slice:0:5"
+              class="tag-display bottom-tag"
+              style="padding: 3px 5px 0 5px; font-size: 12px;"
+            >
+              {{ tag.display }}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-1 col-xl-2"></div>
+    <!-- <div *ngFor="let question of questions">
     <div class="mt-3 bg-light" routerLink="/question/{{ question.id }}">
       <p class="fw-bold">
         {{ question.header }}
@@ -140,5 +274,7 @@
         {{ question.howLongAgo }}
       </span>
     </div>
+  </div> -->
+    <div class="col-xl-2 col-md-3"></div>
   </div>
 </div>

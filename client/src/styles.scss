@@ -1,121 +1,149 @@
 /* You can add global styles to this file, and also import other style files */
 
 /* Importing Bootstrap SCSS file. */
-@import "~bootstrap/scss/bootstrap";
+@import '~bootstrap/scss/bootstrap';
 
 /* Importing Datepicker SCSS file. */
-@import "~ngx-bootstrap/datepicker/bs-datepicker";
+@import '~ngx-bootstrap/datepicker/bs-datepicker';
 
 /* Importing Bootstrap SCSS file. */
-@import "~bootstrap/scss/bootstrap";
+@import '~bootstrap/scss/bootstrap';
 
 /* Importing Datepicker SCSS file. */
-@import "~ngx-bootstrap/datepicker/bs-datepicker";
-
+@import '~ngx-bootstrap/datepicker/bs-datepicker';
 
 @import '~ngx-toastr/toastr';
 
 @font-face {
-    font-family: "Poppins-SemiBold";
-    src: local("Poppins-SemiBold"), url(./assets/fonts/Poppins-SemiBold.ttf) format("truetype");
+  font-family: 'Poppins-SemiBold';
+  src: local('Poppins-SemiBold'),
+    url(./assets/fonts/Poppins-SemiBold.ttf) format('truetype');
 }
 
 @font-face {
-    font-family: "Poppins";
-    src: local("Poppins"), url(./assets/fonts/Poppins-Regular.ttf) format("truetype");
+  font-family: 'Poppins';
+  src: local('Poppins'),
+    url(./assets/fonts/Poppins-Regular.ttf) format('truetype');
 }
 
 @font-face {
-    font-family: "Poppins-Bold";
-    src: local("Poppins-Bold"), url(./assets/fonts/Poppins-Bold.ttf) format("truetype");
+  font-family: 'Poppins-Bold';
+  src: local('Poppins-Bold'),
+    url(./assets/fonts/Poppins-Bold.ttf) format('truetype');
 }
 
+$base-theme-color: #ff7b02;
 
-$base-theme-color:#FF7B02;
-
-.bold-font{
-    font-family: "Poppins-Bold" !important;
+.bold-font {
+  font-family: 'Poppins-Bold' !important;
 }
 
-.semi-bold-font{
-    font-family: "Poppins-SemiBold" !important;
+.semi-bold-font {
+  font-family: 'Poppins-SemiBold' !important;
 }
 
-%semi-bold-font{
-    font-family: "Poppins-SemiBold" !important;
+%semi-bold-font {
+  font-family: 'Poppins-SemiBold' !important;
 }
 
-
-.theme-color-font{
-    color:$base-theme-color;
+.theme-color-font {
+  color: $base-theme-color;
 }
 
-.seperator{
-    width:46px; 
-    color: #FF7B02; 
-    height:3px !important; 
-    opacity: 1;
+.seperator {
+  width: 46px;
+  color: #ff7b02;
+  height: 3px !important;
+  opacity: 1;
 }
 
-body{
-    min-height: 100vh;
-    font-family: "Poppins";
-    background:  no-repeat rgb(255,142,65);
-    background:  no-repeat linear-gradient(45deg, rgba(255, 102, 0, 0.1) 0%, rgba(180,180,180,0.1) 47%);
+body {
+  min-height: 100vh;
+  font-family: 'Poppins';
+  background: no-repeat rgb(255, 142, 65);
+  background: no-repeat
+    linear-gradient(
+      45deg,
+      rgba(255, 102, 0, 0.1) 0%,
+      rgba(180, 180, 180, 0.1) 47%
+    );
 }
 
-
-.btn-primary, .btn-primary:hover, .btn-primary:active, .btn-primary:visited, .btn-primary {
-    background-color: $base-theme-color !important;
-    border-color: $base-theme-color !important;
-    border-radius:25px !important;
-    font-family: Poppins;
+.btn-primary,
+.btn-primary:hover,
+.btn-primary:active,
+.btn-primary:visited,
+.btn-primary {
+  background-color: $base-theme-color !important;
+  border-color: $base-theme-color !important;
+  border-radius: 25px !important;
+  font-family: Poppins;
 }
 
 .btn {
-    border-radius:25px !important;
+  border-radius: 25px !important;
 }
 
-.card textarea,.card input{
-    background-color: #f1f1f1;
-    border-radius: 6px; border: 0px;
+.card textarea,
+.card input {
+  background-color: #f1f1f1;
+  border-radius: 6px;
+  border: 0px;
 }
 
-.card{
-    border-radius:25px; 
-    border:none;
+.card {
+  border-radius: 25px;
+  border: none;
 }
 
-label{
+label {
+  @extend %semi-bold-font;
+}
+
+div.ng2-tags-container tag {
+  margin-top: 10px;
+  color: white !important;
+  background-color: gray !important;
+  opacity: 1 !important;
+  border-radius: 15px !important;
+}
+
+tag-input-form {
+  margin-top: 10px;
+}
+
+.ng2-tag-input__text-input {
+  height: 32px !important;
+}
+
+div.ng2-tag-input {
+  border-bottom: none !important;
+}
+
+div.tag-display {
+  color: #0001fd;
+  border-radius: 11px;
+  background-color: #f2f6fd;
+}
+
+.faded-text {
+  color: #8497b5;
+}
+
+.nav-link {
+  color: black !important;
+}
+
+nav.navbar.bg-dark {
+  background: rgb(255, 255, 255);
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 1) 0%,
+    rgb(255 198 146 / 12%) 100%
+  ) !important;
+}
+
+.nav-link.active{
+    color:$base-theme-color !important;
     @extend %semi-bold-font;
-}
-
-div.ng2-tags-container tag{
-    margin-top:10px;
-    color: white  !important;
-    background-color: gray !important;
-    opacity: 1  !important;
-    border-radius: 15px  !important;
-}
-
-tag-input-form{
-    margin-top:10px;
-}
-
-.ng2-tag-input__text-input{
-    height:32px !important;    
-}
-
-div.ng2-tag-input{
-    border-bottom: none !important;
-}
-
-div.tag-display{    
-    color: #0001FD;
-    border-radius: 11px;
-    background-color: #F2F6FD;
-}
-
-.faded-text{
-    color:#8497b5;
 }

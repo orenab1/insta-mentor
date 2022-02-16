@@ -6,7 +6,7 @@ import { Tag } from 'src/app/_models/tag';
 import { User } from 'src/app/_models/user';
 import { AccountService } from 'src/app/_services/account.service';
 import { CommonService } from 'src/app/_services/common.service';
-import { MembersService } from 'src/app/_services/members.service';
+import { UsersService } from 'src/app/_services/Users.service';
 
 @Component({
   selector: 'app-member-detail',
@@ -20,7 +20,7 @@ export class DisplayUserComponent implements OnInit {
   communitiesAsString:string;
 
 
-  constructor(private membersService: MembersService, private route: ActivatedRoute,
+  constructor(private usersService: UsersService, private route: ActivatedRoute,
     private accountService: AccountService,
     private commonService: CommonService,
     private router: Router) {
@@ -46,7 +46,7 @@ export class DisplayUserComponent implements OnInit {
 
 
   loadMember() {
-    this.membersService.getMember(this.route.snapshot.paramMap.get('username')).subscribe(response => {
+    this.usersService.getMember(this.route.snapshot.paramMap.get('username')).subscribe(response => {
       this.member = response;
       if (!this.member.aboutMe){
         this.member.aboutMe='Nothing to tell yet'
@@ -60,7 +60,7 @@ export class DisplayUserComponent implements OnInit {
   
 
   deletePhoto() {
-    this.membersService.deletePhoto().subscribe(() => {
+    this.usersService.deletePhoto().subscribe(() => {
       this.member.photoUrl = './assets/user.png';
       this.member.photoId = 0;
     })

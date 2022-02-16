@@ -187,7 +187,17 @@
                 "
                 src="./assets/community-not-common.png"
               />
-              <div style="margin-top: 2px;">
+              <div
+                style="
+                  white-space: nowrap;
+                  overflow: hidden;
+                  text-overflow: ellipsis;
+                  height: 20px;
+                  overflow: e;
+                  max-width: 150px;
+                  margin-top: 2px;
+                "
+              >
                 {{ question.communities[0].display }}
               </div>
               <div *ngIf="question.communities.length > 1">
@@ -198,7 +208,7 @@
 
           <div class="d-flex" style="flex-wrap: wrap;">
             <div
-              *ngFor="let tag of question.tags  | slice:0:5"
+              *ngFor="let tag of question.tags | slice: 0:5"
               class="tag-display bottom-tag"
               style="padding: 3px 5px 0 5px; font-size: 12px;"
             >

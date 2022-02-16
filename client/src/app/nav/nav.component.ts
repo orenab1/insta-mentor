@@ -16,14 +16,14 @@ export class NavComponent implements OnInit {
 
 
   constructor(public accountService: AccountService, private router: Router) {
+    this.user={
+      username:'',      
+    }    
     this.accountService.currentUser$.pipe(take(1))
       .subscribe(user => this.user = user);
   }
 
   ngOnInit(): void {
-    this.user={
-      username:'',      
-    }
     
   }
 

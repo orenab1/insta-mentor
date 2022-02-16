@@ -31,11 +31,6 @@ namespace DAL.Repositories
             _context.Entry(user).State = EntityState.Modified;
         }
 
-        public async Task<IEnumerable<AppUser>> GetUsersAsync()
-        {
-            return await _context.Users.ToListAsync();
-        }
-
         public async Task<AppUser> GetUserAsync(string username)
         {
             return await _context.Users

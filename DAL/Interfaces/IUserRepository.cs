@@ -9,7 +9,6 @@ namespace DAL.Interfaces
     public interface IUserRepository
     {
         void Update(AppUser user);
-        Task<IEnumerable<AppUser>> GetUsersAsync();
 
         Task<AppUser> GetUserAsync(string username);
 

@@ -8,7 +8,7 @@ import { User } from 'src/app/_models/user';
 import { AccountService } from 'src/app/_services/account.service';
 import { CommonService } from 'src/app/_services/common.service';
 import { CommunityService } from 'src/app/_services/community.service';
-import { MembersService } from 'src/app/_services/members.service';
+import { UsersService } from 'src/app/_services/Users.service';
 
 @Component({
   selector: 'app-edit-user',
@@ -22,7 +22,7 @@ export class EditUserComponent implements OnInit {
   allCommunities: Community[];
 
 
-  constructor(private membersService: MembersService, private route: ActivatedRoute,
+  constructor(private usersService: UsersService, private route: ActivatedRoute,
     private accountService: AccountService,
     private commonService: CommonService,
     private communityService: CommunityService,
@@ -53,7 +53,7 @@ export class EditUserComponent implements OnInit {
 
 
   editMember() {
-    this.membersService.updateUser(this.member).subscribe(() => {
+    this.usersService.updateUser(this.member).subscribe(() => {
       this.router.navigateByUrl('members/' + this.user.username)
     });
   }
@@ -62,7 +62,7 @@ export class EditUserComponent implements OnInit {
 
 
   loadMember() {
-    this.membersService.getMember(this.route.snapshot.paramMap.get('username')).subscribe(response => {
+    this.usersService.getMember(this.route.snapshot.paramMap.get('username')).subscribe(response => {
       this.member = response;
       this.member.tags = [{
         value: 7,
@@ -86,7 +86,7 @@ export class EditUserComponent implements OnInit {
   }
 
   deletePhoto() {
-    this.membersService.deletePhoto().subscribe(() => {
+    this.usersService.deletePhoto().subscribe(() => {
       this.member.photoUrl = './assets/user.png';
       this.member.photoId = 0;
     })

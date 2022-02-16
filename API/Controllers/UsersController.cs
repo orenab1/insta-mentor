@@ -37,14 +37,6 @@ namespace API.Controllers
             this._unitOfWork = unitOfWork;
         }
 
-        [AllowAnonymous]
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<MemberDto>>> GetUsers()
-        {
-            var users = await _unitOfWork.UserRepository.GetMembersAsync();
-            return Ok(users);
-        }
-
         [Authorize]
         [HttpGet("{username}", Name = "GetUser")]
         public async Task<ActionResult<MemberDto>> GetUser(string username)
@@ -70,7 +62,6 @@ namespace API.Controllers
             await _unitOfWork.Complete();
 
             await _unitOfWork.TagRepository.UpdateTagsForUser(newTags, user.Id);
-          //  await _unitOfWork.CommunityRepository.UpdateCommunitiesForUser(newCommunities, user.Id);
 
             _unitOfWork.UserRepository.Update(user);
 

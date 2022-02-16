@@ -10,7 +10,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { HomeComponent } from './home/home.component';
 import { RegisterComponent } from './register/register.component';
-import { MemberListComponent } from './members/member-list/member-list.component';
 import { DisplayUserComponent } from './_components/user/display-user/display-user.component';
 import { MessagesComponent } from './messages/messages.component';
 import { QuestionComponent } from './question/display-question/question.component';
@@ -45,7 +44,6 @@ import { AddCommunityComponent } from './_components/community/add-community/add
     NavComponent,
     HomeComponent,
     RegisterComponent,
-    MemberListComponent,
     DisplayUserComponent,
     MessagesComponent,
     QuestionComponent,

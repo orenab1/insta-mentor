@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { take } from 'rxjs/operators';
-import { Community } from 'src/app/_models/Community';
+import { Community } from 'src/app/_models/community';
 import { Member } from 'src/app/_models/member';
 import { Tag } from 'src/app/_models/tag';
 import { User } from 'src/app/_models/user';

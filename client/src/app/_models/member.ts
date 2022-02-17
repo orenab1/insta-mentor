@@ -1,4 +1,4 @@
-import { Community } from "./Community";
+import { Community } from "./community";
 import { Tag } from "./tag";
 
 export interface Member {

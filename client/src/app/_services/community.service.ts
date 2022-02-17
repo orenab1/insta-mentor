@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { map } from 'rxjs';
 import { environment } from 'src/environments/environment';
-import { AddCommunity, Community, CommunityFull } from '../_models/Community';
+import { AddCommunity, Community, CommunityFull } from '../_models/community';
 
 @Injectable({
   providedIn: 'root'

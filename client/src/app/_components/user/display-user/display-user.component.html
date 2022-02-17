@@ -1,7 +1,7 @@
 <div *ngIf="member">
   <div class="container my-5">
-    <div class="row" style="padding-top:40px;">
-      <div class="card col-4">
+    <div class="row" style="padding-top: 40px;">
+      <div class="card col-3">
         <div class="card-body text-center">
           <div class="my-4">
             <h5 class="semi-bold-font text-center">Details</h5>
@@ -32,11 +32,24 @@
             </div>
           </div>
 
-          <div class="mt-3 bold-font" style="font-size: 16px; text-align: left">
+          <div class="d-flex flex-column">
+            <button
+              type="button"
+              class="btn btn-primary"
+              [routerLink]="['/edit-user',member.username]"
+            >
+              Edit Profile
+            </button>
+          </div>
+
+          <div
+            class="mt-3 bold-font"
+            style="font-size: 16px; text-align: left;"
+          >
             My Communities
           </div>
 
-          <div  style="text-align: left">
+          <div style="text-align: left;">
             {{ communitiesAsString }}
           </div>
         </div>

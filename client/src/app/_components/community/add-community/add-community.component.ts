@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { AddCommunity } from 'src/app/_models/Community';
+import { AddCommunity } from 'src/app/_models/community';
 import { CommunityService } from 'src/app/_services/community.service';
 
 @Component({

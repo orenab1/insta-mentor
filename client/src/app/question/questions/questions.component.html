@@ -1,11 +1,13 @@
 <div class="mt-5">
   <div *ngIf="!isFromMyQuestionsRoute" class="container-fluid">
-    <div class="row" style="padding-top: 40px;">
+    <div class="row" style="padding-top: 20px;">
       <div class="col-lg-1"></div>
       <div class="col-lg-5" style="align-items: center; display: flex;">
         <div>
           <div style="font-size: 30px; margin-bottom: 25px;" class="bold-font">
-            Zoom Q&A Communities
+           Join a Community. <br/>
+           Ask a Question. <br/>
+           Get a Live Zoom Answer.
           </div>
 
           <button
@@ -89,21 +91,13 @@
             <div *ngIf="question.hasCommonCommunities">
               <img
                 src="./assets/community.png"
-                alt="Payed"
+                alt="You have common communities with this question"
                 title="You have common communities with this question"
                 class="card-img-top mr-3"
                 style="width: 20px; height: 20px; margin-right: 10px;"
               />
             </div>
-            <div>
-              <img
-                src="./assets/dollar.png"
-                alt="Payed"
-                title="Payed"
-                class="rounded-circle card-img-top mr-3"
-                style="width: 15px; height: 15px; margin-right: 10px;"
-              />
-            </div>
+           
 
             <div
               class="top-right-details faded-text"
@@ -149,7 +143,15 @@
           >
             {{ question.lengthAsString }}
           </div>
-
+          <div  class="bottom-tag" style="width:15px;">
+            <img
+              src="./assets/dollar.png"
+              alt="Asker is willing to pay for a solution"
+              title="Asker is willing to pay for a solution"
+              class="rounded-circle card-img-top mr-3"
+              style="width: 15px; height: 15px; margin-right: 10px;"
+            />
+          </div>
           <div
             class="bottom-tag"
             style="padding-top: 2px; min-width: 25px;"

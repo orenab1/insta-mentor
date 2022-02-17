@@ -36,7 +36,12 @@ $base-theme-color: #ff7b02;
 
 .bold-font {
   font-family: 'Poppins-Bold' !important;
+  color:$base-theme-color;
 }
+
+.logo-font {
+    font-family: 'Inspiration-Regular' !important;
+  }
 
 .semi-bold-font {
   font-family: 'Poppins-SemiBold' !important;
@@ -147,3 +152,7 @@ nav.navbar.bg-dark {
     color:$base-theme-color !important;
     @extend %semi-bold-font;
 }
+
+.navbar-dark .navbar-toggler-icon {    
+    background-image:url(./assets/hamburger.svg) !important;
+}   

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { CommunityFull } from '../../../_models/Community';
+import { CommunityFull } from '../../../_models/community';
 import { CommunityService } from '../../../_services/community.service';
 
 @Component({

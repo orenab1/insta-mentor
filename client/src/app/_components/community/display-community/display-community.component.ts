@@ -1,5 +1,5 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
-import { CommunityFull } from 'src/app/_models/Community';
+import { CommunityFull } from 'src/app/_models/community';
 import { CommunityService } from 'src/app/_services/community.service';
 import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
 import { Router } from '@angular/router';

@@ -13,7 +13,7 @@ import { JsonpClientBackend } from '@angular/common/http';
 })
 export class NavComponent implements OnInit {
   user: any={};
-
+  navbarCollapsed:boolean;
 
   constructor(public accountService: AccountService, private router: Router) {
     this.user={

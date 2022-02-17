@@ -167,7 +167,8 @@
               </button>
               <button
                 class="btn btn-warning mr-2 card-button"
-                (click)="cancel()"
+                [routerLink]="['/users',member.username]"
+               
               >
                 Cancel
               </button>

@@ -1,7 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FileUploader } from 'ng2-file-upload';
 import { take } from 'rxjs/operators';
-import { Member } from 'src/app/_models/member';
 import { User } from 'src/app/_models/user';
 import { AccountService } from 'src/app/_services/account.service';
 import { UsersService } from 'src/app/_services/Users.service';
@@ -21,6 +20,7 @@ export class PhotoEditorComponent implements OnInit {
   hasBaseDropzoneOver = false;
   baseUrl = environment.apiUrl;
   user: User;
+  hasUploaded:boolean;
 
 
 
@@ -30,6 +30,7 @@ export class PhotoEditorComponent implements OnInit {
 
   ngOnInit(): void {
     this.initializeUploader();
+    this.hasUploaded=false;
   }
 
   fileOverBase(e: any) {
@@ -58,6 +59,7 @@ export class PhotoEditorComponent implements OnInit {
     this.uploader.onSuccessItem = (item, response, status, headers) => {
       if (response) {
         this.onUploadSuccess(response);
+        this.hasUploaded=true;
       }
     }
   }

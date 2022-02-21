@@ -10,6 +10,7 @@ namespace DAL.Interfaces
         ITagRepository TagRepository { get; }
 
         ICommunityRepository CommunityRepository { get; }
+        ICommonRepository CommonRepository { get; }
 
         Task<bool> Complete();
 

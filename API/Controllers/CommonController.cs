@@ -27,6 +27,14 @@ namespace API.Controllers
             return Ok(await _unitOfWork.TagRepository.GetTagsByCreatorOrApproved(user.Id));
         }
 
+
+         [HttpGet(Name = "GetPhoto")]
+         [ActionName("get-photo")]
+        public async Task<ActionResult<string>> GetPhoto(int photoId)
+        {
+            return Ok(await _unitOfWork.CommonRepository.GetPhotoUrl(photoId)); 
+        }
+
        
     }
 }

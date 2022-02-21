@@ -36,7 +36,7 @@ import { NgxUiLoaderModule, NgxUiLoaderRouterModule } from 'ngx-ui-loader';
 import { CommunitiesComponent } from './_components/community/communities/communities.component';
 import { DisplayCommunityComponent } from './_components/community/display-community/display-community.component';
 import { AddCommunityComponent } from './_components/community/add-community/add-community.component';
-
+import { NgToggleModule } from 'ng-toggle-button';
 
 @NgModule({
   declarations: [
@@ -59,7 +59,6 @@ import { AddCommunityComponent } from './_components/community/add-community/add
     CommunitiesComponent,
     DisplayCommunityComponent,
     AddCommunityComponent,
-    
   ],
   imports: [
     BrowserModule,
@@ -76,6 +75,7 @@ import { AddCommunityComponent } from './_components/community/add-community/add
     ToastrModule.forRoot(),
     NgxUiLoaderModule,
     NgxUiLoaderRouterModule,
+    NgToggleModule
   ],
   providers: [
     HttpClientModule,

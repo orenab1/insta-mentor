@@ -179,7 +179,7 @@ namespace API.Controllers
             if (
                 await _unitOfWork
                     .QuestionRepository
-                    .MakeOfferAsync(offerDto.QuestionId,User.GetUserId())
+                    .MakeOfferAsync(offerDto.QuestionId, User.GetUserId())
             )
             {
                 await _messagesService.NotifyNewOfferAsync(offerDto.QuestionId);
@@ -220,14 +220,10 @@ namespace API.Controllers
                 .GetQuestionsAsync(userTagsIds, userCommunitiesIds));
         }
 
-        [HttpPost("add-photo")]
+        [HttpPost]
+        [ActionName("add-photo")]
         public async Task<ActionResult<PhotoDto>> AddPhoto(IFormFile file)
-        {
-            // var k = HttpContext.Request.Query["page"].ToString();
-            var user =
-                await _unitOfWork
-                    .UserRepository
-                    .GetUserAsync(User.GetUsername());
+        {          
 
             var result = await _photoService.AddPhotoAsync(file);
 
@@ -239,13 +235,13 @@ namespace API.Controllers
                     PublicId = result.PublicId
                 };
 
-            user.Photo = photo;
 
-            if (await _unitOfWork.Complete())
-            {
-                return CreatedAtRoute("GetUser",
-                new { username = user.UserName },
-                _mapper.Map<PhotoDto>(photo));
+            var photoId=await _unitOfWork.CommonRepository.AddPhoto(photo);
+
+            if (photoId!=0)
+            {               
+                return CreatedAtRoute("GetPhoto",
+                new {  controller = "common", photoId = photoId }, value:photo);
             }
 
             return BadRequest("Problem addding photo");
@@ -274,7 +270,9 @@ namespace API.Controllers
         [ActionName("delete-offer")]
         public async Task<ActionResult> DeleteOffer(int offerId)
         {
-            await _unitOfWork.QuestionRepository.DeleteOfferAsync(offerId, User.GetUserId());
+            await _unitOfWork
+                .QuestionRepository
+                .DeleteOfferAsync(offerId, User.GetUserId());
 
             return NoContent();
         }

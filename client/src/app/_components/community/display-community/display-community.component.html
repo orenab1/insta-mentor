@@ -1,31 +1,48 @@
 <div class="card border-0 community-card mx-auto">
   <div class="card-body">
-    <h5 class="card-title text-center bold-font">{{ community.name }}</h5>
+    <h5 class="card-title text-center bold-font" style="height: 40px;">
+      {{ community.name }}
+    </h5>
 
     <hr class="mx-auto seperator" />
 
-    <p class="card-text">{{ community.description }}</p>
+    <p class="card-text" style="height: 71px;">{{ community.description }}</p>
 
     <p class="card-text">
-      <span class="semi-bold-font" >{{ community.numOfMembers }}</span>
+      <span class="semi-bold-font">{{ community.numOfMembers }}</span>
       Members
     </p>
     <p class="card-text">
       <span class="semi-bold-font">{{ community.numOfQuestionsAsked }}</span>
-      Questions Asked
+      Unanswered Questions    
     </p>
-    <p class="card-text semi-bold-font">Best time to get an answer:</p>
+    <!-- <button
+      type="button"
+      class="btn btn-secondary card-button small-button"
+      style="
+        width: 53px !important;
+        min-width: 35px !important;
+        margin-top: -3px;
+        padding: 5px 5px !important;
+        float: right;
+        font-size: 12px;
+      "
+    >
+      Edit
+    </button> -->
+    <p class="card-text semi-bold-font">Best Time to Get an Answer</p>
     <p class="card-text">{{ community.bestTimeToGetAnswer }}</p>
 
     <div
       *ngIf="community.isCurrentUserMember; else joinTemp"
-      class="d-flex justify-content-between "
+      class="d-flex justify-content-between"
     >
       <button
         type="button"
         class="btn btn-success card-button"
         (click)="invite()"
-        [class.small-button]="canUserDeleteCommunity">
+        [class.small-button]="canUserDeleteCommunity"
+      >
         Invite
       </button>
 
@@ -38,7 +55,13 @@
         Delete
       </button>
 
-      <button type="button" class="btn btn-warning card-button" [class.small-button]="canUserDeleteCommunity">Leave</button>
+      <button
+        type="button"
+        class="btn btn-warning card-button"
+        [class.small-button]="canUserDeleteCommunity"
+      >
+        Leave
+      </button>
     </div>
 
     <ng-template #joinTemp class="align-text-bottom">
@@ -50,10 +73,6 @@
     </ng-template>
   </div>
 </div>
-
-
-
-
 
 <ng-template #content let-modal>
   <div class="modal-header">
@@ -99,5 +118,3 @@
     </div>
   </div>
 </ng-template>
-
-

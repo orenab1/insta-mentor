@@ -38,9 +38,11 @@ namespace API.Controllers
             return Ok(_unitOfWork
                 .CommunityRepository
                 .GetCommunitiesFull(User.GetUserId())
-                .OrderBy(x => x.IsCurrentUserCreator && x.IsCurrentUserMember? 0:
-                    x.IsCurrentUserMember? 1 : 2)
-                .ThenBy(x =>x.Created));
+                .OrderBy(x =>
+                    x.IsCurrentUserCreator && x.IsCurrentUserMember
+                        ? 0
+                        : x.IsCurrentUserMember ? 1 : 2)
+                .ThenBy(x => x.Created));
         }
 
         [HttpDelete]
@@ -86,7 +88,9 @@ namespace API.Controllers
         public async Task<ActionResult> Invite(int communityId)
         {
             await _messagesService
-                .InviteToCommunity(communityId,User.GetUserId(),User.GetUsername());
+                .InviteToCommunity(communityId,
+                User.GetUserId(),
+                User.GetUsername());
 
             return NoContent();
         }
@@ -106,7 +110,8 @@ namespace API.Controllers
             return BadRequest("Creating community failed");
         }
 
-         [HttpGet("get-communities-tags")]
+        [HttpGet]
+        [ActionName("get-communities-tags")]
         public async Task<ActionResult> GetCommunitiesTags()
         {
             var userName = User.GetUsername();

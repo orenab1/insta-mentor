@@ -1,7 +1,7 @@
-using Microsoft.EntityFrameworkCore;
-using DAL.Entities;
-using System.Collections.Generic;
 using System;
+using System.Collections.Generic;
+using DAL.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace DAL
 {
@@ -9,15 +9,15 @@ namespace DAL
     {
         public DataContext()
         {
-
         }
 
-        public DataContext(DbContextOptions<DataContext> options) : base(options)
+        public DataContext(DbContextOptions<DataContext> options) :
+            base(options)
         {
-
         }
 
         public DbSet<AppUser> Users { get; set; }
+
         public DbSet<UsersTags> UsersTags { get; set; }
 
         public DbSet<UsersCommunities> UsersCommunities { get; set; }
@@ -25,23 +25,30 @@ namespace DAL
         public DbSet<Question> Questions { get; set; }
 
         public DbSet<Tag> Tags { get; set; }
+
         public DbSet<Community> Communities { get; set; }
+
         public DbSet<Review> Reviews { get; set; }
+
         public DbSet<Offer> Offers { get; set; }
+
         public DbSet<Comment> Comments { get; set; }
 
+        public DbSet<Photo> Photos { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
 
-            builder.Entity<Review>()
+            builder
+                .Entity<Review>()
                 .HasOne(s => s.Reviewer)
                 .WithMany(l => l.ReviewsGiven)
                 .HasForeignKey(s => s.ReviewerId)
                 .OnDelete(DeleteBehavior.NoAction);
 
-            builder.Entity<Review>()
+            builder
+                .Entity<Review>()
                 .HasOne(s => s.Reviewee)
                 .WithMany(l => l.ReviewsReceived)
                 .HasForeignKey(s => s.RevieweeId)
@@ -50,7 +57,6 @@ namespace DAL
             // builder.Entity<Question>()
             //     .Property(b => b.Created)
             //     .HasDefaultValueSql("getdate()");
-
             builder.Entity<Tag>().HasData(SeedTags());
         }
 
@@ -58,41 +64,34 @@ namespace DAL
         // => optionsBuilder
         //     .LogTo(Console.WriteLine)
         //     .EnableDetailedErrors();
-
-
-
         private static List<Tag> SeedTags()
         {
-            return new List<Tag>{new Tag
-            {
-                Id = 1,
-                Text = "SQL",
-                IsApproved = true,
-                //Creator = null,
-            },
-            new Tag
-            {
-                Id = 2,
-                Text = "Python",
-                IsApproved = true,
-             //   Creator = null,
-            },
-            new Tag
-            {
-                Id = 3,
-                Text = "React",
-                IsApproved = true,
-              //  Creator = null,
-            },
-            new Tag
-            {
-                Id = 4,
-                Text = "Angular",
-                IsApproved = true,
-             //   Creator = null,
-            }};
+            return new List<Tag> {
+                new Tag {
+                    Id = 1,
+                    Text = "SQL",
+                    IsApproved = true
+                    //Creator = null,
+                },
+                new Tag {
+                    Id = 2,
+                    Text = "Python",
+                    IsApproved = true
+                    //   Creator = null,
+                },
+                new Tag {
+                    Id = 3,
+                    Text = "React",
+                    IsApproved = true
+                    //  Creator = null,
+                },
+                new Tag {
+                    Id = 4,
+                    Text = "Angular",
+                    IsApproved = true
+                    //   Creator = null,
+                }
+            };
         }
     }
-
-
 }

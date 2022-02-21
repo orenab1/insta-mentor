@@ -36,7 +36,6 @@ $base-theme-color: #ff7b02;
 
 .bold-font {
   font-family: 'Poppins-Bold' !important;
-  color:$base-theme-color;
 }
 
 .logo-font {
@@ -156,3 +155,19 @@ nav.navbar.bg-dark {
 .navbar-dark .navbar-toggler-icon {    
     background-image:url(./assets/hamburger.svg) !important;
 }   
+
+
+.short-tag {
+  background-color: #bfffd9;
+  color: #009572;
+}
+
+.medium-tag {
+    background-color: #ffe28a;
+    color: #954d4d;
+}
+
+.long-tag {
+  background-color: #ffdbbe;
+  color: #ff0000;
+}

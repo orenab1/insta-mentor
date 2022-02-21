@@ -18,6 +18,7 @@ namespace DAL.Data
         public IUserRepository UserRepository => new UserRepository(_context, _mapper);
         public IQuestionRepository QuestionRepository => new QuestionRepository(_context, _mapper,TagRepository);
         public ITagRepository TagRepository => new TagRepository(_context, _mapper);
+        public ICommonRepository CommonRepository => new CommonRepository(_context, _mapper);
 
         public ICommunityRepository CommunityRepository => new CommunityRepository(_context, _mapper);
 

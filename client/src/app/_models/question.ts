@@ -8,10 +8,15 @@ export interface Question {
   isSolved: boolean
   comments: Comment[]
   offers: OfferInQuestion[]
+  tags: Tag[]
+  communities: Community[]
   askerId: number
   askerUsername: string
   photoUrl: string
   photoId: number
+  isActive: boolean
+  isPayed: boolean
+  length: number
 }
 
 export interface QuestionSummary {
@@ -29,8 +34,8 @@ export interface QuestionSummary {
   hasCommonTags: boolean
   hasCommonCommunities: boolean
   howLongAgo: string
-  length: number;
-  lengthAsString:string;
+  length: number
+  lengthAsString: string
 }
 
 export interface Comment {

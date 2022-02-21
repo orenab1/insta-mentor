@@ -1,5 +1,5 @@
 import { Component, Input, OnInit, Output } from '@angular/core';
-import { EventEmitter } from '@angular/core';
+import { Register } from '../_models/register';
 import { AccountService } from '../_services/account.service';
 
 @Component({
@@ -8,10 +8,15 @@ import { AccountService } from '../_services/account.service';
   styleUrls: ['./register.component.scss']
 })
 export class RegisterComponent implements OnInit {
-  @Output() cancelRegister=new EventEmitter();
-  model:any={};
+  model:Register;
+  shouldDisplayPassword: boolean = false;
 
-  constructor(private accountService:AccountService) { }
+  constructor(private accountService:AccountService) {
+    this.model={
+      email: '',
+      password: ''
+    }
+   }
 
   ngOnInit(): void {
   }
@@ -26,6 +31,9 @@ export class RegisterComponent implements OnInit {
   }
 
   cancel(){
-    this.cancelRegister.emit(false);
   }
+
+  toggleDisplayPassword() {
+    this.shouldDisplayPassword = !this.shouldDisplayPassword;
+}
 }

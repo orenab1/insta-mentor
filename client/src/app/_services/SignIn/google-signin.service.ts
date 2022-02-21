@@ -9,10 +9,14 @@ export class GoogleSigninService {
   private subject= new ReplaySubject<gapi.auth2.GoogleUser>(1);
   constructor() {
     gapi.load('auth2', () => {
+      this.auth2 = gapi.auth2.getAuthInstance();
+
+      if (!this.auth2){
       this.auth2 = gapi.auth2.init({
         client_id:
           '155014635586-ir4obp64jsr2do7e2cdnh0msauq11lbo.apps.googleusercontent.com',
       })
+      }
     })
   }
 

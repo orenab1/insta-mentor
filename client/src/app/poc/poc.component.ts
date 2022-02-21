@@ -74,16 +74,5 @@ export class PocComponent implements OnInit {
     this.toastr.warning('Hello world!', 'Toastr fun!')
   }
 
-  submitLogin() {
-    console.log('submit login to facebook')
-    // FB.login();
-    this.FB.login((response) => {
-      console.log('submitLogin', response)
-      if (response.authResponse) {
-        alert('logged in FB')
-      } else {
-        alert('User login failed')
-      }
-    })
-  }
+ 
 }

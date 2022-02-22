@@ -211,9 +211,9 @@ namespace API.Controllers
                 await _unitOfWork
                     .UserRepository
                     .GetMemberAsync(User.GetUsername());
-            int[] userTagsIds = user.Tags?.Select(x => x.Value).ToArray();
+            int[] userTagsIds = user?.Tags?.Select(x => x.Value).ToArray();
             int[] userCommunitiesIds =
-                user.Communities?.Select(x => x.Value).ToArray();
+                user?.Communities?.Select(x => x.Value).ToArray();
 
             return Ok(await _unitOfWork
                 .QuestionRepository

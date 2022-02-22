@@ -20,6 +20,8 @@ namespace DAL.Data
         public ITagRepository TagRepository => new TagRepository(_context, _mapper);
         public ICommonRepository CommonRepository => new CommonRepository(_context, _mapper);
 
+        public IAccountRepository AccountRepository => new AccountRepository(_context, _mapper);
+
         public ICommunityRepository CommunityRepository => new CommunityRepository(_context, _mapper);
 
         public async Task<bool> Complete()

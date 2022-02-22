@@ -17,5 +17,7 @@ namespace DAL.Interfaces
         Task<MemberDto> GetMemberAsync(string username);
 
         void ChangeCurrentUserOnlineStatus(string username, bool isOnline);       
+
+        Task<AppUser> GetUserByEmailAsync(string email);
     }
 }

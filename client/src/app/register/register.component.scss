@@ -7,3 +7,22 @@
     background-size: 20px !important;
   //  background: no-repeat right;
 }
+
+.tab-header{
+    display: inline;
+    list-style-type: none;
+    cursor: pointer;
+    font-size: 18px;
+}
+
+.tabs-header-container{
+    padding-left: 0px;
+}
+
+.selected-header{
+    border-bottom: 2px solid #ff7b02;
+}
+
+.invalid-password{
+    color:red !important;
+}

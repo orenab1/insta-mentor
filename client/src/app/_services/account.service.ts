@@ -42,6 +42,16 @@ export class AccountService {
     )
   }
 
+  forgotPassword(model: string) {
+    return this.http.post(this.baseUrl + 'account/forgot-password', model).pipe(
+      map((response: any) => {
+       
+        return response;
+      })
+    )
+  }
+
+
   setCurrentUser(user: User) {
     localStorage.setItem('user', JSON.stringify(user));
     this.currentUserSource.next(user);

@@ -1,43 +1,112 @@
-<form
-  *ngIf="model"
-  #registerForm="ngForm"
-  (ngSubmit)="register()"
-  autocomplete="off"
->
-  <h2 class="text-center text-primary">Sign up</h2>
-  <hr />
-  <div class="form-group">
-    <label for="email">Email address</label>
-    <input
-      type="text"
-      class="form-control"
-      name="email"
-      [(ngModel)]="model.email"
-      placeholder="Email"
-    />
-  </div>
+<form *ngIf="model" #registerForm="ngForm" autocomplete="off">
+  <div class="row justify-content-center">
+    <div class="col-xl-5 col-lg-7 col-md-10 col-sm-12">
+      <h5 class="semi-bold-font text-center my-3">Register or Sign In</h5>
+      <hr class="seperator mx-auto" />
+      <div class="card p-3">
+        <div class="mb-3 align-bottom mx-auto">
+          <div>
+            <ul class="tabs-header-container">
+              <li
+                (click)="toggleRegisterMode('register')"
+                [class.selected-header]="formMode == 'register'"
+                [class.semi-bold-font]="formMode == 'register'"
+                style="margin-right: 15px;"
+                class="tab-header"
+              >
+                Register
+              </li>
 
-  <div class="form-group">
-    <label for="email">Password</label>
-    <input
-      [type]="shouldDisplayPassword ? 'text' : 'password'"
-      class="form-control"
-      name="password"
-      [(ngModel)]="model.password"
-      placeholder="Password"
-    />
+              <li
+                (click)="toggleRegisterMode('signin')"
+                [class.selected-header]="formMode == 'signin'"
+                [class.semi-bold-font]="formMode == 'signin'"
+                class="tab-header"
+              >
+                Sign In
+              </li>
+            </ul>
 
-    <div *ngIf="!shouldDisplayPassword" (click)="toggleDisplayPassword()"> 
-      <img src="./assets/view.png" style="height: 25px;" />
+            <div class="form-group my-3">
+              <label for="email" class="my-1">Email address</label>
+              <input
+                type="text"
+                class="form-control"
+                name="email"
+                [(ngModel)]="model.email"
+                placeholder="Email"
+              />
+            </div>
+
+            <div
+              class="form-group"
+              [ngStyle]="{ visibility: hasForgotPassword ? 'hidden' : '' }"
+            >
+              <label for="password" class="my-1">Password</label>
+              <input
+                [type]="shouldDisplayPassword ? 'text' : 'password'"
+                class="form-control"
+                name="password"
+                [(ngModel)]="model.password"
+                placeholder="Password"
+                style="display: inline-block; width: 89%;"
+              />
+
+              <span style="margin-left: 7px;">
+                <span
+                  *ngIf="shouldDisplayPassword; else hide"
+                  (click)="toggleDisplayPassword()"
+                >
+                  <img src="./assets/hidden.png" style="height: 25px;" />
+                </span>
+
+                <ng-template #hide>
+                  <span (click)="toggleDisplayPassword()">
+                    <img src="./assets/view.png" style="height: 25px;" />
+                  </span>
+                </ng-template>
+              </span>
+
+              <small
+                class="form-text text-muted"
+                [class.invalid-password]="!passwordIsValid"
+              >
+                Must contain at least 6 characters, digits AND letters
+              </small>
+            </div>
+
+            <div
+              class="my-4 semi-bold-font"
+              style="color: red; font-size: 16px;"
+            >
+              {{ errorMessage }}
+            </div>
+
+            <div
+              *ngIf="formMode == 'signin'"
+              class="text-center my-4 semi-bold-font"
+              style="color: blue; cursor: pointer; font-size: 18px;"
+              (click)="toggleForgotPassword()"
+            >
+              {{
+                !hasForgotPassword ? 'Forgot Password' : 'Cancel Send Password'
+              }}
+            </div>
+
+            <div class="form-group text-center mt-4">
+              <button class="btn btn-primary mr-2" (click)="submitForm()">
+                {{
+                  formMode == 'register'
+                    ? 'Register'
+                    : hasForgotPassword
+                    ? 'Send Me My Password'
+                    : 'Sign In'
+                }}
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-
-    <div *ngIf="shouldDisplayPassword" (click)="toggleDisplayPassword()">
-      <img src="./assets/hidden.png" style="height: 25px;" />
-    </div>    
-  </div>
-
-  <div class="form-group text-center">
-    <button class="btn btn-success mr-2" type="submit">Register</button>
-    <button class="btn btn-default mr-2" (click)="cancel()">Cancel</button>
   </div>
 </form>

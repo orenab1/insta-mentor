@@ -37,6 +37,8 @@ import { CommunitiesComponent } from './_components/community/communities/commun
 import { DisplayCommunityComponent } from './_components/community/display-community/display-community.component';
 import { AddCommunityComponent } from './_components/community/add-community/add-community.component';
 import { NgToggleModule } from 'ng-toggle-button';
+import { TabsModule } from 'ngx-bootstrap/tabs';
+import { RouterModule, ROUTES } from '@angular/router';
 
 @NgModule({
   declarations: [
@@ -75,7 +77,8 @@ import { NgToggleModule } from 'ng-toggle-button';
     ToastrModule.forRoot(),
     NgxUiLoaderModule,
     NgxUiLoaderRouterModule,
-    NgToggleModule
+    NgToggleModule,
+    TabsModule.forRoot()
   ],
   providers: [
     HttpClientModule,

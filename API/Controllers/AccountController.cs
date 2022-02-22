@@ -15,6 +15,8 @@ using System.Collections.Generic;
 using API.Extensions;
 using AutoMapper;
 using Microsoft.AspNetCore.Http;
+using DAL.Interfaces;
+using System;
 
 namespace API.Controllers
 {
@@ -22,37 +24,43 @@ namespace API.Controllers
     [Route("api/[controller]")]
     public class AccountController : BaseApiController
     {
-        private readonly DataContext _context;
         private readonly ITokenService _tokenService;
         private readonly IMessagesService _messagesService;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public AccountController(DataContext context, ITokenService tokenService, IMessagesService messagesService)
+        public AccountController(
+            ITokenService tokenService, 
+            IMessagesService messagesService,
+            IUnitOfWork unitOfWork)
         {
-            _tokenService = tokenService;
-            _context = context;
+            this._tokenService = tokenService;
             this._messagesService = messagesService;
+            this._unitOfWork = unitOfWork;
         }
 
         [HttpPost("register")]
         public async Task<ActionResult<UserDto>> Register(RegisterDto registerDto)
         {
-            if (await UserExists(registerDto.Username))
+            if (await UserExists(registerDto.Email))
             {
-                return BadRequest("Username is taken");
+                return BadRequest("Email already exists. If you forgot your password, please consider navigating to \"Sign In\", and clicking \"Forgot Password\"");
             }
 
             using var hmac = new HMACSHA512();
 
+            Random rnd=new Random();
+
+
             var user = new AppUser
             {
-                UserName = registerDto.Username.ToLower(),
-                PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(registerDto.Password)),
-                PasswordSalt = hmac.Key
+                UserName = "Guest"+rnd.Next(1000,9999),
+                PasswordHash = getComutedHash(registerDto.Password,hmac.Key),
+                PasswordSalt = hmac.Key,
+                Created=DateTime.Now
             };
 
-            _context.Users.Add(user);
+            this._unitOfWork.AccountRepository.CreateUserAsync(user);
 
-            await _context.SaveChangesAsync();
 
             return new UserDto
             {
@@ -62,37 +70,33 @@ namespace API.Controllers
             };
         }
 
+        [HttpPost("forgot-password")]
+        public async Task<ActionResult<UserDto>> ForgotPassword(string email){
+            if (await UserExists(email))
+            {
+                return Ok();
+            }else{
+                return BadRequest("Email address not found. Please make sure you typed it correctly, or register");
+            }
+        }
 
         [HttpPost("login")]
         public async Task<ActionResult<UserDto>> Login(LoginDto loginDto)
         {
-            // var identity = User.Identity as ClaimsIdentity;
-            // var claim = User.Claims == null ? null : User.Claims.FirstOrDefault();
-
-            // if (claim != null)
-            // {
-            //     identity.RemoveClaim(claim);
-            // }
-
-
-            var user = await _context.Users
-                .Include(p => p.Photo)
-                .SingleOrDefaultAsync(x => x.UserName == loginDto.Username);
-
+            var user=await this._unitOfWork.UserRepository.GetUserByEmailAsync(loginDto.Email);
+            
             if (user == null)
             {
-                return Unauthorized("Invalid username");
+                return Unauthorized("Email address not found. Please make sure you typed it correctly, or register");
             }
 
-            using var hmac = new HMACSHA512(user.PasswordSalt);
-
-            var computedHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(loginDto.Password));
+           var computedHash=getComutedHash(loginDto.Password,user.PasswordSalt);
 
             for (int i = 0; i < computedHash.Length; i++)
             {
                 if (computedHash[i] != user.PasswordHash[i])
                 {
-                    return Unauthorized("Invalid password");
+                    return Unauthorized("Your email and password do not match. Please try again or click \"Forgot Password\"");
                 }
             }
 
@@ -107,9 +111,17 @@ namespace API.Controllers
             };
         }
 
-        private async Task<bool> UserExists(string username)
+        private async Task<bool> UserExists(string email)
         {
-            return await _context.Users.AnyAsync(x => x.UserName == username.ToLower());
+            return await this._unitOfWork.AccountRepository.IsUserExistsAsync(email);
+           // return await _context.Users.AnyAsync(x => x.UserName == username.ToLower());
+        }
+
+        private byte[] getComutedHash(string text,byte[] salt)
+        {
+            using var hmac = new HMACSHA512(salt);
+
+            return hmac.ComputeHash(Encoding.UTF8.GetBytes(text));
         }
     }
 }

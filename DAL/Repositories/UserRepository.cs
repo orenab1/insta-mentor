@@ -39,6 +39,14 @@ namespace DAL.Repositories
                 .SingleOrDefaultAsync(x => x.UserName == username);
         }
 
+        public async Task<AppUser> GetUserByEmailAsync(string email)
+        {
+            return await _context.Users
+                .Include(x => x.EmailPrefrence)
+                .Include(x => x.Photo)
+                .SingleOrDefaultAsync(x => x.Email == email);
+        }
+
         public async Task<IEnumerable<MemberDto>> GetMembersAsync()
         {
             return await _mapper

@@ -1,10 +1,8 @@
-
 <div class="container mt-5">
-    <div class="row aligns-items-center">
-      <div class="text-center"><h3>Settings</h3></div>
-    </div>
+  <div class="row aligns-items-center">
+    <div class="text-center"><h3>Settings</h3></div>
   </div>
-
+</div>
 
 <form
   *ngIf="member"
@@ -12,7 +10,7 @@
   (ngSubmit)="editMember()"
   autocomplete="off"
   class="my-3 row d-flex justify-content-center container"
-  style="margin-left:0px;"
+  style="margin-left: 0px;"
 >
   <div class="row justify-content-center">
     <div class="col-xl-5 col-lg-7 col-md-10 col-sm-12">
@@ -29,9 +27,12 @@
           <div class="pencil-wrapper">
             <i class="fa fa-pencil" (click)="edit()"></i>
           </div>
-          
-            <app-photo-editor [addPhotoUrlExtension]="'users/add-photo'" [onUploadSuccess]="onUploadPhotoSuccess"
-                [deletePhoto]="onDeletePhoto"></app-photo-editor> 
+
+          <app-photo-editor
+            [addPhotoUrlExtension]="'users/add-photo'"
+            [onUploadSuccess]="onUploadPhotoSuccess"
+            [deletePhoto]="onDeletePhoto"
+          ></app-photo-editor>
         </div>
         <div class="card-body">
           <div>
@@ -90,7 +91,6 @@
             </tag-input>
           </div>
 
-
           <div class="form-group mt-4">
             <label for="aboutMe">Communities</label>
             <tag-input
@@ -105,7 +105,6 @@
               ></tag-input-dropdown>
             </tag-input>
           </div>
-
 
           <div class="form-group mt-5">
             <label>
@@ -167,8 +166,7 @@
               </button>
               <button
                 class="btn btn-warning mr-2 card-button"
-                [routerLink]="['/users',member.username]"
-               
+                [routerLink]="['/users', member.username]"
               >
                 Cancel
               </button>

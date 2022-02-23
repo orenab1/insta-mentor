@@ -38,7 +38,7 @@
           </div>
         </div>
         <div class="form-group mt-5">
-          <label for="aboutMe">Title</label>
+          <label for="header">Title</label>
           <div>
             <input
               *ngIf="model"
@@ -46,6 +46,7 @@
               class="form-control"
               name="header"
               [(ngModel)]="model.header"
+              id='header'
             />
           </div>
         </div>
@@ -53,7 +54,7 @@
         <div class="mt-4"></div>
 
         <div>
-          <label for="aboutMe">Body</label>
+          <label for="body">Body</label>
           <span style="opacity: 0.5; font-size: 14px;">(optional)</span>
         </div>
 
@@ -64,6 +65,7 @@
             name="body"
             [(ngModel)]="model.body"
             rows="3"
+            id='body'
           ></textarea>
         </div>
 
@@ -73,7 +75,7 @@
             [onUploadSuccess]="onUploadPhotoSuccess"
             [onDeletePhoto]="deletePhoto"
           ></app-photo-editor>
-          <img *ngIf="model.photoUrl" src="{{model.photoUrl}}" class="card-img-top img-thumbnail" style="max-width: 100%;" />
+          <img *ngIf="model.photo" src="{{model.photo.Url}}" class="card-img-top img-thumbnail" style="max-width: 100%;" />
 
           <div class="form-group mt-4">
             <label for="aboutMe">Tags</label>
@@ -116,6 +118,7 @@
                 [class.checked-length]="model.length == 1"
                 class="btn btn-secondary"
                 style="margin-left: 9%;"
+                type='button'
                 (click)="setLength(1)"
               >
                 Up to 5
@@ -124,6 +127,7 @@
                 [class.checked-length]="model.length == 2"
                 class="btn btn-secondary"
                 style="margin-left: 20px;"
+                type='button'
                 (click)="setLength(2)"
               >
                 Up to 15
@@ -132,6 +136,7 @@
                 [class.checked-length]="model.length == 3"
                 class="btn btn-secondary"
                 style="margin-left: 20px;"
+                type='button'
                 (click)="setLength(3)"
               >
                 More Than 15

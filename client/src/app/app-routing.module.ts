@@ -5,7 +5,7 @@ import { HomeComponent } from './home/home.component'
 import { DisplayUserComponent } from './_components/user/display-user/display-user.component'
 import { EditUserComponent } from './_components/user/edit-user/edit-user.component'
 import { PocComponent } from './poc/poc.component'
-import { QuestionComponent } from './question/display-question/question.component'
+import { QuestionComponent } from './question/display-question/display-question.component'
 import { EditQuestionComponent } from './question/edit-question/edit-question.component'
 import { QuestionsComponent } from './question/questions/questions.component'
 import { RegisterComponent } from './register/register.component'
@@ -21,7 +21,7 @@ const routes: Routes = [
   { path: 'poc', component: PocComponent },
   { path: 'question/edit-question', component: EditQuestionComponent },
   { path: 'edit-question/:id', component: EditQuestionComponent },
-  { path: 'question/:id', component: QuestionComponent },
+  { path: 'display-question/:id', component: QuestionComponent },
   { path: '**', component: HomeComponent, pathMatch: 'full' },
 ]
 

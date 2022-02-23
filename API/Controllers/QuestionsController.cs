@@ -109,16 +109,17 @@ namespace API.Controllers
             // Code.Text = Convert.ToString(numericStatusCode);
         }
 
-        [HttpPost("ask-question")]
+        [HttpPost]
+        [ActionName("ask-question")]
         public async Task<ActionResult<int>>
-        AskQuestion(QuestionFirstSaveDto questionFirstSaveDto)
+        AskQuestion(QuestionEditDto questionEditSaveDto)
         {
-            questionFirstSaveDto.AskerId = User.GetUserId();
+            questionEditSaveDto.AskerId = User.GetUserId();
 
             int id =
                 await _unitOfWork
                     .QuestionRepository
-                    .AskQuestionAsync(questionFirstSaveDto);
+                    .AskQuestionAsync(questionEditSaveDto);
 
             return Ok(id);
         }

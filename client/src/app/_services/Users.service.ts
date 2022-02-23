@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { map } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { Member } from '../_models/member';
-import { User } from '../_models/user';
+import { User, UserSummary } from '../_models/user';
 
 @Injectable({
   providedIn: 'root'
@@ -17,7 +17,11 @@ export class UsersService {
   }
 
   getMember(username:string) {
-    return this.http.get<Member>(this.baseUrl + 'users/'+username);
+    return this.http.get<Member>(this.baseUrl + 'users/get-user/'+username);
+  }
+
+  getUserSummary(username:string) {
+    return this.http.get<UserSummary>(this.baseUrl + 'users/get-user-summary/'+username);
   }
 
   deletePhoto() {

@@ -36,6 +36,9 @@ namespace DAL
 
         public DbSet<Photo> Photos { get; set; }
 
+        public DbSet<QuestionsTags> QuestionsTags { get; set; }
+        public DbSet<QuestionsCommunities> QuestionsCommunities { get; set; }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);

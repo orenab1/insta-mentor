@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Threading.Tasks;
 using DAL.DTOs;
+using DAL.DTOs.Summary;
 using DAL.Entities;
 
 namespace DAL.Interfaces
@@ -16,8 +17,10 @@ namespace DAL.Interfaces
 
         Task<MemberDto> GetMemberAsync(string username);
 
-        void ChangeCurrentUserOnlineStatus(string username, bool isOnline);       
+        void ChangeCurrentUserOnlineStatus(string username, bool isOnline);
 
         Task<AppUser> GetUserByEmailAsync(string email);
+
+        Task<UserSummaryDto> GetUserSummaryDtoAsync(string username);
     }
 }

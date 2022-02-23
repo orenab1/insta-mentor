@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace DAL.DTOs
 {
-    public class QuestionFirstSaveDto
+    public class QuestionEditDto
     {
         // For redirect after first save
         public int Id { get; set; }
@@ -19,5 +19,9 @@ namespace DAL.DTOs
 
         public List<TagDto> Tags { get; set; }
         public List<CommunityDto> Communities { get; set; }
+
+        public int Length{get;set;}
+
+        public PhotoDto Photo { get; set; }
     }
 }

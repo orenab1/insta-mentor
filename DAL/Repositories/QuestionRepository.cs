@@ -45,23 +45,29 @@ namespace DAL.Repositories
                 .SingleOrDefaultAsync();
         }
 
-        public async Task<int>
-        AskQuestionAsync(QuestionFirstSaveDto questionFirstSaveDto)
+        public async Task<int> AskQuestionAsync(QuestionEditDto questionEditDto)
         {
-            Question question = _mapper.Map<Question>(questionFirstSaveDto);
+            Question question = _mapper.Map<Question>(questionEditDto);
 
-            await _context.Questions.AddAsync(question);
-
+            if (question.Id == 0)
+            {
+                question.Created = DateTime.Now;
+                await _context.Questions.AddAsync(question);
+            }
+            else
+            {
+                _context.Questions.Update (question);
+            }
             await _context.SaveChangesAsync();
 
-            await UpdateTagsForQuestion(questionFirstSaveDto.Tags.ToArray(),
-            questionFirstSaveDto.AskerId,
+            await UpdateTagsForQuestion(questionEditDto.Tags.ToArray(),
+            questionEditDto.AskerId,
             question.Id);
 
-            await UpdateCommunitiesForQuestion(questionFirstSaveDto
+            await UpdateCommunitiesForQuestion(questionEditDto
                 .Communities
                 .ToArray(),
-            questionFirstSaveDto.AskerId,
+            questionEditDto.AskerId,
             question.Id);
 
             return question.Id;
@@ -89,23 +95,29 @@ namespace DAL.Repositories
         }
 
         public async Task<bool>
-        UpdateTagsForQuestion(TagDto[] newTags, int userId, int questionId)
+        UpdateTagsForQuestion(TagDto[] allTags, int userId, int questionId)
         {
-            Question question =
-                await _context
-                    .Questions
-                    .SingleOrDefaultAsync(x => x.Id == questionId);
+            int[] allTagsIds = allTags.Select(x => x.Value).ToArray();
 
-            this._tagRepository.AddTagsToDBAndAssignId(ref newTags, userId);
+            QuestionsTags[] allQuestionsTags =
+                _context
+                    .QuestionsTags
+                    .Where(qt => qt.QuestionId == questionId)
+                    .ToArray();
 
-            question.Tags = new List<QuestionsTags>();
+            foreach (QuestionsTags qt in allQuestionsTags)
+            {
+                _context.Entry(qt).State = EntityState.Deleted;
+            }
 
             await _context.SaveChangesAsync();
 
-            foreach (TagDto tagDto in newTags)
+            this._tagRepository.AddTagsToDBAndAssignId(ref allTags, userId);
+
+            foreach (TagDto tagDto in allTags)
             {
-                question
-                    .Tags
+                _context
+                    .QuestionsTags
                     .Add(new QuestionsTags {
                         QuestionId = questionId,
                         TagId = tagDto.Value
@@ -122,19 +134,26 @@ namespace DAL.Repositories
             int questionId
         )
         {
-            Question question =
-                await _context
-                    .Questions
-                    .SingleOrDefaultAsync(x => x.Id == questionId);
+            int[] allCommunitiesIds =
+                newCommunities.Select(x => x.Value).ToArray();
 
-            question.Communities = new List<QuestionsCommunities>();
+            QuestionsCommunities[] allQuestionsCommunities =
+                _context
+                    .QuestionsCommunities
+                    .Where(qt => qt.QuestionId == questionId)
+                    .ToArray();
+
+            foreach (QuestionsCommunities qt in allQuestionsCommunities)
+            {
+                _context.Entry(qt).State = EntityState.Deleted;
+            }
 
             await _context.SaveChangesAsync();
 
             foreach (CommunityDto communityDto in newCommunities)
             {
-                question
-                    .Communities
+                 _context
+                    .QuestionsCommunities
                     .Add(new QuestionsCommunities {
                         QuestionId = questionId,
                         CommunityId = communityDto.Value
@@ -281,10 +300,11 @@ namespace DAL.Repositories
                 .Where(o => o.OffererId == userId)
                 .Select(offer => offer.Question)
                 .Where(q => q.IsActive)
-                .Select(q =>new AskerQuestionDTO{ 
-                    AskerUsername=q.Asker.UserName,
-                    QuestionId=q.Id
-                });
+                .Select(q =>
+                    new AskerQuestionDTO {
+                        AskerUsername = q.Asker.UserName,
+                        QuestionId = q.Id
+                    });
         }
     }
 }

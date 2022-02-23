@@ -74,8 +74,6 @@ export class EditUserComponent implements OnInit {
   onUploadPhotoSuccess = (response: any) => {
     if (response) {
       const photo = JSON.parse(response);
-      console.log('member: ' + JSON.stringify(this.member));
-      console.log(response);
       this.member.photoUrl = photo.url;
       this.member.photoId = photo.id;
       this.user.photoUrl = photo.url;

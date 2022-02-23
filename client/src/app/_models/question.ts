@@ -1,4 +1,5 @@
 import { Community } from './community'
+import { Photo } from './photo'
 import { Tag } from './tag'
 
 export interface Question {
@@ -12,11 +13,11 @@ export interface Question {
   communities: Community[]
   askerId: number
   askerUsername: string
-  photoUrl: string
-  photoId: number
+  photo: Photo
   isActive: boolean
   isPayed: boolean
   length: number
+  created:string  
 }
 
 export interface QuestionSummary {

@@ -67,13 +67,13 @@ export class EditQuestionComponent implements OnInit {
         offers: [],
         askerId: 0,
         askerUsername: '',
-        photoId: 0,
-        photoUrl: '',
+        photo: {Url:'',Id:0},
         isActive: false,
         tags: [],
         communities: [],
         isPayed: false,
         length: 1,
+        created:''
       }
       this.getQuestion()
     })
@@ -127,19 +127,20 @@ export class EditQuestionComponent implements OnInit {
   onUploadPhotoSuccess=(response: any) => {
     if (response) {
       let photo=JSON.parse(response);
-      this.model.photoUrl = photo.url;
-      this.model.photoId = photo.id;
+      this.model.photo={Url:'',Id:0}
+      this.model.photo.Url = photo.url;
+      this.model.photo.Id = photo.id;
     }
   }
 
   deletePhoto=() => {
-    this.model.photoUrl =  '';
-    this.model.photoId = 0;
+    this.model.photo.Url =  '';
+    this.model.photo.Id = 0;
   }
 
   askQuestion() {
     this.questionService.askQuestion(this.model).subscribe({
-      next: (questionId) => this.router.navigateByUrl('question/' + questionId),
+      next: (questionId) => this.router.navigateByUrl('display-question/' + questionId),
       error: (error) => console.log(error),
     })
   }

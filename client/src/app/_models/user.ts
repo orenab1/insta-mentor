@@ -4,3 +4,10 @@ export interface User {
     photoUrl: string;
     id: number;
 }
+
+export interface UserSummary {
+    id:number;
+    username: string;
+    title: string;
+    photoUrl: string;
+}

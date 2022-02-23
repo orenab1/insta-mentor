@@ -12,7 +12,7 @@ import { HomeComponent } from './home/home.component';
 import { RegisterComponent } from './register/register.component';
 import { DisplayUserComponent } from './_components/user/display-user/display-user.component';
 import { MessagesComponent } from './messages/messages.component';
-import { QuestionComponent } from './question/display-question/question.component';
+import { QuestionComponent } from './question/display-question/display-question.component';
 import { CommentsComponent } from './question/comments/comments.component';
 import { JwtInterceptor } from './_interceptors/jwt.interceptor';
 import { QuestionsComponent } from './question/questions/questions.component';
@@ -39,6 +39,7 @@ import { AddCommunityComponent } from './_components/community/add-community/add
 import { NgToggleModule } from 'ng-toggle-button';
 import { TabsModule } from 'ngx-bootstrap/tabs';
 import { RouterModule, ROUTES } from '@angular/router';
+import { DisplayUserSummaryComponent } from './_components/user/display-user-summary/display-user-summary.component';
 
 @NgModule({
   declarations: [
@@ -61,6 +62,7 @@ import { RouterModule, ROUTES } from '@angular/router';
     CommunitiesComponent,
     DisplayCommunityComponent,
     AddCommunityComponent,
+    DisplayUserSummaryComponent,
   ],
   imports: [
     BrowserModule,

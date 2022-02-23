@@ -1,23 +1,25 @@
-using System.Configuration;
-using DAL.Interfaces;
-using DAL.Entities;
-using System.Threading.Tasks;
+using System;
 using System.Collections.Generic;
-using DAL;
+using System.Configuration;
 using System.Data;
-using Microsoft.EntityFrameworkCore;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Security.Cryptography.X509Certificates;
+using System.Threading.Tasks;
 using AutoMapper;
+using DAL;
 using DAL.DTOs;
-using System.Linq;
-using System;
+using DAL.DTOs.Summary;
+using DAL.Entities;
+using DAL.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace DAL.Repositories
 {
     public class UserRepository : IUserRepository
     {
         private readonly DataContext _context;
+
         private readonly IMapper _mapper;
 
         public UserRepository(DataContext context, IMapper mapper)
@@ -33,15 +35,27 @@ namespace DAL.Repositories
 
         public async Task<AppUser> GetUserAsync(string username)
         {
-            return await _context.Users
+            return await _context
+                .Users
                 .Include(x => x.EmailPrefrence)
                 .Include(x => x.Photo)
                 .SingleOrDefaultAsync(x => x.UserName == username);
         }
 
+        public async Task<UserSummaryDto>
+        GetUserSummaryDtoAsync(string username)
+        {
+            return await _mapper
+                .ProjectTo<UserSummaryDto>(_context
+                    .Users
+                    .Where(x => x.UserName == username))
+                .SingleOrDefaultAsync();         
+        }
+
         public async Task<AppUser> GetUserByEmailAsync(string email)
         {
-            return await _context.Users
+            return await _context
+                .Users
                 .Include(x => x.EmailPrefrence)
                 .Include(x => x.Photo)
                 .SingleOrDefaultAsync(x => x.Email == email);
@@ -54,25 +68,26 @@ namespace DAL.Repositories
                 .ToListAsync();
         }
 
-
-        public async void ChangeCurrentUserOnlineStatus(string username, bool isOnline)
+        public async void ChangeCurrentUserOnlineStatus(
+            string username,
+            bool isOnline
+        )
         {
-            var user = await _context.Users.SingleOrDefaultAsync(x => x.UserName == username);
+            var user =
+                await _context
+                    .Users
+                    .SingleOrDefaultAsync(x => x.UserName == username);
             user.IsOnline = isOnline;
         }
 
         public async Task<MemberDto> GetMemberAsync(string username)
         {
             return await _mapper
-                .ProjectTo<MemberDto>(_context.Users.Where(x => x.UserName == username))
+                .ProjectTo<MemberDto>(_context
+                    .Users
+                    .Where(x => x.UserName == username))
                 .SingleOrDefaultAsync();
-
         }
-
-
-
-
-
 
         // public async Task<int> GetUserId(string username)
         // {

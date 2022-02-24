@@ -45,6 +45,14 @@ namespace API.Controllers
         }
 
         [Authorize]
+        [HttpGet("{id}")]
+        [ActionName("get-user-summary-by-id")]
+        public async Task<ActionResult<UserSummaryDto>> GetUserSummaryById(int id)
+        {
+            return await _unitOfWork.UserRepository.GetUserSummaryDtoById(id);
+        }
+
+        [Authorize]
         [HttpGet("{username}")]
         [ActionName("get-user")]
         public async Task<ActionResult<MemberDto>> GetUser(string username)

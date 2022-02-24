@@ -42,8 +42,8 @@ export class AccountService {
     )
   }
 
-  forgotPassword(model: string) {
-    return this.http.post(this.baseUrl + 'account/forgot-password', model).pipe(
+  forgotPassword(model: any) {
+    return this.http.post(this.baseUrl + 'account/forgot-password', {'email':model}).pipe(
       map((response: any) => {
        
         return response;

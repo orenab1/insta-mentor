@@ -17,7 +17,7 @@ export interface Question {
   isActive: boolean
   isPayed: boolean
   length: number
-  created:string  
+  created: string
 }
 
 export interface QuestionSummary {
@@ -43,10 +43,13 @@ export interface Comment {
   id: number
   text: string
   questionId: number
-  commentorUsername: string
+  commentorId: string
+  howLongAgo: string
 }
 
 export interface OfferInQuestion {
   id: number
   username: string
+  howLongAgo: string
+  offererId:number
 }

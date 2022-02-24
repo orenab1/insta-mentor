@@ -1,8 +1,18 @@
 <div *ngFor="let offer of offers">
-    <div>{{offer.id}}</div>
-    <div>{{offer.username}}</div>
 
-    <button type="button" class="btn btn-primary" (click)="acceptOffer(offer.id)">Accept Offer</button>
+    <app-display-user-summary
+    [userId]="offer.offererId"
+  ></app-display-user-summary>
+  <div
+    style="float: right; margin-top: -53px; font-size: 11px;"
+    class="faded-text"
+  >
+    {{ offer.howLongAgo }}
+  </div>
+    <button type="button" class="btn btn-primary"  
+    style="float: right; 
+    padding: 4px 7px;
+    font-size: 13px;
+    margin-top: -32px;"
+    (click)="acceptOffer(offer.id)">Start 1:1 Session</button>
 </div>
-
-oooooooooooooooooooooooooooooo

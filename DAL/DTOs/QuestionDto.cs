@@ -39,6 +39,7 @@ namespace DAL.DTOs
         public string AskerUsername { get; set; }
 
         public string AskerTitle { get; set; }
+        public string AskerId { get; set; }
 
         public float AskerAverageRating { get; set; }
 

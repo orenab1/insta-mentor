@@ -164,8 +164,12 @@ namespace API.Helpers
                 .ForMember(dest => dest.HasAtLeastOneOnlineOfferer,
                 opt => opt.Ignore());
 
-            CreateMap<Comment, CommentDto>();
+            CreateMap<Comment, CommentDto>()
+                .ForMember(dest => dest.HowLongAgo,
+                opt => opt.MapFrom(src => src.Created.AsLongAgo()));
             CreateMap<Offer, OfferInQuestionDto>()
+               .ForMember(dest => dest.HowLongAgo,
+                opt => opt.MapFrom(src => src.Created.AsLongAgo()))
                 .ForMember(dest => dest.Username,
                 opt => opt.MapFrom(src => src.Offerer.UserName));
 

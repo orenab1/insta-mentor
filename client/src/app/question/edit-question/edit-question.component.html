@@ -5,7 +5,7 @@
   autocomplete="off"
 >
   <div class="row justify-content-center">
-    <div class="col-xl-7 col-lg-7 col-md-10 col-sm-12">
+    <div class="col-xl-7 col-lg-7 col-md-10 col-sm-12 mt-3 mb-5">
       <div class="card p-3">
         <div class="aligns-items-center">
           <h5 class="semi-bold-font text-center my-3">{{ pageTitle }}</h5>
@@ -117,7 +117,6 @@
               <button
                 [class.checked-length]="model.length == 1"
                 class="btn btn-secondary"
-                style="margin-left: 9%;"
                 type='button'
                 (click)="setLength(1)"
               >
@@ -148,75 +147,28 @@
           <div
             [class.d-flex]="isEditMode"
             [class.flex-column]="isEditMode"
-            class="form-group text-center mt-5"
+            class="form-group mt-5"
           >
-            <button class="btn btn-success mr-2" type="submit">Publish</button>
+            <button class="btn btn-success mr-2" type="submit" style='font-size: 18px; width:150px;'>Publish</button>
             <button
               *ngIf="!isEditMode"
               class="btn btn-danger"
               style="margin-left: 15px;"
               (click)="cancel()"
+              style="
+              color: red !important;
+              background-color: white !important;
+              border: none;
+              font-size: 18px;
+              margin-left: 2%;"
             >
               Cancel
             </button>
           </div>
         </div>
 
-        <!-- 
-        <div
-        *ngIf="community.isCurrentUserMember; else joinTemp"
-        class="d-flex justify-content-between "
-      >
-        <ng-template #joinTemp class="align-text-bottom">
-            <div class="d-flex flex-column">
-              <button type="button" class="btn btn-primary" (click)="join()">
-                Join
-              </button>
-            </div>
-          </ng-template> -->
-
-        <div *ngIf="!isNew">
-          <ul class="nav nav-tabs mt-3">
-            <li class="nav-item">
-              <a
-                class="nav-link"
-                aria-current="page"
-                (click)="toggleDisplayComments()"
-                [ngClass]="{ active: !shouldDisplayComments }"
-              >
-                Comments
-              </a>
-            </li>
-            <li class="nav-item">
-              <a
-                class="nav-link"
-                tabindex="-1"
-                (click)="toggleDisplayComments()"
-                [ngClass]="{ active: shouldDisplayComments }"
-              >
-                Offers
-              </a>
-            </li>
-          </ul>
-
-          <div [hidden]="shouldDisplayComments">
-            <h4>Comments</h4>
-            <app-comments
-              *ngIf="model && !isNew"
-              [comments]="model.comments"
-              [questionId]="id"
-            ></app-comments>
-          </div>
-
-          <div [hidden]="!shouldDisplayComments">
-            <h4>Offers</h4>
-            <app-offers
-              *ngIf="model && !isNew"
-              [offers]="model.offers"
-              [questionId]="id"
-            ></app-offers>
-          </div>
-        </div>
+       
+     
       </div>
     </div>
   </div>

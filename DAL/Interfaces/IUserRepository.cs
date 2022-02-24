@@ -22,5 +22,6 @@ namespace DAL.Interfaces
         Task<AppUser> GetUserByEmailAsync(string email);
 
         Task<UserSummaryDto> GetUserSummaryDtoAsync(string username);
+        Task<UserSummaryDto> GetUserSummaryDtoById(int id);
     }
 }

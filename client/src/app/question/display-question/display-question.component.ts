@@ -18,7 +18,7 @@ export class QuestionComponent implements OnInit {
   routeSub: Subscription
   baseUrl = environment.apiUrl
   isNew = false
-  shouldDisplayComments = true
+  shouldDisplayComments = false
   currentUserUsername: string
   isCurrentUserQuestionOwner: boolean
   isInEditMode = false
@@ -64,13 +64,6 @@ export class QuestionComponent implements OnInit {
     })
   }
 
-  askQuestion() {
-    this.questionService.askQuestion(this.model).subscribe({
-      next: () => this.reloadCurrentRoute(),
-      error: (error) => console.log(error),
-    })
-  }
-
   reloadCurrentRoute() {
     const currentUrl = this.router.url
     this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
@@ -106,10 +99,6 @@ export class QuestionComponent implements OnInit {
         console.log(error)
       },
     )
-  }
-
-  edit() {
-    this.router.navigateByUrl('edit-question/' + this.model.id)
   }
 
   toggleSolved() {

@@ -71,9 +71,10 @@ namespace API.Controllers
         }
 
         [HttpPost("forgot-password")]
-        public async Task<ActionResult<UserDto>> ForgotPassword(string email){
-            if (await UserExists(email))
+        public async Task<ActionResult<UserDto>> ForgotPassword(ForgotPasswordDto forgotPasswordDto){
+            if (await UserExists(forgotPasswordDto.Email))
             {
+                throw new NotImplementedException();
                 return Ok();
             }else{
                 return BadRequest("Email address not found. Please make sure you typed it correctly, or register");

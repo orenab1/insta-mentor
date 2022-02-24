@@ -119,10 +119,6 @@ export class EditQuestionComponent implements OnInit {
     this.model.isActive = !this.model.isActive
   }
 
-  cancel() {
-    alert(this.model.isPayed)
-    //this.reloadCurrentRoute();
-  }
 
   onUploadPhotoSuccess=(response: any) => {
     if (response) {

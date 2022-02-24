@@ -12,16 +12,16 @@ export class UsersService {
   baseUrl = environment.apiUrl;
   constructor(private http: HttpClient) { }
 
-  getMembers() {
-    return this.http.get<Member[]>(this.baseUrl + 'users');
-  }
-
   getMember(username:string) {
     return this.http.get<Member>(this.baseUrl + 'users/get-user/'+username);
   }
 
   getUserSummary(username:string) {
     return this.http.get<UserSummary>(this.baseUrl + 'users/get-user-summary/'+username);
+  }
+
+  getUserSummaryById(id:number) {
+    return this.http.get<UserSummary>(this.baseUrl + 'users/get-user-summary-by-id/'+id);
   }
 
   deletePhoto() {

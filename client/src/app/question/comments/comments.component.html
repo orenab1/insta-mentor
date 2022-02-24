@@ -1,19 +1,40 @@
 <div *ngFor="let comment of comments">
-    <div>{{comment.id}}</div>
-    <div>{{comment.text}}</div>
+  <div
+    class="semi-bold-font"
+    style="font-size: 18px; float: right; margin-top: 7px; color: red; cursor: pointer;"
+    *ngIf='comment.commentorId==currentUserId'
+    (click)="deleteComment(comment.id)"
+  >
+    X
+  </div>
+  <app-display-user-summary
+    [userId]="comment.commentorId"
+  ></app-display-user-summary>
+  <div
+    style="float: right; margin-top: -53px; font-size: 11px;"
+    class="faded-text"
+  >
+    {{ comment.howLongAgo }}
+  </div>
+  <div style="margin-left: 61px; margin-bottom: 21px;">{{ comment.text }}</div>
 </div>
-ccccccccccccccccccccccccccccccccc
+
 <div>
-    <button *ngIf="shouldDisplayCommentButton" type="button" (click)="displayAddForm()">Comment</button>
+  <textarea
+    name="text"
+    [(ngModel)]="model.text"
+    style="resize: none; width: 100%;"
+  ></textarea>
+  <div class="form-group">
+    <button
+      class="btn btn-primary mr-2"
+      type="submit"
+      style="float: right; 
+      padding: 4px 7px;
+      font-size: 13px;"
+      (click)="post()"
+    >
+      Post Comment
+    </button>
+  </div>
 </div>
-
-<form *ngIf="shouldDisplayAddForm" #commentForm="ngForm" (ngSubmit)="postCmment()"
-    autocomplete="off">
-    <textarea name="text" [(ngModel)]="model.text">
-
-    </textarea>
-    <div class="form-group text-center">
-        <button class="btn btn-success mr-2" type="submit" (click)="post()">Post Comment</button>
-        <button class="btn btn-default mr-2" (click)="cancel()">Cancel</button>
-    </div>
-</form>

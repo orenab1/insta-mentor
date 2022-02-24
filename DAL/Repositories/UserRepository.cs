@@ -52,6 +52,16 @@ namespace DAL.Repositories
                 .SingleOrDefaultAsync();         
         }
 
+        public async Task<UserSummaryDto>
+        GetUserSummaryDtoById(int id)
+        {
+            return await _mapper
+                .ProjectTo<UserSummaryDto>(_context
+                    .Users
+                    .Where(x => x.Id == id))
+                .SingleOrDefaultAsync();         
+        }
+
         public async Task<AppUser> GetUserByEmailAsync(string email)
         {
             return await _context

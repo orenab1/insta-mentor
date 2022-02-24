@@ -6,5 +6,7 @@ namespace DAL.DTOs
         public string Text { get; set; }
         public int QuestionId { get; set; }
         public int CommentorId { get; set; }
+
+        public string HowLongAgo { get; set; }
     }
 }

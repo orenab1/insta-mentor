@@ -2,6 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http'
 import { Injectable } from '@angular/core'
 import { map } from 'rxjs/operators'
 import { environment } from 'src/environments/environment'
+import { AskerAcceptedOfferDto } from '../_models/askerAcceptedOfferDto'
 import { Question, QuestionSummary } from '../_models/question'
 import { Comment } from '../_models/question'
 
@@ -28,9 +29,20 @@ export class QuestionService {
     )
   }
 
-  getQuestions() {
+  getAllQuestions() {
     return this.http
       .get<QuestionSummary[]>(this.baseUrl + 'questions/questions')
+      .pipe(
+        map((questions) => {
+          //   this.questions = questions;
+          return questions
+        }),
+      )
+  }
+
+  getMyQuestions() {
+    return this.http
+      .get<QuestionSummary[]>(this.baseUrl + 'questions/my-questions')
       .pipe(
         map((questions) => {
           //   this.questions = questions;
@@ -60,6 +72,6 @@ export class QuestionService {
     var model = {
       offerId: offerId,
     }
-    return this.http.post(this.baseUrl + 'questions/accept-offer/', model)
+    return this.http.post<AskerAcceptedOfferDto>(this.baseUrl + 'questions/accept-offer/', model)
   }
 }

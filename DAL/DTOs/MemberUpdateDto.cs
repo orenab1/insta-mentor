@@ -1,3 +1,5 @@
+using DAL.Entities;
+
 namespace DAL.DTOs
 {
     public class MemberUpdateDto
@@ -14,9 +16,6 @@ namespace DAL.DTOs
 
         public CommunityDto[] Communities { get; set; }
 
-        public bool QuestionAskedOnMyTags { get; set; }
-        public bool OnlyNotifyOnCommunityQuestionAsked { get; set; }
-        public bool MyQuestionReceivedNewOffer { get; set; }
-        public bool MyQuestionReceivedNewComment { get; set; }
+        public EmailPrefrence EmailPrefrence { get; set; }
     }
 }

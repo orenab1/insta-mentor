@@ -47,7 +47,8 @@ namespace API.Controllers
         [Authorize]
         [HttpGet("{id}")]
         [ActionName("get-user-summary-by-id")]
-        public async Task<ActionResult<UserSummaryDto>> GetUserSummaryById(int id)
+        public async Task<ActionResult<UserSummaryDto>>
+        GetUserSummaryById(int id)
         {
             return await _unitOfWork.UserRepository.GetUserSummaryDtoById(id);
         }
@@ -57,7 +58,9 @@ namespace API.Controllers
         [ActionName("get-user")]
         public async Task<ActionResult<MemberDto>> GetUser(string username)
         {
-            return await _unitOfWork.UserRepository.GetMemberAsync(username);
+            return await _unitOfWork
+                .UserRepository
+                .GetUserAsync(User.GetUserId());
         }
 
         [HttpGet("{username}")]
@@ -70,26 +73,35 @@ namespace API.Controllers
                 .GetUserSummaryDtoAsync(username);
         }
 
-        [HttpPut("update-user")]
+        [HttpPut]
+        [ActionName("update-user")]
         public async Task<ActionResult>
         UpdateUser(MemberUpdateDto memberUpdateDto)
         {
-            var username = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             AppUser user =
-                await _unitOfWork.UserRepository.GetUserAsync(username);
-
-            TagDto[] newTags = memberUpdateDto.Tags.ToArray();
-            CommunityDto[] newCommunities =
-                memberUpdateDto.Communities.ToArray();
-
-            memberUpdateDto.Tags = null;
-            memberUpdateDto.Communities = null;
+                await _unitOfWork
+                    .UserRepository
+                    .GetUserByIdAsync(User.GetUserId());
+            
 
             _mapper.Map (memberUpdateDto, user);
 
+            user.Communities = null;
+
             await _unitOfWork.Complete();
 
-            await _unitOfWork.TagRepository.UpdateTagsForUser(newTags, user.Id);
+            _unitOfWork
+                .UserRepository
+                .UpdateCommunitiesForUser(memberUpdateDto.Communities,
+                User.GetUserId());
+
+            TagDto[] newTags = memberUpdateDto.Tags.ToArray();
+
+            memberUpdateDto.Tags = null;
+
+            await _unitOfWork
+                .TagRepository
+                .UpdateTagsForUser(newTags, User.GetUserId());
 
             _unitOfWork.UserRepository.Update (user);
 
@@ -110,13 +122,14 @@ namespace API.Controllers
             return NoContent();
         }
 
-        [HttpPost("add-photo")]
+        [HttpPost]
+        [ActionName("add-photo")]
         public async Task<ActionResult<PhotoDto>> AddPhoto(IFormFile file)
         {
-            var user =
+            var user = 
                 await _unitOfWork
                     .UserRepository
-                    .GetUserAsync(User.GetUsername());
+                    .GetUserByIdAsync(User.GetUserId());
 
             var result = await _photoService.AddPhotoAsync(file);
 

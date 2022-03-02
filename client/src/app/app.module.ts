@@ -80,7 +80,8 @@ import { DisplayUserSummaryComponent } from './_components/user/display-user-sum
     NgxUiLoaderModule,
     NgxUiLoaderRouterModule,
     NgToggleModule,
-    TabsModule.forRoot()
+    TabsModule.forRoot(),
+    RouterModule.forRoot([],{scrollPositionRestoration: 'enabled'})
   ],
   providers: [
     HttpClientModule,

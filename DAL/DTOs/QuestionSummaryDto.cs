@@ -29,5 +29,9 @@ namespace DAL.DTOs
         public DateTime Created { get; set; }
 
         
+        public bool IsActive { get; set; }
+        public bool IsSolved { get; set; }
+
+        
     }
 }

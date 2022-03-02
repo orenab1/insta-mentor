@@ -9,6 +9,7 @@ using API.Interfaces;
 using API.SignalR;
 using DAL;
 using DAL.DTOs;
+using DAL.DTOs.Partial;
 using DAL.Entities;
 using DAL.Interfaces;
 using DAL.Repositories;
@@ -41,6 +42,22 @@ namespace API.Services
             this._presenceHub = presenceHub;
         }
 
+        public async Task NotifyOffererAskerAcceptedOfferAsync(string offererUsername,
+            AskerAcceptedOfferDto askerAcceptedOfferDto)
+        {
+             var connections =
+                    await _tracker
+                        .GetConnectionsForUser(offererUsername);
+
+                if (connections != null)
+                {
+                    await _presenceHub
+                        .Clients
+                        .Clients(connections)
+                        .AskerAcceptedOffer(askerAcceptedOfferDto);
+                }
+        }
+
         public async Task NotifyAskersOffererLoggedInAsync(int userId)
         {
             IEnumerable<AskerQuestionDTO> askerUsernameQuestionIds =
@@ -48,10 +65,16 @@ namespace API.Services
                     .QuestionRepository
                     .GetAskerUsernamesByOffererId(userId);
 
-            foreach (AskerQuestionDTO askerUsernameQuestionId in askerUsernameQuestionIds)
+            foreach (AskerQuestionDTO
+                askerUsernameQuestionId
+                in
+                askerUsernameQuestionIds
+            )
             {
                 var connections =
-                    await _tracker.GetConnectionsForUser(askerUsernameQuestionId.AskerUsername);
+                    await _tracker
+                        .GetConnectionsForUser(askerUsernameQuestionId
+                            .AskerUsername);
 
                 if (connections != null)
                 {
@@ -73,7 +96,7 @@ namespace API.Services
             AppUser asker =
                 await _unitOfWork
                     .UserRepository
-                    .GetUserAsync(questionDto.AskerUsername);
+                    .GetUserByIdAsync(questionDto.AskerId);
 
             if (asker.EmailPrefrence.MyQuestionReceivedNewOffer)
             {
@@ -108,7 +131,7 @@ namespace API.Services
             AppUser asker =
                 await _unitOfWork
                     .UserRepository
-                    .GetUserAsync(questionDto.AskerUsername);
+                    .GetUserByIdAsync(questionDto.AskerId);
 
             if (asker.EmailPrefrence.MyQuestionReceivedNewComment)
             {
@@ -133,21 +156,28 @@ namespace API.Services
             }
         }
 
-        public async Task InviteToCommunity(int communityId, int userId, string username)
+        public async Task
+        InviteToCommunity(int communityId, int userId, string username)
         {
-            AppUser user =await _unitOfWork.UserRepository.GetUserAsync(username);
+            AppUser user =
+                await _unitOfWork.UserRepository.GetUserAsync(username);
 
-            CommunityFullDto community=await _unitOfWork.CommunityRepository.GetCommunity(communityId, userId);
+            CommunityFullDto community =
+                await _unitOfWork
+                    .CommunityRepository
+                    .GetCommunity(communityId, userId);
 
-            string subject=$"Hi, It's {user.UserName}! Check out the community {community.Name} {(community.IsCurrentUserCreator? "I created": "")} on ZOOMME.io";
+            string subject =
+                $"Hi, It's {user.UserName}! Check out the community {community.Name} {(community.IsCurrentUserCreator ? "I created" : "")} on ZOOMME.io";
 
-             _mailService
-                    .SendEmailAsync(new EmailDto {
-                        Subject = subject,
-                        Body =
-                            "\nYou'll be able to ask me and others question there, and get LIVE answers on ZOOM.\n\nCheck it out here!",
-                        To = user.Email
-                    });
+            _mailService
+                .SendEmailAsync(new EmailDto {
+                    Subject = subject,
+                    Body =
+                        "\nYou'll be able to ask me and others question there, and get LIVE answers on ZOOM.\n\nCheck it out here!",
+                    To = user.Email
+                });
         }
     }
 }
+

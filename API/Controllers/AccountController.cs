@@ -21,7 +21,7 @@ using System;
 namespace API.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("api/[controller]/[action]")]
     public class AccountController : BaseApiController
     {
         private readonly ITokenService _tokenService;
@@ -53,13 +53,17 @@ namespace API.Controllers
 
             var user = new AppUser
             {
-                UserName = "Guest"+rnd.Next(1000,9999),
                 PasswordHash = getComutedHash(registerDto.Password,hmac.Key),
                 PasswordSalt = hmac.Key,
                 Created=DateTime.Now
             };
 
-            this._unitOfWork.AccountRepository.CreateUserAsync(user);
+            if (user.EmailPrefrence==null)
+            {
+                user.EmailPrefrence=new EmailPrefrence();
+            }
+
+            await this._unitOfWork.AccountRepository.CreateUserAsync(user);
 
 
             return new UserDto
@@ -75,13 +79,13 @@ namespace API.Controllers
             if (await UserExists(forgotPasswordDto.Email))
             {
                 throw new NotImplementedException();
-                return Ok();
             }else{
                 return BadRequest("Email address not found. Please make sure you typed it correctly, or register");
             }
         }
 
-        [HttpPost("login")]
+        [HttpPost]
+        [ActionName("login")]
         public async Task<ActionResult<UserDto>> Login(LoginDto loginDto)
         {
             var user=await this._unitOfWork.UserRepository.GetUserByEmailAsync(loginDto.Email);

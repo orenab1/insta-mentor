@@ -120,6 +120,7 @@ namespace API.Helpers
         private void MapQuestion()
         {
             CreateMap<QuestionEditDto, Question>()
+                .ForMember(dest => dest.Created, opt => opt.Ignore())
                 .ForMember(dest => dest.Tags, opt => opt.Ignore())
                 .ForMember(dest => dest.Communities, opt => opt.Ignore());
 

@@ -36,9 +36,9 @@ export class QuestionsComponent implements OnInit {
   loadQuestions(): void {
     let questions = new Observable<QuestionSummary[]>()
     if (this.isFromMyQuestionsRoute) {
-      questions = this.questionService.getQuestions()
+      questions = this.questionService.getMyQuestions()
     } else {
-      questions = this.questionService.getQuestions()
+      questions = this.questionService.getAllQuestions()
     }
 
     questions.subscribe(
@@ -49,13 +49,13 @@ export class QuestionsComponent implements OnInit {
           switch (q.length) {
             case 1:
               q.lengthAsString = '<5 mins.'
-              break
+              break;
             case 2:
               q.lengthAsString = '<15 mins.'
-              break
+              break;
             case 3:
               q.lengthAsString = '>15 mins.'
-              break
+              break;
           }
         })
       },

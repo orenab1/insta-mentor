@@ -11,11 +11,13 @@ using System.Text;
 using System.Threading.Tasks;
 using API.Extensions;
 using API.Interfaces;
+using API.Services;
 using API.Settings;
 using API.SignalR;
 using AutoMapper;
 using DAL;
 using DAL.DTOs;
+using DAL.DTOs.Partial;
 using DAL.Entities;
 using DAL.Interfaces;
 using Microsoft.AspNetCore.Authorization;
@@ -44,69 +46,105 @@ namespace API.Controllers
 
         private readonly IMessagesService _messagesService;
 
-        private readonly ZoomSettings _zoomSettings;
+        private readonly IZoomService _zoomService;
 
         public QuestionsController(
             IUnitOfWork unitOfWork,
             IPhotoService photoService,
             IMapper mapper,
             IMessagesService messagesService,
-            IOptions<ZoomSettings> zoomSettings
+            IZoomService zoomService
         )
         {
             this._unitOfWork = unitOfWork;
             this._photoService = photoService;
             this._mapper = mapper;
             this._messagesService = messagesService;
-            this._zoomSettings = zoomSettings.Value;
+            this._zoomService = zoomService;
         }
 
         [HttpPost]
         [ActionName("accept-offer")]
-        public async Task AcceptOffer(int offerId)
+        public async Task<ActionResult<AcceptedOfferDto>>
+        AcceptOffer(AcceptOfferDto acceptOfferDto)
         {
-            var tokenHandler =
-                new System.IdentityModel.Tokens.Jwt.JwtSecurityTokenHandler();
-            var now = DateTime.UtcNow;
-            var apiSecret = _zoomSettings.APISecret;
-            byte[] symmetricKey = Encoding.ASCII.GetBytes(apiSecret);
+            int questionId =
+                await _unitOfWork
+                    .QuestionRepository
+                    .GetQuestionIdByOfferId(acceptOfferDto.OfferId);
 
-            var tokenDescriptor =
-                new SecurityTokenDescriptor {
-                    Issuer = _zoomSettings.APIKey,
-                    Expires = now.AddSeconds(600),
-                    SigningCredentials =
-                        new SigningCredentials(new SymmetricSecurityKey(symmetricKey),
-                            SecurityAlgorithms.HmacSha256)
+            QuestionDto questionDto =
+                await _unitOfWork
+                    .QuestionRepository
+                    .GetQuestionAsync(questionId);
+
+            int offererId =
+                await _unitOfWork
+                    .QuestionRepository
+                    .GetOffererUserIdByOfferId(acceptOfferDto.OfferId);
+
+            string meetingUrl =
+                await this._zoomService.GetMeetingUrl(questionDto.Header);
+
+            AskerAcceptedOfferDto askerAcceptedOfferDto =
+                new AskerAcceptedOfferDto {
+                    OffererUserId = offererId,
+                    QuestionHeader = questionDto.Header,
+                    QuestionBody = questionDto.Body,
+                    AskerUserId = questionDto.AskerId,
+                    MeetingUrl = meetingUrl,
+                    QuestionId = questionId,
+                    AskerUsername = questionDto.AskerUsername
                 };
-            var token = tokenHandler.CreateToken(tokenDescriptor);
-            var tokenString = tokenHandler.WriteToken(token);
-            RestClient client =
-                new RestClient("https://api.zoom.us/v2/users/me/meetings");
 
-            var request = new RestRequest();
+            AppUser offererAppUser =
+                await _unitOfWork.UserRepository.GetUserByIdAsync(offererId);
 
-            request.RequestFormat = DataFormat.Json;
-            request
-                .AddJsonBody(new {
-                    topic = "Meeting with Ussain134",
-                    type = "1",
-                    settings = new { join_before_host = true }
-                });
-            request
-                .AddHeader("authorization",
-                String.Format("Bearer {0}", tokenString));
-            var restResponse = await client.PostAsync<object>(request);
-            var k = JObject.Parse(restResponse.ToString());
-            //  var k= JsonDocument.Parse(restResponse);
-            // var k=object.Value;
-            // IRestResponse restResponse = client.Execute(request);
-            // HttpStatusCode statusCode = restResponse.StatusCode;
-            // int numericStatusCode = (int) statusCode;
-            // var jObject = JObject.Parse(restResponse.Content);
-            // Host.Text = (string) jObject["start_url"];
-            // Join.Text = (string) jObject["join_url"];
-            // Code.Text = Convert.ToString(numericStatusCode);
+            string offererUsername = offererAppUser.UserName;
+
+            _messagesService.NotifyOffererAskerAcceptedOfferAsync (
+                offererUsername,
+                askerAcceptedOfferDto
+            );
+            return Ok(new AcceptedOfferDto{
+                MeetingUrl=meetingUrl
+            } );
+
+            // var tokenHandler =
+            //     new System.IdentityModel.Tokens.Jwt.JwtSecurityTokenHandler();
+            // var now = DateTime.UtcNow;
+            // var apiSecret = _zoomSettings.APISecret;
+            // byte[] symmetricKey = Encoding.ASCII.GetBytes(apiSecret);
+
+            // var tokenDescriptor =
+            //     new SecurityTokenDescriptor {
+            //         Issuer = _zoomSettings.APIKey,
+            //         Expires = now.AddSeconds(600),
+            //         SigningCredentials =
+            //             new SigningCredentials(new SymmetricSecurityKey(symmetricKey),
+            //                 SecurityAlgorithms.HmacSha256)
+            //     };
+            // var token = tokenHandler.CreateToken(tokenDescriptor);
+            // var tokenString = tokenHandler.WriteToken(token);
+            // RestClient client =
+            //     new RestClient("https://api.zoom.us/v2/users/me/meetings");
+
+            // var request = new RestRequest();
+
+            // request.RequestFormat = DataFormat.Json;
+            // request
+            //     .AddJsonBody(new {
+            //         topic = "Meeting with Ussain134",
+            //         type = "1",
+            //         settings = new { join_before_host = true }
+            //     });
+            // request
+            //     .AddHeader("authorization",
+            //     String.Format("Bearer {0}", tokenString));
+            // var restResponse = await client.PostAsync<object>(request);
+            // var responseAsJObject = JObject.Parse(restResponse.ToString());
+
+            // string meetingUrl = responseAsJObject["start_url"].ToString();
         }
 
         [HttpPost]
@@ -194,13 +232,9 @@ namespace API.Controllers
         public async Task<ActionResult<IEnumerable<MyQuestionSummaryDto>>>
         GetMyQuestions()
         {
-            var user =
-                await _unitOfWork
-                    .UserRepository
-                    .GetMemberAsync(User.GetUsername());
             return Ok(await _unitOfWork
                 .QuestionRepository
-                .GetMyQuestionsAsync(user.Id));
+                .GetMyQuestionsAsync(User.GetUserId()));
         }
 
         [HttpGet()]
@@ -209,9 +243,7 @@ namespace API.Controllers
         GetQuestions()
         {
             var user =
-                await _unitOfWork
-                    .UserRepository
-                    .GetMemberAsync(User.GetUsername());
+                await _unitOfWork.UserRepository.GetUserAsync(User.GetUserId());
             int[] userTagsIds = user?.Tags?.Select(x => x.Value).ToArray();
             int[] userCommunitiesIds =
                 user?.Communities?.Select(x => x.Value).ToArray();
@@ -224,8 +256,7 @@ namespace API.Controllers
         [HttpPost]
         [ActionName("add-photo")]
         public async Task<ActionResult<PhotoDto>> AddPhoto(IFormFile file)
-        {          
-
+        {
             var result = await _photoService.AddPhotoAsync(file);
 
             if (result.Error != null) return BadRequest(result.Error.Message);
@@ -236,13 +267,13 @@ namespace API.Controllers
                     PublicId = result.PublicId
                 };
 
+            var photoId = await _unitOfWork.CommonRepository.AddPhoto(photo);
 
-            var photoId=await _unitOfWork.CommonRepository.AddPhoto(photo);
-
-            if (photoId!=0)
-            {               
+            if (photoId != 0)
+            {
                 return CreatedAtRoute("GetPhoto",
-                new {  controller = "common", photoId = photoId }, value:photo);
+                new { controller = "common", photoId = photoId },
+                value: photo);
             }
 
             return BadRequest("Problem addding photo");

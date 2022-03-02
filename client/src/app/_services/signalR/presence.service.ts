@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core'
 import { Router } from '@angular/router'
 import { HubConnection, HubConnectionBuilder } from '@microsoft/signalr'
+import { ToastrService } from 'ngx-toastr'
 import { BehaviorSubject } from 'rxjs'
 import { take } from 'rxjs/operators'
 import { environment } from 'src/environments/environment'
@@ -16,7 +17,7 @@ export class PresenceService {
   private onlineUsersSource = new BehaviorSubject<string[]>([])
   onlineUsers$ = this.onlineUsersSource.asObservable()
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, private toastr: ToastrService) {}
 
   createHubConnection(user: User) {
     this.hubConnection = new HubConnectionBuilder()
@@ -59,29 +60,36 @@ export class PresenceService {
       alert('')
     })
 
+    this.hubConnection.on('AskerAcceptedOffer', (askerAcceptedOfferDto) => {
+      this.toastr.info(
+        `<div><b>${askerAcceptedOfferDto.askerUsername}</b> wants your help in answering their question:</div><br/><div><b>${askerAcceptedOfferDto.questionHeader}</b></div><br/> <a href="${askerAcceptedOfferDto.meetingUrl}" target="_blank">Start a Zoom session with ${askerAcceptedOfferDto.askerUsername}</a><br/><br/> <a href="${environment.baseUrl}display-question/${askerAcceptedOfferDto.questionId}" target="_blank">See the question</a>`,
+        '',
+        {
+          timeOut: 600000,
+          enableHtml: true,
+          progressBar: true,
+          progressAnimation: 'increasing',
+          tapToDismiss:false,
+          closeButton:true,
+          disableTimeOut:'extendedTimeOut'
+        },
+      )
+    })
+
+    this.hubConnection.on('OffererCancelsOffer', () => {
+      alert('OffererCancelsOffer   ')
+    })
+
     this.hubConnection.on(
-      'AskerWantsToStartASession',
-      question => {
-        alert('AskerWantsToStartASession   '+ JSON.stringify(question));
+      'QuestionIsAskedAccordingToCommunityAndTags',
+      (question) => {
+        alert('')
       },
     )
 
-    this.hubConnection.on(
-      'OffererCancelsOffer',
-      () => {
-        alert('OffererCancelsOffer   ');
-      },
-    )
-
-    this.hubConnection.on(
-      'QuestionIsAskedAccordingToCommunityAndTags', (question) => {
-        alert('')
-      })
-
-    this.hubConnection.on(
-      'QuestionIsAskedAccordingToTags', (question) => {
-        alert('')
-      })
+    this.hubConnection.on('QuestionIsAskedAccordingToTags', (question) => {
+      alert('')
+    })
   }
 
   stopHubConnection() {

@@ -25,6 +25,7 @@ namespace API.Extensions
             services.AddSingleton<PresenceTracker>();
             services.AddTransient<IMailService, MailService>();
             services.AddScoped<IMessagesService, MessagesService>();
+             services.AddScoped<IZoomService, ZoomService>();
             services
                 .Configure<CloudinarySettings>(config
                     .GetSection("CloudinarySettings"));

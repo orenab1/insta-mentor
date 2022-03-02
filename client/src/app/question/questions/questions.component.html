@@ -5,9 +5,11 @@
       <div class="col-lg-5" style="align-items: center; display: flex;">
         <div>
           <div style="font-size: 30px; margin-bottom: 25px;" class="bold-font">
-           Join a Community. <br/>
-           Ask a Question. <br/>
-           Get a Live Zoom Answer.
+            Join a Community.
+            <br />
+            Ask a Question.
+            <br />
+            Get a Live Zoom Answer.
           </div>
 
           <button
@@ -55,12 +57,14 @@
       <div
         *ngFor="let question of questions"
         style="background-color: white; border-radius: 10px;"
-        class="my-2 p-2 short-bg"
+        class="my-2 p-2 short-bg question-container"
         [ngClass]="{
           'short-bg': question.length == 1,
           'medium-bg': question.length == 2,
           'long-bg': question.length == 3
         }"
+        [class.question-not-active] = "!question.isActive || question.isSolved"
+        (click)="router.navigateByUrl('/display-question/' + question.id)"
       >
         <div class="first-question-row d-flex justify-content-between">
           <div class="user semi-bold-font">
@@ -97,7 +101,6 @@
                 style="width: 20px; height: 20px; margin-right: 10px;"
               />
             </div>
-           
 
             <div
               class="top-right-details faded-text"
@@ -119,9 +122,12 @@
             "
             class="rounded-circle"
           ></div>
-          <div class="bold-font">{{ question.header }}</div>
+          <div class="bold-font question-header">{{ question.header }}</div>
         </div>
-        <div class="faded-text" style="margin-left: 10px; margin-bottom: 5px;">
+        <div
+          class="faded-text question-body"
+          style="margin-left: 10px; margin-bottom: 5px;"
+        >
           {{ question.body }}
         </div>
 
@@ -131,7 +137,7 @@
               border-radius: 11px;
               font-size: 12px;
               display: inline-block;
-              padding: 3px 5px;
+              padding: 2px 5px 0 5px;
               min-width: 64px;
               height: 23px;
             "
@@ -143,7 +149,7 @@
           >
             {{ question.lengthAsString }}
           </div>
-          <div  class="bottom-tag" style="width:15px;">
+          <div class="bottom-tag" style="width: 15px;">
             <img
               src="./assets/dollar.png"
               alt="Asker is willing to pay for a solution"
@@ -221,7 +227,7 @@
       </div>
     </div>
     <div class="col-lg-1 col-xl-2"></div>
- 
+
     <div class="col-xl-2 col-md-3"></div>
   </div>
 </div>

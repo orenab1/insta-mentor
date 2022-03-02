@@ -15,13 +15,21 @@ namespace DAL.Interfaces
 
         Task<IEnumerable<MemberDto>> GetMembersAsync();
 
-        Task<MemberDto> GetMemberAsync(string username);
+        Task<MemberDto> GetUserAsync(int userId);
 
         void ChangeCurrentUserOnlineStatus(string username, bool isOnline);
 
         Task<AppUser> GetUserByEmailAsync(string email);
 
         Task<UserSummaryDto> GetUserSummaryDtoAsync(string username);
+
         Task<UserSummaryDto> GetUserSummaryDtoById(int id);
+
+        Task<AppUser> GetUserByIdAsync(int userId);
+
+        Task<bool>
+        UpdateCommunitiesForUser(
+            CommunityDto[] newCommunities, int userId
+        );
     }
 }

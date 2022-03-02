@@ -22,9 +22,7 @@ namespace API.Controllers
         [HttpGet("get-tags")]
         public async Task<ActionResult> GetTags()
         {
-            var userName = User.GetUsername();
-            var user = await _unitOfWork.UserRepository.GetUserAsync(User.GetUsername());
-            return Ok(await _unitOfWork.TagRepository.GetTagsByCreatorOrApproved(user.Id));
+            return Ok(await _unitOfWork.TagRepository.GetTagsByCreatorOrApproved(User.GetUserId()));
         }
 
 

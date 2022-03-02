@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using DAL.DTOs.Partial;
 
 namespace API.Interfaces
 {
@@ -14,5 +15,7 @@ namespace API.Interfaces
          Task UserIsOffline(string username);
 
          Task OffererLoggedIn(int questionId);
+
+         Task AskerAcceptedOffer(AskerAcceptedOfferDto askerAcceptedOfferDto);
     }
 }

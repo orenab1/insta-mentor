@@ -20,7 +20,7 @@ namespace DAL.Interfaces
 
         Task PublishReview(ReviewDto reviewDto);
 
-        Task<IEnumerable<MyQuestionSummaryDto>> GetMyQuestionsAsync(int userId);
+        Task<IEnumerable<QuestionSummaryDto>> GetMyQuestionsAsync(int userId);
 
         Task<bool> ChangeQuestionActiveStatus(int questionId, bool isActive);
 
@@ -30,5 +30,8 @@ namespace DAL.Interfaces
         Task DeleteOfferAsync(int offerId, int userId);
 
         Task<IEnumerable<AskerQuestionDTO>> GetAskerUsernamesByOffererId(int userId);
+        Task<int> GetQuestionIdByOfferId(int offerId);
+
+        Task<int> GetOffererUserIdByOfferId(int offerId);
     }
 }

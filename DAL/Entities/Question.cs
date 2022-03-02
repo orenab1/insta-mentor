@@ -34,8 +34,11 @@ namespace DAL.Entities
         public ICollection<Review> Reviews { get; set; }
 
         public ICollection<QuestionsTags> Tags { get; set; }
+
         public ICollection<QuestionsCommunities> Communities { get; set; }
 
-         public Photo Photo { get; set; }        
+        public Photo Photo { get; set; }
+
+        public int? LastAnswererUserId { get; set; }
     }
 }

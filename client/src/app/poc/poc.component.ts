@@ -68,10 +68,25 @@ export class PocComponent implements OnInit {
       },
     ]
 
-    this.toastr.success('Hello world!', 'Toastr fun!')
-    this.toastr.info('Hello world!', 'Toastr fun!')
-    this.toastr.show('Hello world!', 'Toastr fun!')
-    this.toastr.warning('Hello world!', 'Toastr fun!')
+    this.toastr.info(
+      `<div><b>dave11</b> wants your help in answering their question:</div><br/><div><b>How to prevent Sql Injection?</b></div><br/> <a href="https://www.w3schools.com/" target="_blank">Click here to start a Zoom session with them</a><br/><br/> <a href="https://www.w3schools.com/" target="_blank">Click here to see the question</a>`,
+      '',
+      {
+        timeOut: 600000,
+        enableHtml: true,
+        progressBar: true,
+        progressAnimation: 'increasing',
+        tapToDismiss:false,
+        closeButton:true,
+        disableTimeOut:'extendedTimeOut'
+      },
+    )
+
+
+   // this.toastr.info('<br/><div>How do you prevent Sql Injection?</div><br/> <a href="https://www.w3schools.com/" target="_blank">Click here to start a Zoom session with them</a><br/><br/> <a href="https://www.w3schools.com/">Click here to see the question</a>', 'username wants your help in answering their question',{disableTimeOut:true, closeButton:true, enableHtml:true,progressBar:true,progressAnimation:'increasing' })
+    // this.toastr.info('Hello world!', 'Toastr fun!')
+    // this.toastr.show('Hello world!', 'Toastr fun!')
+    // this.toastr.warning('Hello world!', 'Toastr fun!')
   }
 
  

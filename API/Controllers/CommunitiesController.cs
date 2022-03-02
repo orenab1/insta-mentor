@@ -49,7 +49,7 @@ namespace API.Controllers
         [ActionName("delete")]
         public async Task<IActionResult> Delete(int communityId)
         {
-            if (await CanDeleteCommunity(communityId) == false)
+            if (!CanDeleteCommunity(communityId))
                 return Unauthorized();
 
             await _unitOfWork.CommunityRepository.DeleteCommunity(communityId);
@@ -114,7 +114,6 @@ namespace API.Controllers
         [ActionName("get-communities-tags")]
         public async Task<ActionResult> GetCommunitiesTags()
         {
-            var userName = User.GetUsername();
             return Ok(await _unitOfWork.CommunityRepository.GetCommunities());
         }
 
@@ -148,7 +147,7 @@ namespace API.Controllers
             return true;
         }
 
-        private async Task<bool> CanDeleteCommunity(int communityId)
+        private bool CanDeleteCommunity(int communityId)
         {
             var community =
                 _unitOfWork

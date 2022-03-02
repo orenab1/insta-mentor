@@ -52,10 +52,18 @@ namespace DAL.Repositories
             if (question.Id == 0)
             {
                 question.Created = DateTime.Now;
+                question.IsActive = true;
                 await _context.Questions.AddAsync(question);
             }
             else
             {
+                var questionCreatedFromDb =
+                    _context
+                        .Questions
+                        .AsNoTracking()
+                        .FirstOrDefault(x => x.Id == questionEditDto.Id)?
+                        .Created;
+                question.Created = questionCreatedFromDb.Value;
                 _context.Questions.Update (question);
             }
             await _context.SaveChangesAsync();
@@ -82,6 +90,21 @@ namespace DAL.Repositories
                     .SingleOrDefaultAsync(x => x.Id == questionId);
             question.IsActive = isActive;
             return await _context.SaveChangesAsync() > 0;
+        }
+
+        public async Task<int> GetQuestionIdByOfferId(int offerId)
+        {
+            Offer offer =
+              await  _context.Offers.SingleOrDefaultAsync(x => x.Id == offerId);
+            return offer.QuestionId;
+        }
+
+        public async Task<int> GetOffererUserIdByOfferId(int offerId)
+        {
+            Offer offer =
+              await  _context.Offers.SingleOrDefaultAsync(x => x.Id == offerId);
+
+            return offer.OffererId;
         }
 
         public async Task<bool> MarkQuestionAsSolved(int questionId)
@@ -152,7 +175,7 @@ namespace DAL.Repositories
 
             foreach (CommunityDto communityDto in newCommunities)
             {
-                 _context
+                _context
                     .QuestionsCommunities
                     .Add(new QuestionsCommunities {
                         QuestionId = questionId,
@@ -217,12 +240,12 @@ namespace DAL.Repositories
             await _context.SaveChangesAsync();
         }
 
-        public async Task<IEnumerable<MyQuestionSummaryDto>>
+        public async Task<IEnumerable<QuestionSummaryDto>>
         GetMyQuestionsAsync(int userId)
         {
             var result =
                 await _mapper
-                    .ProjectTo<MyQuestionSummaryDto>(_context
+                    .ProjectTo<QuestionSummaryDto>(_context
                         .Questions
                         .Where(q => q.AskerId == userId))
                     .ToListAsync();

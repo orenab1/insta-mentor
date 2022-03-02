@@ -22,14 +22,16 @@ namespace DAL.Repositories
         {
             _context.Users.Add (user);
 
+            await _context.SaveChangesAsync();
+
+            user.UserName = "Guest" + user.Id;
+
             return await _context.SaveChangesAsync() > 0;
         }
 
         public async Task<bool> IsUserExistsAsync(string email)
         {
-            return await _context
-                .Users
-                .AnyAsync(x => x.Email == email);
+            return await _context.Users.AnyAsync(x => x.Email == email);
         }
     }
 }

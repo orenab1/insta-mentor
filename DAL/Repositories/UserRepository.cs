@@ -90,18 +90,58 @@ namespace DAL.Repositories
             user.IsOnline = isOnline;
         }
 
-        public async Task<MemberDto> GetMemberAsync(string username)
+        public async Task<MemberDto> GetUserAsync(int userId)
         {
             return await _mapper
                 .ProjectTo<MemberDto>(_context
                     .Users
-                    .Where(x => x.UserName == username))
+                    .Where(x => x.Id == userId))
                 .SingleOrDefaultAsync();
         }
 
-        // public async Task<int> GetUserId(string username)
-        // {
-        //     return await _context.Users.SingleOrDefaultAsync(x => x.UserName == username).Id;
-        // }
+        public async Task<AppUser> GetUserByIdAsync(int userId)
+        {
+            return await _context
+                    .Users
+                    .Include(x => x.EmailPrefrence)
+                    .Where(x => x.Id == userId)
+                .SingleOrDefaultAsync();
+        }
+
+        public async Task<bool>
+        UpdateCommunitiesForUser(
+            CommunityDto[] newCommunities,
+            int userId
+        )
+        {
+            int[] allCommunitiesIds =
+                newCommunities.Select(x => x.Value).ToArray();
+
+            UsersCommunities[] allUserCommunities =
+                _context
+                    .UsersCommunities
+                    .Where(uc => uc.AppUserId == userId)
+                    .ToArray();
+
+            foreach (UsersCommunities uc in allUserCommunities)
+            {
+                _context.Entry(uc).State = EntityState.Deleted;
+            }
+
+            await _context.SaveChangesAsync();
+
+            foreach (CommunityDto communityDto in newCommunities)
+            {
+                _context
+                    .UsersCommunities
+                    .Add(new UsersCommunities {
+                        AppUserId = userId,
+                        CommunityId = communityDto.Value
+                    });
+            }
+
+            return await _context.SaveChangesAsync() > 0;
+        }
+
     }
 }

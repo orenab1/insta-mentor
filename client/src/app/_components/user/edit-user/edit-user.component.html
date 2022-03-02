@@ -15,7 +15,7 @@
   <div class="row justify-content-center">
     <div class="col-xl-5 col-lg-7 col-md-10 col-sm-12">
       <div class="card p-3">
-        <div class="mb-3 align-bottom mx-auto">
+        <div class="mb-3 align-bottom mx-auto text-center">
           <img
             src="{{ member.photoUrl || './assets/user.png' }}"
             alt="{{ member.username }}"
@@ -23,11 +23,6 @@
             style="width: 100px; height: 100px;"
             class="rounded-circle"
           />
-
-          <div class="pencil-wrapper">
-            <i class="fa fa-pencil" (click)="edit()"></i>
-          </div>
-
           <app-photo-editor
             [addPhotoUrlExtension]="'users/add-photo'"
             [onUploadSuccess]="onUploadPhotoSuccess"
@@ -116,7 +111,7 @@
                 class="form-check-input"
                 type="checkbox"
                 name="questionAskedOnMyTags"
-                [(ngModel)]="member.questionAskedOnMyTags"
+                [(ngModel)]="member.emailPrefrence.questionAskedOnMyTags"
               />
               <label class="form-check-label" for="flexCheckChecked">
                 A question is asked according to my tags
@@ -128,7 +123,7 @@
                 class="form-check-input"
                 type="checkbox"
                 name="onlyNotifyOnCommunityQuestionAsked"
-                [(ngModel)]="member.onlyNotifyOnCommunityQuestionAsked"
+                [(ngModel)]="member.emailPrefrence.onlyNotifyOnCommunityQuestionAsked"
               />
               <label class="form-check-label" for="flexCheckChecked">
                 Only notify me when a question is asked in a community I'm a
@@ -141,7 +136,7 @@
                 class="form-check-input"
                 type="checkbox"
                 name="myQuestionReceivedNewOffer"
-                [(ngModel)]="member.myQuestionReceivedNewOffer"
+                [(ngModel)]="member.emailPrefrence.myQuestionReceivedNewOffer"
               />
               <label class="form-check-label" for="flexCheckChecked">
                 A question I asked gets a new offer
@@ -153,7 +148,7 @@
                 class="form-check-input"
                 type="checkbox"
                 name="myQuestionReceivedNewComment"
-                [(ngModel)]="member.myQuestionReceivedNewComment"
+                [(ngModel)]="member.emailPrefrence.myQuestionReceivedNewComment"
               />
               <label class="form-check-label" for="flexCheckChecked">
                 A question I asked gets a new comment

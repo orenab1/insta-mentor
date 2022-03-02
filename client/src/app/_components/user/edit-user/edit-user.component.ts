@@ -39,7 +39,7 @@ export class EditUserComponent implements OnInit {
 
   loadTags() {
     this.commonService.getTags().subscribe(response => {
-      this.allTags = response;
+      this.allTags=response;
       error: (error) => console.log(error)
     });
   }
@@ -54,7 +54,7 @@ export class EditUserComponent implements OnInit {
 
   editMember() {
     this.usersService.updateUser(this.member).subscribe(() => {
-      this.router.navigateByUrl('members/' + this.user.username)
+      this.router.navigateByUrl('users/' + this.user.username)
     });
   }
 
@@ -63,11 +63,7 @@ export class EditUserComponent implements OnInit {
 
   loadMember() {
     this.usersService.getMember(this.route.snapshot.paramMap.get('username')).subscribe(response => {
-      this.member = response;
-      this.member.tags = [{
-        value: 7,
-        display: 'Angular'
-      }];
+      this.member = response;     
     });
   }
 

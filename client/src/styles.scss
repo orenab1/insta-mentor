@@ -39,8 +39,8 @@ $base-theme-color: #ff7b02;
 }
 
 .logo-font {
-    font-family: 'Inspiration-Regular' !important;
-  }
+  font-family: 'Inspiration-Regular' !important;
+}
 
 .semi-bold-font {
   font-family: 'Poppins-SemiBold' !important;
@@ -147,15 +147,14 @@ nav.navbar.bg-dark {
   ) !important;
 }
 
-.nav-link.active{
-    color:$base-theme-color !important;
-    @extend %semi-bold-font;
+.nav-link.active {
+  color: $base-theme-color !important;
+  @extend %semi-bold-font;
 }
 
-.navbar-dark .navbar-toggler-icon {    
-    background-image:url(./assets/hamburger.svg) !important;
-}   
-
+.navbar-dark .navbar-toggler-icon {
+  background-image: url(./assets/hamburger.svg) !important;
+}
 
 .short-tag {
   background-color: #bfffd9;
@@ -163,13 +162,28 @@ nav.navbar.bg-dark {
 }
 
 .medium-tag {
-    background-color: #ffe28a;
-    color: #954d4d;
+  background-color: #ffe28a;
+  color: #954d4d;
 }
 
 .long-tag {
   background-color: #ffdbbe;
   color: #ff0000;
 }
+
+.toast-message a {
+  color: black !important;
+}
+
+div.ngx-toastr.toast-info {
+  background-color: white !important;
+  color: black;  
+  padding: 21px !important;
+}
+
+.toast-close-button span{
+  color:black !important;
+}
+
 /* Importing Bootstrap SCSS file. */
-@import "~bootstrap/scss/bootstrap";
+@import '~bootstrap/scss/bootstrap';

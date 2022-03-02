@@ -154,7 +154,7 @@
               *ngIf="!isEditMode"
               class="btn btn-danger"
               style="margin-left: 15px;"
-              (click)="cancel()"
+              (click)="router.navigateByUrl('/display-question/' + model.id)"
               style="
               color: red !important;
               background-color: white !important;

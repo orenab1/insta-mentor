@@ -38,11 +38,24 @@ namespace DAL.Repositories
 
         public async Task<QuestionDto> GetQuestionAsync(int id)
         {
-            return await _mapper
-                .ProjectTo<QuestionDto>(_context
-                    .Questions
-                    .Where(x => x.Id == id))
-                .SingleOrDefaultAsync();
+            QuestionDto result =
+                await _mapper
+                    .ProjectTo<QuestionDto>(_context
+                        .Questions
+                        .Where(x => x.Id == id))
+                    .SingleOrDefaultAsync();
+
+            if (result.LastAnswererUserId.HasValue)
+            {
+                AppUser answerer =
+                    await _context
+                        .Users
+                        .SingleOrDefaultAsync(x =>
+                            x.Id == result.LastAnswererUserId);
+
+                result.LastAnswererUserName = answerer.UserName;
+            }
+            return result;
         }
 
         public async Task<int> AskQuestionAsync(QuestionEditDto questionEditDto)
@@ -95,14 +108,18 @@ namespace DAL.Repositories
         public async Task<int> GetQuestionIdByOfferId(int offerId)
         {
             Offer offer =
-              await  _context.Offers.SingleOrDefaultAsync(x => x.Id == offerId);
+                await _context
+                    .Offers
+                    .SingleOrDefaultAsync(x => x.Id == offerId);
             return offer.QuestionId;
         }
 
         public async Task<int> GetOffererUserIdByOfferId(int offerId)
         {
             Offer offer =
-              await  _context.Offers.SingleOrDefaultAsync(x => x.Id == offerId);
+                await _context
+                    .Offers
+                    .SingleOrDefaultAsync(x => x.Id == offerId);
 
             return offer.OffererId;
         }
@@ -328,6 +345,17 @@ namespace DAL.Repositories
                         AskerUsername = q.Asker.UserName,
                         QuestionId = q.Id
                     });
+        }
+
+        public async Task<bool>
+        UpdateQuestionLastOfferer(int questionId, int userId)
+        {
+            Question question =
+                await _context
+                    .Questions
+                    .FirstOrDefaultAsync(q => q.Id == questionId);
+            question.LastAnswererUserId = userId;
+            return await _context.SaveChangesAsync() > 0;
         }
     }
 }

@@ -1,23 +1,28 @@
-<rating class="rating-c text-warning" [(ngModel)]="rate" [max]="max" [readonly]="isReadonly"
-        (keyup)="confirmSelection($event)"
-        (onHover)="hoveringOver($event)"></rating>
-<div class="card">
-</div>
-<button class="btn btn-primary" (click)="resetStars()">Reset rating and status</button>
-<button class="btn btn-primary ml-3 ms-3" (click)="isReadonly = !isReadonly">Toggle ReadOnly</button>
-<hr/>
-<b >{{starsAsText}}</b>
-<hr>
-Rating: <b>{{rate}}</b>
+<rating
+  class="rating-c text-warning"
+  [(ngModel)]="rate"
+  [max]="max"
+  [readonly]="isReadonly"
+  (keyup)="confirmSelection($event)"
+  (onHover)="hoveringOver($event)"
+></rating>
+<!-- <div>
+  <button class="btn btn-primary" (click)="resetStars()">
+    Reset rating and status
+  </button>
+  <button class="btn btn-primary ml-3 ms-3" (click)="isReadonly = !isReadonly">
+    Toggle ReadOnly
+  </button>
+</div> -->
+<div>{{ starsAsText }}</div>
+<!-- Rating:
+        <div>{{ rate }}</div> -->
 
-
-
-<div class="ratings">
-        <div class="empty-stars"></div>
-        <div class="full-stars" [style.width]="starsCountPercentage + '%'" style="width:70%"></div>
-    </div>
-
-
-
-
-
+<!-- <div class="ratings">
+  <div class="empty-stars"></div>
+  <div
+    class="full-stars"
+    [style.width]="starsCountPercentage + '%'"
+    style="width: 70%;"
+  ></div>
+</div> -->

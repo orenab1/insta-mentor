@@ -63,16 +63,35 @@
               <img *ngIf="model.photoUrl" img src="{{ model.photoUrl }}" />
             </div>
 
-            <div class='text-center my-5'>
+            <div
+              class="text-center my-5"
+              *ngIf="
+                this.isCurrentUserQuestionOwner && model.lastAnswererUserId > 0;
+                else notSolved
+              "
+            >
               <button
-                *ngIf="!this.isCurrentUserQuestionOwner"
-                (click)="addOffer()"
                 class="btn btn-primary"
-                style='width:250px;'
+                style="width: 250px;"
+                (click)="solved(hasAnswererHelped)"
               >
-                I CAN HELP!
+                {{ true ? 'Solved' : '' }}
               </button>
             </div>
+
+            <ng-template
+              class="text-center my-5"
+              #notSolved
+              *ngIf="!this.isCurrentUserQuestionOwner"
+            >
+              <button
+                (click)="addOffer()"
+                class="btn btn-primary"
+                style="width: 250px;"
+              >
+                {{ true ? 'I CAN HELP!' : 'Solved' }}
+              </button>
+            </ng-template>
           </div>
         </div>
       </div>
@@ -126,6 +145,68 @@
       </div>
     </div>
   </div>
+  <ng-template #hasAnswererHelped>
+    <div style="margin: 20px;">
+      <h5 style="margin-bottom: 17px;">
+        Has {{ model.lastAnswererUserName }} helped you solve your question?
+      </h5>
+      <button
+        type="button"
+        class="btn btn-primary"
+        style="width: 70px; margin-right: 20px;"
+        (click)="answererHelped(reviewModal)"
+      >
+        Yes
+      </button>
+      <button
+        type="button"
+        class="btn btn-primary"
+        style="background-color: white !important; color: red; border: none;"
+        (click)="answererDidntHelp()"
+      >
+        No
+      </button>
+
+      <div></div>
+    </div>
+  </ng-template>
+
+  <ng-template #reviewModal>
+    <div style="margin: 20px;">
+      <h5 style="margin-bottom: 17px;">
+        Please tell us what you think..
+      </h5>
+      <app-display-user-summary
+        [userId]="model.lastAnswererUserId"
+      ></app-display-user-summary>
+
+      <div class="mt-4 mb-2">
+        <label>How helpful was {{ model.lastAnswererUserName }}?</label>
+      </div>
+      <div>
+        <rating-basic></rating-basic>
+      </div>
+      <div class="mt-4">
+        <div class="form-group">
+          <div><label for="review">Review</label></div>
+          <textarea
+            [(ngModel)]="review"
+            rows="3"
+            style="resize: none; width: 100%;"
+          ></textarea>
+        </div>
+      </div>
+      <button
+        class="btn btn-primary semi-bold-font"
+        style="width: 100%; margin-top: 35px;"
+      >
+        SUBMIT
+      </button>
+      <button class="btn semi-bold-font" style="width: 100%; color: #624000;">
+        SKIP
+      </button>
+    </div>
+  </ng-template>
 
   <app-review [questionId]="id"></app-review>
 </div>

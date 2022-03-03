@@ -18,6 +18,8 @@ export interface Question {
   isPayed: boolean
   length: number
   created: string
+  lastAnswererUserId: number
+  lastAnswererUserName: string
 }
 
 export interface QuestionSummary {
@@ -51,5 +53,5 @@ export interface OfferInQuestion {
   id: number
   username: string
   howLongAgo: string
-  offererId:number
+  offererId: number
 }

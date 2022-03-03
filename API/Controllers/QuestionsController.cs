@@ -106,6 +106,10 @@ namespace API.Controllers
                 offererUsername,
                 askerAcceptedOfferDto
             );
+
+             _unitOfWork
+                    .QuestionRepository
+                    .UpdateQuestionLastOfferer(questionId,offererId);
             return Ok(new AcceptedOfferDto{
                 MeetingUrl=meetingUrl
             } );

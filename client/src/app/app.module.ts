@@ -8,6 +8,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NavComponent } from './nav/nav.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
+import { BsModalService, ModalModule } from 'ngx-bootstrap/modal';
 import { HomeComponent } from './home/home.component';
 import { RegisterComponent } from './register/register.component';
 import { DisplayUserComponent } from './_components/user/display-user/display-user.component';
@@ -40,6 +41,7 @@ import { NgToggleModule } from 'ng-toggle-button';
 import { TabsModule } from 'ngx-bootstrap/tabs';
 import { RouterModule, ROUTES } from '@angular/router';
 import { DisplayUserSummaryComponent } from './_components/user/display-user-summary/display-user-summary.component';
+
 
 @NgModule({
   declarations: [
@@ -81,9 +83,10 @@ import { DisplayUserSummaryComponent } from './_components/user/display-user-sum
     NgxUiLoaderRouterModule,
     NgToggleModule,
     TabsModule.forRoot(),
-    RouterModule.forRoot([],{scrollPositionRestoration: 'enabled'})
+    RouterModule.forRoot([],{scrollPositionRestoration: 'enabled'}),
   ],
   providers: [
+    BsModalService,
     HttpClientModule,
     {
       provide: HTTP_INTERCEPTORS,

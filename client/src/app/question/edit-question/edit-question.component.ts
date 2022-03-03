@@ -67,13 +67,15 @@ export class EditQuestionComponent implements OnInit {
         offers: [],
         askerId: 0,
         askerUsername: '',
-        photo: {Url:'',Id:0},
+        photo: { Url: '', Id: 0 },
         isActive: false,
         tags: [],
         communities: [],
         isPayed: false,
         length: 1,
-        created:''
+        created: '',
+        lastAnswererUserId: undefined,
+        lastAnswererUserName:''
       }
       this.getQuestion()
     })
@@ -103,7 +105,7 @@ export class EditQuestionComponent implements OnInit {
   getQuestion() {
     this.questionService.getQuestion(this.id).subscribe(
       (response) => {
-        if (response != null) { 
+        if (response != null) {
           this.model = response
           this.isCurrentUserQuestionOwner =
             this.model.askerUsername === this.currentUserUsername
@@ -119,24 +121,24 @@ export class EditQuestionComponent implements OnInit {
     this.model.isActive = !this.model.isActive
   }
 
-
-  onUploadPhotoSuccess=(response: any) => {
+  onUploadPhotoSuccess = (response: any) => {
     if (response) {
-      let photo=JSON.parse(response);
-      this.model.photo={Url:'',Id:0}
-      this.model.photo.Url = photo.url;
-      this.model.photo.Id = photo.id;
+      let photo = JSON.parse(response)
+      this.model.photo = { Url: '', Id: 0 }
+      this.model.photo.Url = photo.url
+      this.model.photo.Id = photo.id
     }
   }
 
-  deletePhoto=() => {
-    this.model.photo.Url =  '';
-    this.model.photo.Id = 0;
+  deletePhoto = () => {
+    this.model.photo.Url = ''
+    this.model.photo.Id = 0
   }
 
   askQuestion() {
     this.questionService.askQuestion(this.model).subscribe({
-      next: (questionId) => this.router.navigateByUrl('display-question/' + questionId),
+      next: (questionId) =>
+        this.router.navigateByUrl('display-question/' + questionId),
       error: (error) => console.log(error),
     })
   }

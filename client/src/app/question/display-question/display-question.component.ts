@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core'
+import { Component, OnInit, TemplateRef } from '@angular/core'
 import { ActivatedRoute, Router } from '@angular/router'
 import { Subscription } from 'rxjs'
 import { take } from 'rxjs/operators'
@@ -6,6 +6,8 @@ import { AccountService } from 'src/app/_services/account.service'
 import { environment } from 'src/environments/environment'
 import { Question } from '../../_models/question'
 import { QuestionService } from '../../_services/question.service'
+import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal'
+
 
 @Component({
   selector: 'app-display-question',
@@ -13,6 +15,8 @@ import { QuestionService } from '../../_services/question.service'
   styleUrls: ['./display-question.component.scss'],
 })
 export class QuestionComponent implements OnInit {
+  modalRef?: BsModalRef
+  bsModalRefReview?: BsModalRef
   model: Question
   id: number = 0
   routeSub: Subscription
@@ -24,12 +28,19 @@ export class QuestionComponent implements OnInit {
   isInEditMode = false
   communitiesAsString: string
   lengthAsString: string
+  review:string
+  modalConfig = {
+    animated: true,
+    backdrop: true,
+    ignoreBackdropClick: true,
+  }
 
   constructor(
     private questionService: QuestionService,
     private router: Router,
     private route: ActivatedRoute,
     private accountService: AccountService,
+    private modalService: BsModalService,
   ) {
     this.accountService.currentUser$
       .pipe(take(1))
@@ -103,5 +114,24 @@ export class QuestionComponent implements OnInit {
 
   toggleSolved() {
     this.model.isSolved = !this.model.isSolved
+  }
+
+  solved(template: TemplateRef<any>) {
+    this.modalRef = this.modalService.show(template, this.modalConfig)
+  }
+
+  answererHelped(template: TemplateRef<any>) {
+    this.modalRef?.hide()
+
+    setTimeout(()=>{
+      let reviewModal:TemplateRef<any>;
+      this.bsModalRefReview =this.modalService.show(template,  this.modalConfig);
+    },100);
+  
+      // this.modalRef = this.modalService.show('reviewModal', this.modalConfig)
+   //   alert('yo')
+  }
+  answererDidntHelp() {
+    this.modalRef?.hide()
   }
 }

@@ -187,3 +187,13 @@ div.ngx-toastr.toast-info {
 
 /* Importing Bootstrap SCSS file. */
 @import '~bootstrap/scss/bootstrap';
+
+
+
+.modal-dialog{
+  max-width: 400px !important;
+}
+
+.rating-c{
+  line-height:40px;
+}

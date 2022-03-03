@@ -33,5 +33,7 @@ namespace DAL.Interfaces
         Task<int> GetQuestionIdByOfferId(int offerId);
 
         Task<int> GetOffererUserIdByOfferId(int offerId);
+        Task<bool>
+        UpdateQuestionLastOfferer(int questionId, int userId);
     }
 }

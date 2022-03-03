@@ -11,11 +11,11 @@ export class RatingBasicComponent {
   rate = 0;
   isReadonly = false;
   overStar: number | undefined;
-  starsAsText:string;
+  starsAsText:string=''; //without empty string no place will be reserved for text
 
 
   starsCountPercentage=84;
-
+  
   confirmSelection(event: KeyboardEvent) {
     if (event.keyCode === 13 || event.key === 'Enter') {
       this.isReadonly = true;
@@ -25,11 +25,11 @@ export class RatingBasicComponent {
   hoveringOver(value: number): void {
     this.overStar = value;
     switch (this.overStar){
-      case 1:this.starsAsText='Very Poor'; break;
-      case 2:this.starsAsText='Poor'; break;
-      case 3:this.starsAsText='Ok'; break;
-      case 4:this.starsAsText='Very Good'; break;
-      case 5:this.starsAsText='Great!'; break;
+      case 1:this.starsAsText='Not helpful'; break;
+      case 2:this.starsAsText='Not so much'; break;
+      case 3:this.starsAsText='Somewhat helpful'; break;
+      case 4:this.starsAsText='Very helpful'; break;
+      case 5:this.starsAsText='Awesome!'; break;
     }
   }
  

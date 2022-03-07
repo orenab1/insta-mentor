@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
  
 @Component({
   // eslint-disable-next-line @angular-eslint/component-selector
@@ -12,7 +12,7 @@ export class RatingBasicComponent {
   isReadonly = false;
   overStar: number | undefined;
   starsAsText:string=''; //without empty string no place will be reserved for text
-
+  @Output() onRatingChanged=new EventEmitter<number>();
 
   starsCountPercentage=84;
   
@@ -20,6 +20,12 @@ export class RatingBasicComponent {
     if (event.keyCode === 13 || event.key === 'Enter') {
       this.isReadonly = true;
     }
+    this.onRatingChanged.emit(this.rate);
+  }
+
+  clicked(value: number)
+  { 
+    this.onRatingChanged.emit(this.rate);
   }
 
   hoveringOver(value: number): void {

@@ -36,7 +36,7 @@
             <button
               type="button"
               class="btn btn-primary"
-              [routerLink]="['/edit-user',member.username]"
+              [routerLink]="['/edit-user', member.username]"
             >
               Edit Profile
             </button>
@@ -69,6 +69,37 @@
             <div class="my-4">
               <h5 class="semi-bold-font text-center">Reviews</h5>
               <hr class="seperator mx-auto" />
+
+              <div style="padding: 0px 40px;">
+                <span style="font-size: 22px;">
+                  {{ this.member.askerAverageRating | number: '1.1-1' }}
+                </span>
+                <div class="star-ratings" style="display: inline-block;">
+                  <div
+                    class="fill-ratings"
+                    [ngStyle]="{ width: reviewAverageAsPercentage + '%' }"
+                  >
+                    <span>★★★★★</span>
+                  </div>
+                  <div class="empty-ratings">
+                    <span>★★★★★</span>
+                  </div>
+                </div>
+                <span style="font-size: 22px;">
+                  {{ this.member.askerNumOfRatings }} Reviews
+                </span>
+                <div *ngFor="let review of member.reviews" class='my-3'>
+                  <div style="color: #ecbe24; font-size: 20px; float: right;">
+                    ★
+                    <span style="color: black;">{{ review.rating }}</span>
+                  </div>
+                  <app-display-user-summary
+                    [userId]="review.reviewerId"
+                  ></app-display-user-summary>
+                  <div style='
+                  margin-left: 62px;'>{{ review.text }}</div>
+                </div>
+              </div>
             </div>
           </div>
         </div>

@@ -67,7 +67,7 @@ namespace API.Helpers
                 .ForMember(dest => dest.PhotoUrl,
                 opt => opt.MapFrom(src => src.Photo.Url));
 
-            CreateMap<AppUser, MemberDto>()
+            CreateMap<AppUser, UserFullDto>()
                 .ForMember(dest => dest.PhotoUrl,
                 opt => opt.MapFrom(src => src.Photo.Url))
                 .ForMember(dest => dest.PhotoId,
@@ -80,12 +80,19 @@ namespace API.Helpers
                         .MapFrom(src =>
                             src.ReviewsReceived != null
                                 ? src.ReviewsReceived.Count()
+                                : 0))
+                .ForMember(dest => dest.AskerAverageRating,
+                opt =>
+                    opt
+                        .MapFrom(src =>
+                            (src.ReviewsReceived != null && src.ReviewsReceived.Count()!=0)
+                                ? (
+                                (float) src.ReviewsReceived.Sum(r => r.Rating) /
+                                (float) src.ReviewsReceived.Count()
+                                )
                                 : 0));
-
-            //  .ForMember(dest => dest.AskerAverageRating, opt => opt.MapFrom(src =>
-            //     src.ReviewsReceived != null?
-            //       ((float)src.ReviewsReceived.Sum(r => r.Rating) / (float)src.ReviewsReceived.Count()) :
-            //       0))
+                
+                
             CreateMap<MemberUpdateDto, AppUser>();
 
             CreateMap<EmailPrefrenceDto, EmailPrefrence>();
@@ -169,7 +176,7 @@ namespace API.Helpers
                 .ForMember(dest => dest.HowLongAgo,
                 opt => opt.MapFrom(src => src.Created.AsLongAgo()));
             CreateMap<Offer, OfferInQuestionDto>()
-               .ForMember(dest => dest.HowLongAgo,
+                .ForMember(dest => dest.HowLongAgo,
                 opt => opt.MapFrom(src => src.Created.AsLongAgo()))
                 .ForMember(dest => dest.Username,
                 opt => opt.MapFrom(src => src.Offerer.UserName));

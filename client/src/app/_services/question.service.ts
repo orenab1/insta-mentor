@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core'
 import { map } from 'rxjs/operators'
 import { environment } from 'src/environments/environment'
 import { AskerAcceptedOfferDto } from '../_models/askerAcceptedOfferDto'
-import { Question, QuestionSummary } from '../_models/question'
+import { Question, QuestionSummary, Review } from '../_models/question'
 import { Comment } from '../_models/question'
 
 @Injectable({
@@ -61,6 +61,12 @@ export class QuestionService {
     )
   }
 
+  deleteOffer(offerId: number) {
+    return this.http.delete(
+      this.baseUrl + 'questions/delete-offer?offerId=' + offerId,
+    )
+  }
+
   makeOffer(questionId: number) {
     var model = {
       questionId: questionId,
@@ -73,5 +79,16 @@ export class QuestionService {
       offerId: offerId,
     }
     return this.http.post<AskerAcceptedOfferDto>(this.baseUrl + 'questions/accept-offer/', model)
+  }
+
+  publishReview(model: Review) {
+    return this.http.post<Review>(this.baseUrl + 'questions/publish-review/', model);
+  }
+
+  markQuestionAsSolved(questionId:number) {
+    return this.http.put(this.baseUrl + 'questions/mark-question-as-solved', questionId).pipe(
+      map(() => {        
+      })
+    );
   }
 }

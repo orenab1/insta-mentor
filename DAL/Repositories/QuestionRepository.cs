@@ -55,6 +55,21 @@ namespace DAL.Repositories
 
                 result.LastAnswererUserName = answerer.UserName;
             }
+
+            Review review =
+                await _context
+                    .Reviews
+                    .FirstOrDefaultAsync(x => x.QuestionId == result.Id);
+
+            if (review != null)
+            {
+                AppUser reviewee =
+                    await _context
+                        .Users
+                        .FirstOrDefaultAsync(x => x.Id == review.RevieweeId);
+                result.RevieweeUsername = reviewee.UserName;
+            }
+
             return result;
         }
 

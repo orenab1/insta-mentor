@@ -13,9 +13,9 @@ namespace DAL.Interfaces
 
         Task<AppUser> GetUserAsync(string username);
 
-        Task<IEnumerable<MemberDto>> GetMembersAsync();
+        Task<IEnumerable<UserFullDto>> GetMembersAsync();
 
-        Task<MemberDto> GetUserAsync(int userId);
+        Task<UserFullDto> GetUserAsync(int userId);
 
         void ChangeCurrentUserOnlineStatus(string username, bool isOnline);
 

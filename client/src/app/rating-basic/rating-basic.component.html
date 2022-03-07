@@ -3,7 +3,7 @@
   [(ngModel)]="rate"
   [max]="max"
   [readonly]="isReadonly"
-  (keyup)="confirmSelection($event)"
+ (click)='clicked($event)'
   (onHover)="hoveringOver($event)"
 ></rating>
 <!-- <div>

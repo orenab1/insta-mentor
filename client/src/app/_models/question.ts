@@ -20,6 +20,7 @@ export interface Question {
   created: string
   lastAnswererUserId: number
   lastAnswererUserName: string
+  revieweeUsername: string
 }
 
 export interface QuestionSummary {
@@ -54,4 +55,13 @@ export interface OfferInQuestion {
   username: string
   howLongAgo: string
   offererId: number
+}
+
+export interface Review {
+  id: number
+  questionId: number
+  rating: number
+  text: string
+  reviewerId: number
+  revieweeId: number
 }

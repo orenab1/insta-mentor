@@ -1,4 +1,13 @@
 <div *ngFor="let offer of offers">
+  <div
+    class="semi-bold-font"
+    style="font-size: 18px; float: right; margin-top: 7px; color: red; cursor: pointer;"
+    *ngIf='offer.offererId==currentUserId'
+    (click)="deleteOffer(offer.id)"
+  >
+    X
+  </div>
+
   <div   class="mb-3">
     <app-display-user-summary
     
@@ -12,6 +21,7 @@
     {{ offer.howLongAgo }}
   </div>
   <button
+    *ngIf='isCurrentUserQuestionOwner'
     type="button"
     class="btn btn-primary"
     style="float: right; padding: 1px 7px; font-size: 13px; margin-top: -48px;"

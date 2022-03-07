@@ -41,6 +41,7 @@ import { NgToggleModule } from 'ng-toggle-button';
 import { TabsModule } from 'ngx-bootstrap/tabs';
 import { RouterModule, ROUTES } from '@angular/router';
 import { DisplayUserSummaryComponent } from './_components/user/display-user-summary/display-user-summary.component';
+import { DisplayUsernameComponent } from './_components/user/display-username/display-username.component';
 
 
 @NgModule({
@@ -65,6 +66,7 @@ import { DisplayUserSummaryComponent } from './_components/user/display-user-sum
     DisplayCommunityComponent,
     AddCommunityComponent,
     DisplayUserSummaryComponent,
+    DisplayUsernameComponent,
   ],
   imports: [
     BrowserModule,

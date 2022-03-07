@@ -2,7 +2,7 @@
 
     <div>
         <input type="file" ng2FileSelect [uploader]="uploader" />
-        <button *ngIf='hasUploaded' (click)="deletePhoto()" class="btn btn-sm btn-danger"><i class="fa fa-trash"></i></button>
+        <button *ngIf='hasUploaded' type='button' (click)="deletePhoto()" class="btn btn-sm btn-danger"><i class="fa fa-trash"></i></button>
     </div>
 
     <div class="progress" *ngIf="uploader?.queue?.length>0">

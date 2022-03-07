@@ -56,7 +56,7 @@ namespace API.Controllers
         [Authorize]
         [HttpGet("{username}")]
         [ActionName("get-user")]
-        public async Task<ActionResult<MemberDto>> GetUser(string username)
+        public async Task<ActionResult<UserFullDto>> GetUser(string username)
         {
             return await _unitOfWork
                 .UserRepository
@@ -145,21 +145,24 @@ namespace API.Controllers
 
             if (await _unitOfWork.Complete())
             {
-                return CreatedAtRoute("GetUser",
-                new { username = user.UserName },
-                _mapper.Map<PhotoDto>(photo));
+                return  _mapper.Map<PhotoDto>(photo);
+
+                // return CreatedAtRoute("GetUser",
+                // new { username = user.UserName },
+                // _mapper.Map<PhotoDto>(photo));
             }
 
             return BadRequest("Problem addding photo");
         }
 
-        [HttpDelete("delete-photo")]
+        [HttpDelete]
+        [ActionName("delete-photo")]
         public async Task<ActionResult> DeletePhoto()
         {
             var user =
                 await _unitOfWork
                     .UserRepository
-                    .GetUserAsync(User.GetUsername());
+                    .GetUserByIdAsync(User.GetUserId());
 
             var photo = user.Photo;
 

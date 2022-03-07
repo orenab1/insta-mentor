@@ -1,4 +1,5 @@
 import { Community } from "./community";
+import { Review } from "./question";
 import { Tag } from "./tag";
 
 export interface Member {
@@ -16,5 +17,8 @@ export interface Member {
     onlyNotifyOnCommunityQuestionAsked: boolean;
     myQuestionReceivedNewOffer: boolean;
     myQuestionReceivedNewComment: boolean;
+    askerAverageRating:number;
+    askerNumOfRatings:number;
+    reviews:Review[];
 
 }

@@ -49,17 +49,16 @@ namespace DAL.Repositories
                 .ProjectTo<UserSummaryDto>(_context
                     .Users
                     .Where(x => x.UserName == username))
-                .SingleOrDefaultAsync();         
+                .SingleOrDefaultAsync();
         }
 
-        public async Task<UserSummaryDto>
-        GetUserSummaryDtoById(int id)
+        public async Task<UserSummaryDto> GetUserSummaryDtoById(int id)
         {
             return await _mapper
                 .ProjectTo<UserSummaryDto>(_context
                     .Users
                     .Where(x => x.Id == id))
-                .SingleOrDefaultAsync();         
+                .SingleOrDefaultAsync();
         }
 
         public async Task<AppUser> GetUserByEmailAsync(string email)
@@ -71,10 +70,10 @@ namespace DAL.Repositories
                 .SingleOrDefaultAsync(x => x.Email == email);
         }
 
-        public async Task<IEnumerable<MemberDto>> GetMembersAsync()
+        public async Task<IEnumerable<UserFullDto>> GetMembersAsync()
         {
             return await _mapper
-                .ProjectTo<MemberDto>(_context.Users)
+                .ProjectTo<UserFullDto>(_context.Users)
                 .ToListAsync();
         }
 
@@ -90,10 +89,17 @@ namespace DAL.Repositories
             user.IsOnline = isOnline;
         }
 
-        public async Task<MemberDto> GetUserAsync(int userId)
+        public async Task<UserFullDto> GetUserAsync(int userId)
         {
+            var k =
+                await _mapper
+                    .ProjectTo<UserFullDto>(_context
+                        .Users
+                        .Where(x => x.Id == userId))
+                    .ToListAsync();
+
             return await _mapper
-                .ProjectTo<MemberDto>(_context
+                .ProjectTo<UserFullDto>(_context
                     .Users
                     .Where(x => x.Id == userId))
                 .SingleOrDefaultAsync();
@@ -102,17 +108,14 @@ namespace DAL.Repositories
         public async Task<AppUser> GetUserByIdAsync(int userId)
         {
             return await _context
-                    .Users
-                    .Include(x => x.EmailPrefrence)
-                    .Where(x => x.Id == userId)
+                .Users
+                .Include(x => x.EmailPrefrence)
+                .Where(x => x.Id == userId)
                 .SingleOrDefaultAsync();
         }
 
         public async Task<bool>
-        UpdateCommunitiesForUser(
-            CommunityDto[] newCommunities,
-            int userId
-        )
+        UpdateCommunitiesForUser(CommunityDto[] newCommunities, int userId)
         {
             int[] allCommunitiesIds =
                 newCommunities.Select(x => x.Value).ToArray();
@@ -142,6 +145,5 @@ namespace DAL.Repositories
 
             return await _context.SaveChangesAsync() > 0;
         }
-
     }
 }

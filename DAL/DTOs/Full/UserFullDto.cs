@@ -3,7 +3,7 @@ using DAL.Entities;
 
 namespace DAL.DTOs
 {
-    public class MemberDto
+    public class UserFullDto
     {
         public int Id { get; set; }
         public string Username { get; set; }
@@ -22,15 +22,15 @@ namespace DAL.DTOs
 
         public bool IsOnline { get; set; }
 
-        public TagDto[] Tags { get; set; }
+         public TagDto[] Tags { get; set; }
 
-        public CommunityDto[] Communities { get; set; }
+         public CommunityDto[] Communities { get; set; }
 
-        public ReviewDto[] Reviews { get; set; }
+         public ReviewDto[] Reviews { get; set; }
 
-        public EmailPrefrenceDto EmailPrefrence { get; set; }
+         public EmailPrefrenceDto EmailPrefrence { get; set; }
 
-       public float AskerAverageRating { get; set; }
-       public int AskerNumOfRatings { get; set; }
+        public float AskerAverageRating { get; set; }
+        public int AskerNumOfRatings { get; set; }
     }
 }

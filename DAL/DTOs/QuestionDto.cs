@@ -53,5 +53,7 @@ namespace DAL.DTOs
         public int? LastAnswererUserId { get; set; }
 
         public string LastAnswererUserName { get; set; }
+
+        public string RevieweeUsername { get; set; }
     }
 }

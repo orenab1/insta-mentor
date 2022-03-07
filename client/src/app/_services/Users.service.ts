@@ -25,13 +25,13 @@ export class UsersService {
   }
 
   deletePhoto() {
-    return this.http.delete(this.baseUrl + 'users/delete-photo');
-  }
-
-  updateUser(member: Member) {
-    return this.http.put(this.baseUrl + 'users/update-user', member).pipe(
+    return this.http.delete(this.baseUrl + 'users/delete-photo').pipe(
       map(() => {        
       })
     );
+  }
+
+  updateUser(member: Member) {
+    return this.http.put(this.baseUrl + 'users/update-user', member);
   }
 }

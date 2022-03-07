@@ -18,6 +18,7 @@ export class DisplayUserComponent implements OnInit {
   user: User;
   allTags: Tag[];
   communitiesAsString:string;
+  reviewAverageAsPercentage:number;
 
 
   constructor(private usersService: UsersService, private route: ActivatedRoute,
@@ -49,7 +50,8 @@ export class DisplayUserComponent implements OnInit {
     this.usersService.getMember(this.route.snapshot.paramMap.get('username')).subscribe(response => {
       this.member = response;
       if (!this.member.aboutMe){
-        this.member.aboutMe='Nothing to tell yet'
+        this.member.aboutMe='Nothing to tell yet';
+        this.reviewAverageAsPercentage=(this.member.askerAverageRating/5)*100;
       }
 
       this.communitiesAsString=this.member.communities.map((item)=>item.display).join(', ')

@@ -75,7 +75,8 @@ export class EditQuestionComponent implements OnInit {
         length: 1,
         created: '',
         lastAnswererUserId: undefined,
-        lastAnswererUserName:''
+        lastAnswererUserName:'',
+        revieweeUsername:''
       }
       this.getQuestion()
     })

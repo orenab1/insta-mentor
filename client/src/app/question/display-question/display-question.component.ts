@@ -5,9 +5,9 @@ import { take } from 'rxjs/operators'
 import { AccountService } from 'src/app/_services/account.service'
 import { environment } from 'src/environments/environment'
 import { Question } from '../../_models/question'
+import { Review } from '../../_models/question'
 import { QuestionService } from '../../_services/question.service'
 import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal'
-
 
 @Component({
   selector: 'app-display-question',
@@ -28,7 +28,10 @@ export class QuestionComponent implements OnInit {
   isInEditMode = false
   communitiesAsString: string
   lengthAsString: string
-  review:string
+  review: string
+  rating: number
+  hasCurrentUserMadeAnOffer: boolean = false
+
   modalConfig = {
     animated: true,
     backdrop: true,
@@ -103,7 +106,10 @@ export class QuestionComponent implements OnInit {
               break
           }
           this.isCurrentUserQuestionOwner =
-            this.model.askerUsername === this.currentUserUsername
+            this.model.askerUsername === this.currentUserUsername;
+
+          this.hasCurrentUserMadeAnOffer=this.model.offers.some((offer)=> offer.username==this.currentUserUsername);
+          
         }
       },
       (error) => {
@@ -112,26 +118,48 @@ export class QuestionComponent implements OnInit {
     )
   }
 
-  toggleSolved() {
-    this.model.isSolved = !this.model.isSolved
-  }
 
   solved(template: TemplateRef<any>) {
+    this.questionService.markQuestionAsSolved(this.model.id);
     this.modalRef = this.modalService.show(template, this.modalConfig)
   }
 
   answererHelped(template: TemplateRef<any>) {
     this.modalRef?.hide()
 
-    setTimeout(()=>{
-      let reviewModal:TemplateRef<any>;
-      this.bsModalRefReview =this.modalService.show(template,  this.modalConfig);
-    },100);
-  
-      // this.modalRef = this.modalService.show('reviewModal', this.modalConfig)
-   //   alert('yo')
+    setTimeout(() => {
+      let reviewModal: TemplateRef<any>
+      this.bsModalRefReview = this.modalService.show(template, this.modalConfig)
+    }, 100)
+
+    // this.modalRef = this.modalService.show('reviewModal', this.modalConfig)
+    //   alert('yo')
   }
   answererDidntHelp() {
     this.modalRef?.hide()
+  }
+
+  ratingChanged(rating: any) {
+    this.rating = rating
+    //rating
+    //this.review
+
+    //alert(rating);
+    console.log(rating)
+  }
+
+  submitReview() {
+    let review: Review = {
+      id: 0,
+      questionId: this.model.id,
+      rating: this.rating,
+      text: this.review,
+      reviewerId: this.model.askerId,
+      revieweeId: this.model.lastAnswererUserId,
+    }
+
+    this.questionService.publishReview(review).subscribe(() => {
+      this.bsModalRefReview.hide()
+    })
   }
 }

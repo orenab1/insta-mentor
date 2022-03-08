@@ -15,7 +15,8 @@ namespace DAL.DTOs
 
         public string Body { get; set; }
 
-        public string IsPayed { get; set; }
+        public bool IsPayed { get; set; }
+        public string IsActive { get; set; }
 
         public List<TagDto> Tags { get; set; }
         public List<CommunityDto> Communities { get; set; }

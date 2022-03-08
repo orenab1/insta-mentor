@@ -149,7 +149,7 @@
           >
             {{ question.lengthAsString }}
           </div>
-          <div class="bottom-tag" style="width: 15px;">
+          <div class="bottom-tag" style="width: 15px;" *ngIf='question.isPayed'>
             <img
               src="./assets/dollar.png"
               alt="Asker is willing to pay for a solution"

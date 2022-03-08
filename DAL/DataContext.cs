@@ -37,6 +37,7 @@ namespace DAL
         public DbSet<Photo> Photos { get; set; }
 
         public DbSet<QuestionsTags> QuestionsTags { get; set; }
+
         public DbSet<QuestionsCommunities> QuestionsCommunities { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
@@ -57,6 +58,18 @@ namespace DAL
                 .HasForeignKey(s => s.RevieweeId)
                 .OnDelete(DeleteBehavior.NoAction);
 
+            // builder
+            //     .Entity<UsersCommunities>()
+            //     .HasOne(uc => uc.AppUser)
+            //     .WithMany()
+            //     .OnDelete(DeleteBehavior.NoAction);
+
+            // builder
+            //     .Entity<UsersCommunities>()
+            //     .HasOne(uc => uc.Community)
+            //     .WithMany()
+            //     .OnDelete(DeleteBehavior.NoAction);
+
             // builder.Entity<Question>()
             //     .Property(b => b.Created)
             //     .HasDefaultValueSql("getdate()");
@@ -67,12 +80,20 @@ namespace DAL
         // => optionsBuilder
         //     .LogTo(Console.WriteLine)
         //     .EnableDetailedErrors();
+
+        
+        // protected override void OnConfiguring(DbContextOptionsBuilder options)
+        // {
+        //     // connect to sql server with connection string from app settings
+        //     options
+        //         .UseSqlServer(Configuration.GetConnectionString("vidcallme"));
+        // }
         private static List<Tag> SeedTags()
         {
             return new List<Tag> {
                 new Tag {
                     Id = 1,
-                    Text = "SQL",
+                    Text = "JavaScript",
                     IsApproved = true
                     //Creator = null,
                 },

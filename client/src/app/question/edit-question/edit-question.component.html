@@ -11,15 +11,15 @@
           <h5 class="semi-bold-font text-center my-3">{{ pageTitle }}</h5>
           <hr class="seperator mx-auto" />
 
-          <div>
-            <div *ngIf="model && !isNew" style="margin-left: 36%;">
+          <div style="text-align:center">
+            <div *ngIf="model && !isNew">
               <ng-toggle
                 
                 [color]="{
                   unchecked: '#dcdcdc',
                   checked: '#0099cc'
                 }"
-                [value]="model.isActive"
+               
                 [(ngModel)]="model.isActive"
                 [switchColor]="{
                   checked: '#fff',

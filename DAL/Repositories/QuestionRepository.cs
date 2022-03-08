@@ -45,7 +45,7 @@ namespace DAL.Repositories
                         .Where(x => x.Id == id))
                     .SingleOrDefaultAsync();
 
-            if (result.LastAnswererUserId.HasValue)
+            if (result?.LastAnswererUserId.HasValue == true)
             {
                 AppUser answerer =
                     await _context
@@ -58,7 +58,7 @@ namespace DAL.Repositories
 
             Review review =
                 await _context
-                    .Reviews
+                    .Reviews?
                     .FirstOrDefaultAsync(x => x.QuestionId == result.Id);
 
             if (review != null)

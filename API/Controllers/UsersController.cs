@@ -82,7 +82,6 @@ namespace API.Controllers
                 await _unitOfWork
                     .UserRepository
                     .GetUserByIdAsync(User.GetUserId());
-            
 
             _mapper.Map (memberUpdateDto, user);
 
@@ -90,7 +89,7 @@ namespace API.Controllers
 
             await _unitOfWork.Complete();
 
-            _unitOfWork
+            await _unitOfWork
                 .UserRepository
                 .UpdateCommunitiesForUser(memberUpdateDto.Communities,
                 User.GetUserId());
@@ -103,11 +102,10 @@ namespace API.Controllers
                 .TagRepository
                 .UpdateTagsForUser(newTags, User.GetUserId());
 
-            _unitOfWork.UserRepository.Update (user);
+           
 
-            if (await _unitOfWork.Complete()) return NoContent();
+            return NoContent();
 
-            return BadRequest("Failed to update user");
         }
 
         [HttpPut("{isOnline}", Name = "change-current-user-online-status")]
@@ -126,7 +124,7 @@ namespace API.Controllers
         [ActionName("add-photo")]
         public async Task<ActionResult<PhotoDto>> AddPhoto(IFormFile file)
         {
-            var user = 
+            var user =
                 await _unitOfWork
                     .UserRepository
                     .GetUserByIdAsync(User.GetUserId());
@@ -145,7 +143,7 @@ namespace API.Controllers
 
             if (await _unitOfWork.Complete())
             {
-                return  _mapper.Map<PhotoDto>(photo);
+                return _mapper.Map<PhotoDto>(photo);
 
                 // return CreatedAtRoute("GetUser",
                 // new { username = user.UserName },

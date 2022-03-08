@@ -42,11 +42,12 @@ namespace API.Extensions
 
             services
                 .AddDbContext<DataContext>(options =>
-                {
+                
                     options
-                        .UseSqlite(config
-                            .GetConnectionString("DefaultConnection"));
-                });
+                        .UseSqlServer(config
+                            .GetConnectionString("DefaultConnection")),
+                            ServiceLifetime.Transient
+                );
 
             return services;
         }

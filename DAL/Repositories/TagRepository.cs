@@ -51,7 +51,7 @@ namespace DAL.Repositories
 
             var prevUserTags = _context.UsersTags.Where(i => i.AppUserId == userId).ToList();
 
-            if (prevUserTags != null && prevUserTags.Count > 0) _context.UsersTags.RemoveRange(prevUserTags);
+            if (prevUserTags?.Count > 0) _context.UsersTags.RemoveRange(prevUserTags);
 
             if (newUserTags.Count > 0) _context.UsersTags.AddRange(newUserTags);
 

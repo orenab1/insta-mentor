@@ -48,16 +48,53 @@ export class PresenceService {
       this.onlineUsersSource.next(usernames)
     })
 
-    this.hubConnection.on('NewOfferReceived', (questionid) => {
-      alert('new offer! ' + questionid)
+    this.hubConnection.on('NewOfferReceived', (questionId) => {
+      this.toastr.info(
+        `<div>Someone just offered to help you with your question!</div><br/><a href="${environment.baseUrl}display-question/${questionId}" target="_blank">Click here to view it</a>`,
+        '',
+        {
+          timeOut: 600000,
+          enableHtml: true,
+          progressBar: true,
+          progressAnimation: 'increasing',
+          tapToDismiss:false,
+          closeButton:true,
+          disableTimeOut:'extendedTimeOut'
+        },
+      )
     })
 
-    this.hubConnection.on('NewCommentReceived', (questionid) => {
-      alert('new comment! ' + questionid)
+    this.hubConnection.on('NewCommentReceived', (questionId) => {
+      this.toastr.info(
+        `<div>Your question just received a new comment!</div><br/><a href="${environment.baseUrl}display-question/${questionId}" target="_blank">Click here to read it</a>`,
+        '',
+        {
+          timeOut: 600000,
+          enableHtml: true,
+          progressBar: true,
+          progressAnimation: 'increasing',
+          tapToDismiss:false,
+          closeButton:true,
+          disableTimeOut:'extendedTimeOut'
+        },
+      )
+      
     })
 
-    this.hubConnection.on('OffererLoggedIn', (questionid) => {
-      alert('')
+    this.hubConnection.on('OffererLoggedIn', (questionId) => {
+      this.toastr.info(
+        `<div>Someone who offered to help you just logged in!</div><br/><a href="${environment.baseUrl}display-question/${questionId}" target="_blank">Click here to view the question they offered to help with</a>`,
+        '',
+        {
+          timeOut: 600000,
+          enableHtml: true,
+          progressBar: true,
+          progressAnimation: 'increasing',
+          tapToDismiss:false,
+          closeButton:true,
+          disableTimeOut:'extendedTimeOut'
+        },
+      )
     })
 
     this.hubConnection.on('AskerAcceptedOffer', (askerAcceptedOfferDto) => {
@@ -77,18 +114,15 @@ export class PresenceService {
     })
 
     this.hubConnection.on('OffererCancelsOffer', () => {
-      alert('OffererCancelsOffer   ')
     })
 
     this.hubConnection.on(
       'QuestionIsAskedAccordingToCommunityAndTags',
       (question) => {
-        alert('')
       },
     )
 
     this.hubConnection.on('QuestionIsAskedAccordingToTags', (question) => {
-      alert('')
     })
   }
 

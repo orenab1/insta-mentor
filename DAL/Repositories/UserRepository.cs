@@ -91,13 +91,6 @@ namespace DAL.Repositories
 
         public async Task<UserFullDto> GetUserAsync(int userId)
         {
-            var k =
-                await _mapper
-                    .ProjectTo<UserFullDto>(_context
-                        .Users
-                        .Where(x => x.Id == userId))
-                    .ToListAsync();
-
             return await _mapper
                 .ProjectTo<UserFullDto>(_context
                     .Users

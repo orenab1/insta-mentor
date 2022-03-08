@@ -79,20 +79,26 @@ namespace API.Helpers
                     opt
                         .MapFrom(src =>
                             src.ReviewsReceived != null
-                                ? src.ReviewsReceived.Count()
+                                ? src.ReviewsReceived.Count
                                 : 0))
                 .ForMember(dest => dest.AskerAverageRating,
                 opt =>
                     opt
                         .MapFrom(src =>
-                            (src.ReviewsReceived != null && src.ReviewsReceived.Count()!=0)
-                                ? (
-                                (float) src.ReviewsReceived.Sum(r => r.Rating) /
-                                (float) src.ReviewsReceived.Count()
-                                )
-                                : 0));
-                
-                
+                            (src.ReviewsReceived == null || src.ReviewsReceived.Count == 0)
+                                ? 0
+                                : (float)
+                                src.ReviewsReceived.Average(r => r.Rating)));
+
+            //             (src.ReviewsReceived != null && src.ReviewsReceived.Count !=0)?
+            // ((float)src.ReviewsReceived.Sum(r => r.Rating) / (float)src.ReviewsReceived.Count)
+            // : 0));
+            // (src.ReviewsReceived == null || src.ReviewsReceived.Count==0)
+            //     ? 0
+            //     : (
+            //     (float) (src.ReviewsReceived.Sum(r => r.Rating) /
+            //     (float) src.ReviewsReceived.Count)
+            //     )));
             CreateMap<MemberUpdateDto, AppUser>();
 
             CreateMap<EmailPrefrenceDto, EmailPrefrence>();

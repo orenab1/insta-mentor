@@ -38,7 +38,8 @@ namespace API.Controllers
             this._unitOfWork = unitOfWork;
         }
 
-        [HttpPost("register")]
+ [HttpPost]
+        [ActionName("register")]
         public async Task<ActionResult<UserDto>> Register(RegisterDto registerDto)
         {
             if (await UserExists(registerDto.Email))
@@ -74,7 +75,8 @@ namespace API.Controllers
             };
         }
 
-        [HttpPost("forgot-password")]
+ [HttpPost]
+        [ActionName("forgot-password")]
         public async Task<ActionResult<UserDto>> ForgotPassword(ForgotPasswordDto forgotPasswordDto){
             if (await UserExists(forgotPasswordDto.Email))
             {

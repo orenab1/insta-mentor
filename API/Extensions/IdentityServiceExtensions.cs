@@ -27,6 +27,7 @@ namespace API.Extensions
                                 new SymmetricSecurityKey(Encoding
                                         .UTF8
                                         .GetBytes(config["TokenKey"])),
+                                   //     .GetBytes("1d20c454-4f6c-45c4-a41a-98acdd245b75")),
                             ValidateIssuer = false,
                             ValidateAudience = false
                         };

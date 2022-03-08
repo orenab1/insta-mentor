@@ -49,6 +49,7 @@
               id="email"
               [(ngModel)]="member.email"
             />
+            <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
           </div>
           <div class="form-group">
             <label for="title">Title</label>
@@ -58,17 +59,20 @@
               name="title"
               id="title"
               [(ngModel)]="member.title"
+              maxlength="50"
             />
           </div>
           <div class="form-group">
             <label for="aboutMe">About Me</label>
-            <input
+            <textarea
               type="textarea"
               class="form-control"
               name="aboutMe"
               id="aboutMe"
-              [(ngModel)]="member.aboutMe"
-            />
+              rows='5'
+              style="resize: none;"
+              [(ngModel)]="member.aboutMe"></textarea>
+            
           </div>
 
           <div class="form-group mt-4">

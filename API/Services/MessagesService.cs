@@ -137,9 +137,9 @@ namespace API.Services
             {
                 _mailService
                     .SendEmailAsync(new EmailDto {
-                        Subject = "New Comment Received!",
+                        Subject = "Your question just received a new comment!",
                         Body =
-                            "A Question of yours just got a new comment! Click here to view it",
+                            "A Question of yours just got a new comment! Click here to read it",
                         To = asker.Email
                     });
             }

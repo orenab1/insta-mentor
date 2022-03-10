@@ -1,5 +1,6 @@
 export const environment = {
   production: true,
-  apiUrl:'api/',
-  hubUrl:'hubs/'
+  apiUrl:'https://vidcallme.azurewebsites.net/api/',
+  hubUrl:'hubs/',
+  baseUrl:'/'
 };

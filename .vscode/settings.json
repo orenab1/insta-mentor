@@ -8,5 +8,7 @@
             "database": "instamentor.db"
         }
     ],
-    "sqltools.useNodeRuntime": true
+    "sqltools.useNodeRuntime": true,
+    "appService.defaultWebAppToDeploy": "",
+    "appService.deploySubpath": "client\\dist\\client"
 }

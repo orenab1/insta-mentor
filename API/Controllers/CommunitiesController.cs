@@ -120,7 +120,7 @@ namespace API.Controllers
         private async Task<bool> CanAddCommunity(string addedCommunityName)
         {
             DateTime? lastCreatedCommunityByUser =
-                await _unitOfWork
+              await  _unitOfWork
                     .CommunityRepository
                     .LastCreatedCommunity(User.GetUserId());
 

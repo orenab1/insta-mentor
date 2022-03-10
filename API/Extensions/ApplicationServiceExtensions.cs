@@ -40,14 +40,21 @@ namespace API.Extensions
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddAutoMapper(typeof (AutoMapperProfiles).Assembly);
 
-            services
-                .AddDbContext<DataContext>(options =>
+            // services
+            //     .AddDbContext<DataContext>(options =>
                 
-                    options
-                        .UseSqlServer(config
-                            .GetConnectionString("DefaultConnection")),
-                            ServiceLifetime.Transient
-                );
+            //         options
+            //             .UseSqlServer(config
+            //                 .GetConnectionString("DefaultConnection")),
+            //              //   ServiceLifetime.Transient,
+            //                 po=>po.EnableRetryOnFailure()
+            //     );
+
+
+                   services.AddDbContext<DataContext>(
+        options => options.UseSqlServer(
+            config.GetConnectionString("DefaultConnection"),
+            providerOptions => providerOptions.EnableRetryOnFailure()));
 
             return services;
         }

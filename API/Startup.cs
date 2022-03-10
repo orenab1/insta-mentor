@@ -27,6 +27,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.IdentityModel.Tokens.Jwt;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Serilog;
 
 
 namespace API
@@ -81,7 +82,7 @@ namespace API
                         builder =>
                         {
                             builder
-                                .WithOrigins("https://localhost:4200")
+                                .WithOrigins("https://localhost:4200", "https://vidcallme-app.azurewebsites.net")
                                 .AllowAnyHeader()
                                 .AllowAnyMethod()
                                 .AllowCredentials();
@@ -115,6 +116,18 @@ namespace API
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+
+            Log.Logger = new LoggerConfiguration()
+        .ReadFrom.Configuration(_config)
+        .CreateLogger();
+
+            // Log.Logger=new LoggerConfiguration()
+            //     .ReadFrom.Configuration(Configuration)
+            //     .Enrich.FromLogContext()
+            //     .CreateLogger();
+
+            // loggerFactory.AddSerilog();
+
             app.UseDeveloperExceptionPage();
 
             if (env.IsDevelopment())

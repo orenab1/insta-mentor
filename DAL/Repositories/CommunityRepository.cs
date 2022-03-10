@@ -146,8 +146,7 @@ namespace DAL.Repositories
                 _context.Communities.Where(x => x.CreatorId == userId);
 
             if (
-                communitiesCreatedByUser != null &&
-                communitiesCreatedByUser.Count() > 0
+                communitiesCreatedByUser?.Count() > 0
             )
             {
                 return communitiesCreatedByUser.Max(c => c.Created);

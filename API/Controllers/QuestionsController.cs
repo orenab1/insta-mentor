@@ -29,6 +29,8 @@ using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json.Linq;
 using RestSharp;
 using RestSharp.Authenticators;
+using Serilog;
+using Serilog.Sinks.MSSqlServer;
 
 // using RestSharpAutomation.HelperClass.Request;
 // using RestSharpAutomation.ReportAttribute;
@@ -48,19 +50,40 @@ namespace API.Controllers
 
         private readonly IZoomService _zoomService;
 
+        private readonly ILogger _logger;
+
         public QuestionsController(
             IUnitOfWork unitOfWork,
             IPhotoService photoService,
             IMapper mapper,
             IMessagesService messagesService,
-            IZoomService zoomService
+            IZoomService zoomService,
+            ILogger logger
         )
         {
+            this._logger = logger;
             this._unitOfWork = unitOfWork;
             this._photoService = photoService;
             this._mapper = mapper;
             this._messagesService = messagesService;
             this._zoomService = zoomService;
+
+            // int
+            //     a = 10,
+            //     b = 0;
+            // try
+            // {
+            //     this._logger.Debug("Dividing {A} by {B}", a, b);
+            //     Console.WriteLine(a / b);
+            // }
+            // catch (Exception ex)
+            // {
+            //     this._logger.Error(ex, "Something went wrong");
+            // }
+            // finally
+            // {
+            //     //Log.CloseAndFlush();
+            // }
         }
 
         [HttpPost]
@@ -107,12 +130,11 @@ namespace API.Controllers
                 askerAcceptedOfferDto
             );
 
-             _unitOfWork
-                    .QuestionRepository
-                    .UpdateQuestionLastOfferer(questionId,offererId);
-            return Ok(new AcceptedOfferDto{
-                MeetingUrl=meetingUrl
-            } );
+            _unitOfWork.QuestionRepository.UpdateQuestionLastOfferer (
+                questionId,
+                offererId
+            );
+            return Ok(new AcceptedOfferDto { MeetingUrl = meetingUrl });
 
             // var tokenHandler =
             //     new System.IdentityModel.Tokens.Jwt.JwtSecurityTokenHandler();
@@ -209,7 +231,8 @@ namespace API.Controllers
             )
             {
                 await _messagesService
-                    .NotifyNewCommentAsync(commentDto.QuestionId);
+                    .NotifyNewCommentAsync(commentDto.QuestionId,
+                    User.GetUserId());
             }
 
             return Ok();
@@ -236,6 +259,12 @@ namespace API.Controllers
         public async Task<ActionResult<IEnumerable<MyQuestionSummaryDto>>>
         GetMyQuestions()
         {
+            this._logger.Debug("Dividing 10 by 20", 10, 20);
+
+            this._logger.Error("Something went wrong");
+
+            Log.CloseAndFlush();
+
             return Ok(await _unitOfWork
                 .QuestionRepository
                 .GetMyQuestionsAsync(User.GetUserId()));

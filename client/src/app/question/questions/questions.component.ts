@@ -64,4 +64,8 @@ export class QuestionsComponent implements OnInit {
       },
     )
   }
+
+  goToAsk(){
+    this.router.navigateByUrl('question/edit-question');
+  }
 }

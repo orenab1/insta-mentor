@@ -23,6 +23,9 @@ namespace DAL.DTOs
 
         public int Length{get;set;}
 
-        public PhotoDto Photo { get; set; }
+        public int? PhotoId{get;set;}
+        public string PhotoUrl{get;set;}
+
+       // public PhotoDto Photo { get; set; }
     }
 }

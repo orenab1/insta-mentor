@@ -38,7 +38,7 @@ export class EditUserComponent implements OnInit {
     this.loadMember()
 
     this.loadTags()
-    this.loadCommunities()
+   // this.loadCommunities()
   }
 
   loadTags() {
@@ -56,6 +56,15 @@ export class EditUserComponent implements OnInit {
   }
 
   editMember() {
+    if (this.member.tags!=null && this.member.tags.length!=0) {
+      for (let i=0;i<this.member.tags.length; i++){
+
+        if (isNaN(this.member.tags[i].value)){
+          this.member.tags[i].value=0;
+        }
+      }
+    }
+
     this.usersService.updateUser(this.member).subscribe(() => {
       this.accountService.setCurrentUser({username:this.member.username,token:this.user.token,photoUrl:this.member.photoUrl,id:this.member.id})
       this.router.navigateByUrl('users/' + this.user.username)

@@ -63,6 +63,11 @@ export class QuestionComponent implements OnInit {
     })
   }
 
+  openImage(){
+    window.open( this.model.photoUrl,'Question Image');
+  }
+
+
   toggleDisplayComments() {
     this.shouldDisplayComments = !this.shouldDisplayComments
   }

@@ -39,6 +39,8 @@ namespace DAL.Entities
 
         public Photo Photo { get; set; }
 
+        public int? PhotoId{ get; set; }
+
         public int? LastAnswererUserId { get; set; }
     }
 }

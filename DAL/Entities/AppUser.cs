@@ -35,5 +35,7 @@ namespace DAL.Entities
 
         public ICollection<UsersTags> Tags { get; set; } 
         public ICollection<UsersCommunities> Communities { get; set; }
+
+        public ICollection<Connection> Connections { get; set; }
     }
 }

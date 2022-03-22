@@ -4,14 +4,16 @@ using DAL;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DAL.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20220313094617_Question_added_photoId")]
+    partial class Question_added_photoId
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -121,30 +123,6 @@ namespace DAL.Migrations
                     b.HasIndex("CreatorId");
 
                     b.ToTable("Communities");
-                });
-
-            modelBuilder.Entity("DAL.Entities.Connection", b =>
-                {
-                    b.Property<string>("ConnectionID")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<bool>("Connected")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTime>("ConnectedTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("UserAgent")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("UserId")
-                        .HasColumnType("int");
-
-                    b.HasKey("ConnectionID");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Connections");
                 });
 
             modelBuilder.Entity("DAL.Entities.EmailPrefrence", b =>
@@ -480,15 +458,6 @@ namespace DAL.Migrations
                     b.Navigation("Creator");
                 });
 
-            modelBuilder.Entity("DAL.Entities.Connection", b =>
-                {
-                    b.HasOne("DAL.Entities.AppUser", "User")
-                        .WithMany("Connections")
-                        .HasForeignKey("UserId");
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("DAL.Entities.EmailPrefrence", b =>
                 {
                     b.HasOne("DAL.Entities.AppUser", "AppUser")
@@ -645,8 +614,6 @@ namespace DAL.Migrations
             modelBuilder.Entity("DAL.Entities.AppUser", b =>
                 {
                     b.Navigation("Communities");
-
-                    b.Navigation("Connections");
 
                     b.Navigation("EmailPrefrence");
 

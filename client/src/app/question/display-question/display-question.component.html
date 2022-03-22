@@ -48,7 +48,7 @@
           </div>
 
           <div class="my-2" style="opacity: 0.7;">
-            Community:&nbsp;{{ communitiesAsString }}
+            <!-- Community:&nbsp;{{ communitiesAsString }} -->
 
             <div>
               Author thinks this should take
@@ -64,9 +64,10 @@
 
           <div>
             <p>{{ model.body }}</p>
-            <div class="d-flex flex-row my-5">
-              <img *ngIf="model.photoUrl" img src="{{ model.photoUrl }}" />
+            <div class="d-flex flex-row mt-5">
+              <img *ngIf="model.photoUrl" img src="{{ model.photoUrl }}" style="height: auto; max-height: 400px; max-width: 100%;width: auto;" (click)="openImage();"/>              
             </div>
+            <div *ngIf="model.photoUrl" style='font-size: 12px;' class='semi-bold-font mb-5'>Click image to enlarge</div>
             <div style="text-align: center;">
               <div
                 *ngIf="model.revieweeUsername"

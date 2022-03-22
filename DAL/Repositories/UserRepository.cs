@@ -28,6 +28,53 @@ namespace DAL.Repositories
             this._mapper = mapper;
         }
 
+         public async Task<bool>
+        MarkConnectionClosed(
+            string connectionId
+        )
+        {
+            var connection =_context.Connections.Find(connectionId);
+            connection.Connected=false;
+            return await _context.SaveChangesAsync()>0;
+        }
+
+        public string[]
+        GetOnlineUsers(
+        )
+        {
+            return _context.Connections.Select(c=>c.User.UserName).Distinct().ToArray();
+        }
+
+        public bool IsUserOnline(string username){
+            return _context.Users.Include(u => u.Connections).SingleOrDefault(u=>u.UserName == username).Connections.Any(c=>c.Connected);
+        }
+
+       
+        public async Task<bool>
+        SaveNewConnectionForUser(
+            string username,
+            string connectionId,
+            string userAgent
+        )
+        {
+            var user =
+                _context
+                    .Users
+                    .Include(u => u.Connections)
+                    .SingleOrDefault(u => u.UserName == username);
+
+            user
+                .Connections
+                .Add(new Connection {
+                    ConnectionID = connectionId,
+                    UserAgent = userAgent,
+                    Connected = true,
+                    ConnectedTime = DateTime.Now
+                });
+
+           return await _context.SaveChangesAsync()>0;
+        }
+
         public void Update(AppUser user)
         {
             _context.Entry(user).State = EntityState.Modified;

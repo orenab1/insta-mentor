@@ -82,7 +82,7 @@ namespace API
                         builder =>
                         {
                             builder
-                                .WithOrigins("https://localhost:4200", "https://vidcallme-app.azurewebsites.net")
+                                .WithOrigins("https://localhost:4200", "https://vidcallme-app.azurewebsites.net","https://vidcallme.azurewebsites.net/hubs/")
                                 .AllowAnyHeader()
                                 .AllowAnyMethod()
                                 .AllowCredentials();
@@ -92,6 +92,8 @@ namespace API
             services.AddIdentityServices (_config);
 
             services.AddSignalR();
+
+            services.AddSingleton(Log.Logger);
 
             services
                 .AddAuthentication()
@@ -116,10 +118,11 @@ namespace API
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            
 
-            Log.Logger = new LoggerConfiguration()
-        .ReadFrom.Configuration(_config)
-        .CreateLogger();
+        //     Log.Logger = new LoggerConfiguration()
+        // .ReadFrom.Configuration(_config)
+        // .CreateLogger();
 
             // Log.Logger=new LoggerConfiguration()
             //     .ReadFrom.Configuration(Configuration)
@@ -159,9 +162,6 @@ namespace API
                 {
                     endpoints.MapControllers();
                     endpoints.MapHub<PresenceHub>("hubs/presence");
-                    endpoints.MapHub<BroadcastHub>("hubs/notify");  
-                    endpoints.MapHub<PresenceHub>("hubs/message");
-                    endpoints.MapHub<NotificationsHub>("hubs/notifications");
                 });
 
         }

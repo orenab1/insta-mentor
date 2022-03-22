@@ -13,7 +13,8 @@ import { User } from '../../_models/user'
 export class PresenceService {
   hubUrl = environment.hubUrl
   private hubConnection: HubConnection
-  private hubConnection2: HubConnection
+
+
   private onlineUsersSource = new BehaviorSubject<string[]>([])
   onlineUsers$ = this.onlineUsersSource.asObservable()
 
@@ -30,6 +31,7 @@ export class PresenceService {
     this.hubConnection.start().catch((error) => console.log(error))
 
     this.hubConnection.on('UserIsOnline', (username) => {
+
       alert(username + ' connected')
       this.onlineUsers$.pipe(take(1)).subscribe((usernames) => {
         this.onlineUsersSource.next([...usernames, username])
@@ -37,6 +39,7 @@ export class PresenceService {
     })
 
     this.hubConnection.on('UserIsOffline', (username) => {
+      alert(username + ' DISconnected')
       this.onlineUsers$.pipe(take(1)).subscribe((usernames) => {
         this.onlineUsersSource.next([
           ...usernames.filter((x) => x !== username),

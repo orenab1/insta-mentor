@@ -76,13 +76,20 @@ export class EditQuestionComponent implements OnInit {
         created: '',
         lastAnswererUserId: undefined,
         lastAnswererUserName:'',
-        revieweeUsername:''
+        revieweeUsername:'',
+        photoUrl:'',
+        photoId:0
       }
       this.getQuestion()
     })
 
     this.loadTags()
-    this.loadCommunities()
+    //this.loadCommunities()
+  }
+
+
+  openImage(){
+    window.open( this.model.photoUrl,'Question Image');
   }
 
   toggleDisplayComments() {
@@ -126,17 +133,29 @@ export class EditQuestionComponent implements OnInit {
     if (response) {
       let photo = JSON.parse(response)
       this.model.photo = { Url: '', Id: 0 }
-      this.model.photo.Url = photo.url
-      this.model.photo.Id = photo.id
+      this.model.photoUrl = photo.url
+      this.model.photoId = photo.id
     }
   }
 
   deletePhoto = () => {
-    this.model.photo.Url = ''
-    this.model.photo.Id = 0
+    this.model.photoUrl = ''
+    this.model.photoId = 0
   }
 
   askQuestion() {
+
+    if (this.model.tags!=null && this.model.tags.length!=0) {
+      for (let i=0;i<this.model.tags.length; i++){
+
+        if (isNaN(this.model.tags[i].value)){
+          this.model.tags[i].value=0;
+        }
+      }
+    }
+
+  
+
     this.questionService.askQuestion(this.model).subscribe({
       next: (questionId) =>
         this.router.navigateByUrl('display-question/' + questionId),

@@ -38,6 +38,11 @@ namespace DAL.Repositories
 
         public async Task<QuestionDto> GetQuestionAsync(int id)
         {
+            if (id == 0)
+            {
+                return new QuestionDto();
+            }
+
             QuestionDto result =
                 await _mapper
                     .ProjectTo<QuestionDto>(_context
@@ -75,6 +80,13 @@ namespace DAL.Repositories
 
         public async Task<int> AskQuestionAsync(QuestionEditDto questionEditDto)
         {
+            if (questionEditDto.PhotoId == 0)
+            {
+                questionEditDto.PhotoId=null;
+            }
+            int? photoID = questionEditDto.PhotoId;
+            questionEditDto.PhotoId = null;
+
             Question question = _mapper.Map<Question>(questionEditDto);
 
             if (question.Id == 0)
@@ -96,16 +108,24 @@ namespace DAL.Repositories
             }
             await _context.SaveChangesAsync();
 
+            if (photoID.HasValue)
+            {
+                question.PhotoId = photoID;
+                await _context.SaveChangesAsync();
+            }
+
             await UpdateTagsForQuestion(questionEditDto.Tags.ToArray(),
             questionEditDto.AskerId,
             question.Id);
 
+            if (questionEditDto.Communities!=null){
             await UpdateCommunitiesForQuestion(questionEditDto
                 .Communities
                 .ToArray(),
             questionEditDto.AskerId,
             question.Id);
-
+            }
+            
             return question.Id;
         }
 

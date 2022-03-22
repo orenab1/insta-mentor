@@ -75,7 +75,9 @@
             [onUploadSuccess]="onUploadPhotoSuccess"
             [onDeletePhoto]="deletePhoto"
           ></app-photo-editor>
-          <img *ngIf="model.photo" src="{{model.photo.Url}}" class="card-img-top img-thumbnail" style="max-width: 100%;" />
+          <img *ngIf="model.photoUrl" src="{{model.photoUrl}}" class="card-img-top img-thumbnail" style="height: auto; max-height: 400px; max-width: 100%;width: auto;" 
+          (click)="openImage();"/>
+          <div *ngIf="model.photoUrl" style='font-size: 12px;' class='semi-bold-font'>Click image to enlarge</div>
 
           <div class="form-group mt-4">
             <label for="aboutMe">Tags</label>
@@ -88,7 +90,7 @@
             </tag-input>
           </div>
 
-          <div class="form-group mt-4">
+          <!-- <div class="form-group mt-4">
             <label for="communities">Community</label>
             <tag-input
               name="communities"
@@ -105,7 +107,7 @@
                 [placeholder]="community"
               ></tag-input-dropdown>
             </tag-input>
-          </div>
+          </div> -->
 
           <div class="form-group mt-4">
             <label class="form-check-label" for="howLong">

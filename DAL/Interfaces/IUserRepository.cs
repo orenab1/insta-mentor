@@ -31,5 +31,21 @@ namespace DAL.Interfaces
         UpdateCommunitiesForUser(
             CommunityDto[] newCommunities, int userId
         );
+
+        Task<bool>
+        SaveNewConnectionForUser(
+            string username,
+            string connectionId,
+            string userAgent
+        );
+
+        Task<bool>
+        MarkConnectionClosed(
+            string connectionId
+        );
+
+        string[] GetOnlineUsers();
+
+        public bool IsUserOnline(string username);
     }
 }

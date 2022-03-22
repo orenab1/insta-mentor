@@ -4,14 +4,16 @@ using DAL;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DAL.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20220322150219_connections_added")]
+    partial class connections_added
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -128,6 +130,9 @@ namespace DAL.Migrations
                     b.Property<string>("ConnectionID")
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<int?>("AppUserId")
+                        .HasColumnType("int");
+
                     b.Property<bool>("Connected")
                         .HasColumnType("bit");
 
@@ -137,12 +142,9 @@ namespace DAL.Migrations
                     b.Property<string>("UserAgent")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("UserId")
-                        .HasColumnType("int");
-
                     b.HasKey("ConnectionID");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("AppUserId");
 
                     b.ToTable("Connections");
                 });
@@ -482,11 +484,9 @@ namespace DAL.Migrations
 
             modelBuilder.Entity("DAL.Entities.Connection", b =>
                 {
-                    b.HasOne("DAL.Entities.AppUser", "User")
+                    b.HasOne("DAL.Entities.AppUser", null)
                         .WithMany("Connections")
-                        .HasForeignKey("UserId");
-
-                    b.Navigation("User");
+                        .HasForeignKey("AppUserId");
                 });
 
             modelBuilder.Entity("DAL.Entities.EmailPrefrence", b =>

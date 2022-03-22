@@ -21,6 +21,8 @@ export interface Question {
   lastAnswererUserId: number
   lastAnswererUserName: string
   revieweeUsername: string
+  photoUrl:string
+  photoId:number
 }
 
 export interface QuestionSummary {

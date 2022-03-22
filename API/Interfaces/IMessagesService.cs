@@ -8,7 +8,7 @@ namespace API.Interfaces
         // name template: Notify who? what?
         Task NotifyNewOfferAsync(int questionId);
 
-        Task NotifyNewCommentAsync(int questionId);
+        Task NotifyNewCommentAsync(int questionId,int currentUserId);
 
         Task NotifyAskersOffererLoggedInAsync(int questionId);
 

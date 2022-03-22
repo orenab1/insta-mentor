@@ -26,6 +26,7 @@ namespace API.Services
         private readonly IMailService _mailService;
 
         private readonly PresenceTracker _tracker;
+        private readonly PresenceTrackerDB _trackerDB;
 
         private readonly IHubContext<PresenceHub, IPresenceHub> _presenceHub;
 
@@ -33,12 +34,14 @@ namespace API.Services
             IUnitOfWork unitOfWork,
             IMailService mailService,
             PresenceTracker tracker,
+            PresenceTrackerDB trackerDB,
             IHubContext<PresenceHub, IPresenceHub> presenceHub
         )
         {
             this._unitOfWork = unitOfWork;
             this._mailService = mailService;
             this._tracker = tracker;
+            this._trackerDB = trackerDB;
             this._presenceHub = presenceHub;
         }
 
@@ -93,6 +96,8 @@ namespace API.Services
                     .QuestionRepository
                     .GetQuestionAsync(questionId);
 
+          
+
             AppUser asker =
                 await _unitOfWork
                     .UserRepository
@@ -121,12 +126,18 @@ namespace API.Services
             }
         }
 
-        public async Task NotifyNewCommentAsync(int questionId)
+        public async Task NotifyNewCommentAsync(int questionId,int currentUserId)
         {
             QuestionDto questionDto =
                 await _unitOfWork
                     .QuestionRepository
                     .GetQuestionAsync(questionId);
+
+
+                      if (currentUserId==questionDto.AskerId)
+            {
+                return;
+            }
 
             AppUser asker =
                 await _unitOfWork

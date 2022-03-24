@@ -10,8 +10,7 @@ namespace DAL.Entities
 
         public string UserAgent { get; set; }
 
-        public bool Connected { get; set; }
-
         public DateTime ConnectedTime { get; set; }
+        public DateTime? DisconnectedTime { get; set; }
     }
 }

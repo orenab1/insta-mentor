@@ -368,7 +368,7 @@ namespace DAL.Repositories
         }
 
         public async Task<IEnumerable<AskerQuestionDTO>>
-        GetAskerUsernamesByOffererId(int userId)
+        GetAskerIdsByOffererId(int userId)
         {
             return _context
                 .Offers
@@ -377,7 +377,7 @@ namespace DAL.Repositories
                 .Where(q => q.IsActive)
                 .Select(q =>
                     new AskerQuestionDTO {
-                        AskerUsername = q.Asker.UserName,
+                        AskerId = q.Asker.Id,
                         QuestionId = q.Id
                     });
         }

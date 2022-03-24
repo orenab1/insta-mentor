@@ -12,7 +12,7 @@ namespace API.Interfaces
 
         Task NotifyAskersOffererLoggedInAsync(int questionId);
 
-        Task NotifyOffererAskerAcceptedOfferAsync(string offererUsername,AskerAcceptedOfferDto askerAcceptedOfferDto);
+        Task NotifyOffererAskerAcceptedOfferAsync(int offererId,AskerAcceptedOfferDto askerAcceptedOfferDto);
 
         Task InviteToCommunity(int communityId, int userId, string username);
     }

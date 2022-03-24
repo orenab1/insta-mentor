@@ -126,7 +126,7 @@ namespace API.Controllers
             string offererUsername = offererAppUser.UserName;
 
             _messagesService.NotifyOffererAskerAcceptedOfferAsync (
-                offererUsername,
+                offererId,
                 askerAcceptedOfferDto
             );
 

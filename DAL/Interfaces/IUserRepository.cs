@@ -47,5 +47,7 @@ namespace DAL.Interfaces
         string[] GetOnlineUsers();
 
         public bool IsUserOnline(string username);
+
+        public  List<string> GetConnectionIdsForUser(int userId);
     }
 }

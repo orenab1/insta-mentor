@@ -100,3 +100,4 @@ INSERT INTO [dbo].[Tags] VALUES ('swing',1,1,GETDATE());
 INSERT INTO [dbo].[Tags] VALUES ('unit-testing',1,1,GETDATE());
 INSERT INTO [dbo].[Tags] VALUES ('file',1,1,GETDATE());
 INSERT INTO [dbo].[Tags] VALUES ('tensorflow',1,1,GETDATE());
+INSERT INTO [dbo].[Tags] VALUES ('clean-code',1,1,GETDATE());

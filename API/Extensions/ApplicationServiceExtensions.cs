@@ -22,8 +22,7 @@ namespace API.Extensions
             IConfiguration config
         )
         {
-            services.AddSingleton<PresenceTracker>();
-            services.AddScoped<PresenceTrackerDB>();
+            services.AddScoped<PresenceTracker>();
             services.AddScoped<IMailService, MailService>();
             services.AddScoped<IMessagesService, MessagesService>();
              services.AddScoped<IZoomService, ZoomService>();

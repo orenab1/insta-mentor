@@ -29,7 +29,7 @@ namespace DAL.Interfaces
         Task DeleteCommentAsync(int commentId,int userId);
         Task DeleteOfferAsync(int offerId, int userId);
 
-        Task<IEnumerable<AskerQuestionDTO>> GetAskerUsernamesByOffererId(int userId);
+        Task<IEnumerable<AskerQuestionDTO>> GetAskerIdsByOffererId(int userId);
         Task<int> GetQuestionIdByOfferId(int offerId);
 
         Task<int> GetOffererUserIdByOfferId(int offerId);

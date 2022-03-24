@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core'
 import { Router } from '@angular/router'
 import { UserSummary } from 'src/app/_models/user'
+import { PresenceService } from 'src/app/_services/signalR/presence.service'
 import { UsersService } from 'src/app/_services/Users.service'
 
 @Component({
@@ -13,11 +14,20 @@ export class DisplayUserSummaryComponent implements OnInit {
   @Input() username: string
   @Input() userId: number
   communitiesAsString: string
+  isUserOnline: boolean = false
 
-  constructor(private usersService: UsersService,private router: Router) {}
+  constructor(
+    private usersService: UsersService,
+    private presenceService: PresenceService,
+    private router: Router,
+  ) {}
 
   ngOnInit(): void {
     this.loadUserSummary()
+
+    this.presenceService.onlineUsers$.subscribe((usernames) => {
+      this.isUserOnline = usernames.indexOf(this.username) > -1
+    })
   }
 
   loadUserSummary(): void {
@@ -27,14 +37,16 @@ export class DisplayUserSummaryComponent implements OnInit {
         error: (error) => console.log(error)
       })
     } else {
-      this.usersService.getUserSummaryById(this.userId).subscribe((response) => {
-        this.model = response
-        error: (error) => console.log(error)
-      })
+      this.usersService
+        .getUserSummaryById(this.userId)
+        .subscribe((response) => {
+          this.model = response
+          error: (error) => console.log(error)
+        })
     }
   }
 
-  clicked(){
-    this.router.navigateByUrl('users/' + this.username);
+  clicked() {
+    this.router.navigateByUrl('users/' + this.username)
   }
 }

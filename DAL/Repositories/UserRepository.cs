@@ -28,13 +28,18 @@ namespace DAL.Repositories
             this._mapper = mapper;
         }
 
+        public  List<string> GetConnectionIdsForUser(int userId){
+            return  _context.Connections.Where(c=>c.User.Id==userId && !c.DisconnectedTime.HasValue).Select(c=>c.ConnectionID).ToList();
+        }
+
+
          public async Task<bool>
         MarkConnectionClosed(
             string connectionId
         )
         {
             var connection =_context.Connections.Find(connectionId);
-            connection.Connected=false;
+            connection.DisconnectedTime=DateTime.Now;
             return await _context.SaveChangesAsync()>0;
         }
 
@@ -42,11 +47,11 @@ namespace DAL.Repositories
         GetOnlineUsers(
         )
         {
-            return _context.Connections.Select(c=>c.User.UserName).Distinct().ToArray();
+            return _context.Connections.Where(c=>!c.DisconnectedTime.HasValue).Select(c=>c.User.UserName).Distinct().ToArray();
         }
 
         public bool IsUserOnline(string username){
-            return _context.Users.Include(u => u.Connections).SingleOrDefault(u=>u.UserName == username).Connections.Any(c=>c.Connected);
+            return _context.Users.Include(u => u.Connections).SingleOrDefault(u=>u.UserName == username).Connections.Any(c=>!c.DisconnectedTime.HasValue);
         }
 
        
@@ -68,7 +73,6 @@ namespace DAL.Repositories
                 .Add(new Connection {
                     ConnectionID = connectionId,
                     UserAgent = userAgent,
-                    Connected = true,
                     ConnectedTime = DateTime.Now
                 });
 

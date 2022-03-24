@@ -20,6 +20,10 @@ export class PresenceService {
 
   constructor(private router: Router, private toastr: ToastrService) {}
 
+  isUserOnline(){
+    
+  }
+
   createHubConnection(user: User) {
     this.hubConnection = new HubConnectionBuilder()
       .withUrl(this.hubUrl + 'presence', {

@@ -13,8 +13,8 @@ namespace API.SignalR
     [Authorize]
     public class PresenceHub : Hub<IPresenceHub> 
     {
-        private readonly PresenceTrackerDB _tracker;
-        public PresenceHub(PresenceTrackerDB tracker)
+        private readonly PresenceTracker _tracker;
+        public PresenceHub(PresenceTracker tracker)
         {
             _tracker = tracker;
         }

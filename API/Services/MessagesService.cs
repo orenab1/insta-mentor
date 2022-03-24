@@ -26,7 +26,6 @@ namespace API.Services
         private readonly IMailService _mailService;
 
         private readonly PresenceTracker _tracker;
-        private readonly PresenceTrackerDB _trackerDB;
 
         private readonly IHubContext<PresenceHub, IPresenceHub> _presenceHub;
 
@@ -34,23 +33,21 @@ namespace API.Services
             IUnitOfWork unitOfWork,
             IMailService mailService,
             PresenceTracker tracker,
-            PresenceTrackerDB trackerDB,
             IHubContext<PresenceHub, IPresenceHub> presenceHub
         )
         {
             this._unitOfWork = unitOfWork;
             this._mailService = mailService;
             this._tracker = tracker;
-            this._trackerDB = trackerDB;
             this._presenceHub = presenceHub;
         }
 
-        public async Task NotifyOffererAskerAcceptedOfferAsync(string offererUsername,
+        public async Task NotifyOffererAskerAcceptedOfferAsync(int offererId,
             AskerAcceptedOfferDto askerAcceptedOfferDto)
         {
              var connections =
                     await _tracker
-                        .GetConnectionsForUser(offererUsername);
+                        .GetConnectionsForUser(offererId);
 
                 if (connections != null)
                 {
@@ -66,7 +63,7 @@ namespace API.Services
             IEnumerable<AskerQuestionDTO> askerUsernameQuestionIds =
                 await _unitOfWork
                     .QuestionRepository
-                    .GetAskerUsernamesByOffererId(userId);
+                    .GetAskerIdsByOffererId(userId);
 
             foreach (AskerQuestionDTO
                 askerUsernameQuestionId
@@ -77,7 +74,7 @@ namespace API.Services
                 var connections =
                     await _tracker
                         .GetConnectionsForUser(askerUsernameQuestionId
-                            .AskerUsername);
+                            .AskerId);
 
                 if (connections != null)
                 {
@@ -115,7 +112,7 @@ namespace API.Services
             }
 
             var connections =
-                await _tracker.GetConnectionsForUser(asker.UserName);
+                await _tracker.GetConnectionsForUser(asker.Id);
 
             if (connections != null)
             {
@@ -156,7 +153,7 @@ namespace API.Services
             }
 
             var connections =
-                await _tracker.GetConnectionsForUser(asker.UserName);
+                await _tracker.GetConnectionsForUser(asker.Id);
 
             if (connections != null)
             {

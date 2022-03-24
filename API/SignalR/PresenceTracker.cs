@@ -1,73 +1,48 @@
+using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using API.Helpers;
-using Microsoft.AspNetCore.Mvc;
+using System.Web;
+using DAL.Repositories;
+using DAL.Interfaces;
 
 namespace API.SignalR
 {
     public class PresenceTracker
     {
-         private static readonly Dictionary<string, List<string>> OnlineUsers =
-            new Dictionary<string, List<string>>();
+         private readonly IUnitOfWork _unitOfWork;
 
-        public Task<bool> UserConnected(string username, string connectionId)
+        public PresenceTracker( IUnitOfWork unitOfWork)
         {
-            bool isOnline = false;
-            lock (OnlineUsers)
-            {
-                if (OnlineUsers.ContainsKey(username))
-                {
-                    OnlineUsers[username].Add(connectionId);
-                }
-                else
-                {
-                    OnlineUsers.Add(username, new List<string> { connectionId });
-                    isOnline = true;
-                }
-            }
-
-            return Task.FromResult(isOnline);
+            this._unitOfWork = unitOfWork;
         }
 
-        public Task<bool> UserDisconnected(string username, string connectionId)
+        public async Task
+        UserConnected(string username, string connectionId, string userAgent)
         {
-            bool isOffline = false;
-            lock (OnlineUsers)
-            {
-                if (!OnlineUsers.ContainsKey(username)) return Task.FromResult(isOffline);
+            await _unitOfWork.UserRepository
+                .SaveNewConnectionForUser(username, connectionId, userAgent);
+        }
 
-                OnlineUsers[username].Remove(connectionId);
-                if (OnlineUsers[username].Count == 0)
-                {
-                    OnlineUsers.Remove(username);
-                    isOffline = true;
-                }
-            }
-
-            return Task.FromResult(isOffline);
+        public async Task<bool> UserDisconnected(string connectionId)
+        {
+           return await _unitOfWork.UserRepository
+                .MarkConnectionClosed(connectionId);
         }
 
         public Task<string[]> GetOnlineUsers()
         {
-            string[] onlineUsers;
-            lock (OnlineUsers)
-            {
-                onlineUsers = OnlineUsers.OrderBy(k => k.Key).Select(k => k.Key).ToArray();
-            }
-
-            return Task.FromResult(onlineUsers);
+            return Task.FromResult(_unitOfWork.UserRepository.GetOnlineUsers());
         }
 
-        public Task<List<string>> GetConnectionsForUser(string username)
-        {
-            List<string> connectionIds;
-            lock (OnlineUsers)
-            {
-                connectionIds = OnlineUsers.GetValueOrDefault(username);
-            }
+        public Task<bool> IsUserOnline(string username){
+            return Task.FromResult(_unitOfWork.UserRepository.IsUserOnline(username));
+        }
 
-            return Task.FromResult(connectionIds);
+        public Task<List<string>> GetConnectionsForUser(int userId)
+        {
+            return Task.FromResult(_unitOfWork.UserRepository.GetConnectionIdsForUser(userId));
         }
     }
 }

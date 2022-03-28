@@ -1,0 +1,21 @@
+<div
+  style="
+    position: absolute;
+    margin-left: 37px;
+    margin-top: 39px;
+    float: right;
+    width: 11px;
+    height: 11px;
+    border: 1px white solid;
+    border-radius: 50%;
+    z-index: 100;
+  "
+  class="offline-user"
+  [ngClass]="{ online: isUserOnline,smallDot:isSmall }"
+></div>
+<img
+  src="{{ photoUrl || './assets/user.png' }}"
+  alt="{{ username }}"
+  [ngClass]="{small:isSmall}"
+  class="rounded-circle card-img-top user-image"
+/>

@@ -70,7 +70,7 @@
           <div
             class="col-1"
             style="
-              background-color: #08092f;
+              background-color: green;
               color: white;
               text-align: center;
               padding-top: 8px;
@@ -109,29 +109,7 @@
 
     <div class="row" style="padding-top: 20px;">
       <div class="col-lg-1"></div>
-      <div class="col-lg-10 container-fluid">
-        <div class="row semi-bold-font mb-3">
-          <div
-            class="col-1"
-            style="
-              background-color: #08092f;
-              color: white;
-              text-align: center;
-              padding-top: 8px;
-            "
-          >
-            <span style="font-size: 20px;">NOW</span>
-          </div>
-          <div class="col-11">
-            <div>
-              <a href="www.ynet.co.il" target="_blank">Adi Shmorak</a>
-              , a Clean Code expert, answers your Clean Code questions
-            </div>
-            <div style="opacity: 0.6;">
-              Please do consider accepting other helpers’ help offers as well
-            </div>
-          </div>
-        </div>
+      <div class="col-lg-10 container-fluid">      
 
         <div class="row semi-bold-font">
           <div
@@ -152,7 +130,7 @@
             <div>
               Featuring
               <a href="www.ynet.co.il" target="_blank">Adi Shmorak</a>
-              , a Clean Code expert
+              , a Clean Code expert.
               <span style="color: red;">Starts in less than 1 hour!</span>
             </div>
           </div>
@@ -190,25 +168,21 @@
       >
         <div class="first-question-row d-flex justify-content-between">
           <div class="user semi-bold-font">
-            <img
-              src="{{ question.askerPhotoUrl || './assets/user.png' }}"
-              alt="{{ question.askerUsername }}"
-              class="card-img-top mr-3 rounded-circle"
-              style="
-                width: 30px;
-                height: 30px;
-                margin-right: 10px;
-                margin-bottom: 5px;
-              "
-            />
-            <span style="font-size: 14px;">{{ question.askerUsername }}</span>
+            <app-display-user-image
+            [isSmall]="true"
+            [username]="question.askerUsername"
+            [photoUrl]="question.askerPhotoUrl"
+            [userId]="question.askerId"
+          ></app-display-user-image>
+         
+            <span style="font-size: 14px; margin-left: 10px;">{{ question.askerUsername }}</span>
           </div>
 
           <div class="d-flex justify-content-end">
             <div *ngIf="question.hasCommonTags">
               <img
                 src="./assets/tag.png"
-                alt="Common Communities"
+                alt="Common Tags"
                 title="You have common tags with this question"
                 class="card-img-top mr-3"
                 style="width: 15px; height: 15px; margin-right: 10px;"
@@ -248,7 +222,7 @@
           <div class="d-flex flex-row">
             <div
               style="
-                margin-top: 8px;
+                margin-top: 17px;
                 height: 5px;
                 width: 5px;
                 background-color: #ff7b02;
@@ -256,7 +230,7 @@
               "
               class="rounded-circle"
             ></div>
-            <div class="bold-font question-header">{{ question.header }}</div>
+            <div class="bold-font question-header my-2">{{ question.header }}</div>
           </div>
           <div
             class="faded-text question-body"

@@ -2,21 +2,19 @@
   <div class="container-fluid">
     <a class="navbar-brand" href="#">Navbar</a>
 
-    <button 
-    class="navbar-toggler"
-     type="button" 
-     data-bs-toggle="collapse" 
-     data-bs-target="#nav-content" 
-     aria-controls="nav-content" 
-     aria-expanded="false" 
-     aria-label="Toggle navigation">
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#nav-content"
+      aria-controls="nav-content"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
       <span class="navbar-toggler-icon"></span>
     </button>
 
-
-  <div class="collapse navbar-collapse" id="nav-content">
-    
-   
+    <div class="collapse navbar-collapse" id="nav-content">
       <div
         class="logo-font"
         style="
@@ -42,11 +40,8 @@
         "
       >
         id Call Me
-      </div> 
-      <div
-        class="navbar-nav me-auto mb-2 mb-md-0"
-       
-      >
+      </div>
+      <div class="navbar-nav me-auto mb-2 mb-md-0">
         <li class="nav-item">
           <a
             class="nav-link"
@@ -88,7 +83,7 @@
           >
             Ask
           </a>
-        </li> 
+        </li>
 
         <!-- <li class="nav-item">
           <a class="nav-link" aria-current="page" routerLink="/poc">POCs</a>
@@ -106,18 +101,19 @@
         </li>
       </div>
 
-       <div
+      <div
         class="dropdown"
-        *ngIf="user &&  accountService.currentUser$ | async"
+        *ngIf="user && accountService.currentUser$ | async"
         dropdown
       >
-        <img
-          src="{{ user.photoUrl || './assets/user.png' }}"
-          alt="{{ user.username }}"
-          class="card-img-top img-thumbnail"
-          style="width: 30px; height: 30px;"
-          class="rounded-circle"
-        />
+        <div style="display: inline-block;">
+          <app-display-user-image
+            [isSmall]="true"
+            [username]="user.username"
+            [photoUrl]="user.photoUrl"
+            [userId]="user.id"
+          ></app-display-user-image>
+        </div>
 
         <a
           class="dropdown-toggle text-light"
@@ -133,9 +129,9 @@
           <div class="dropdown-divider"></div>
           <a class="dropdown-item" (click)="logout()">Logout</a>
         </div>
-      </div> 
+      </div>
 
-       <!-- <form
+      <!-- <form
         *ngIf="(accountService.currentUser$ | async) === null"
         #loginForm="ngForm"
         class="d-flex"
@@ -160,6 +156,6 @@
         />
         <button class="btn btn-outline-success" type="submit">Login</button>
       </form>  -->
-     </div>
+    </div>
   </div>
-</nav> 
+</nav>

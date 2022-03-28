@@ -51,7 +51,8 @@ namespace DAL.Repositories
         }
 
         public bool IsUserOnline(string username){
-            return _context.Users.Include(u => u.Connections).SingleOrDefault(u=>u.UserName == username).Connections.Any(c=>!c.DisconnectedTime.HasValue);
+
+            return _context.Users.Include(u => u.Connections).SingleOrDefault(u=>u.UserName == username).Connections.Any(c=>!c.DisconnectedTime.HasValue && DateTime.Now.Subtract(c.ConnectedTime).TotalDays<=1);
         }
 
        

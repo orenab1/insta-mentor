@@ -4,28 +4,7 @@
   (click)="clicked()"
 >
   <div style="margin-right: 12px;">
-    <div
-      style="
-        position: absolute;
-        margin-left: 37px;
-        margin-top: 39px;
-        float: right;
-        width: 11px;
-        height: 11px;
-        border: 1px white solid;
-        border-radius: 50%;
-        z-index: 100;
-      "
-      class="offline-user"
-      [ngClass]="{online: isUserOnline}"
-    ></div>
-    <img
-      src="{{ model.photoUrl || './assets/user.png' }}"
-      alt="{{ model.username }}"
-      class="card-img-top img-thumbnail"
-      style="width: 50px; height: 50px;"
-      class="rounded-circle"
-    />
+    <app-display-user-image [username]="model.username" [photoUrl]="model.photoUrl" [userId]="model.id"></app-display-user-image>
   </div>
 
   <div class="d-flex flex-column">

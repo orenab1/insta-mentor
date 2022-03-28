@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core'
+import { Component, Input, OnInit, ViewEncapsulation } from '@angular/core'
 import { Router } from '@angular/router'
 import { UserSummary } from 'src/app/_models/user'
 import { PresenceService } from 'src/app/_services/signalR/presence.service'
@@ -8,6 +8,7 @@ import { UsersService } from 'src/app/_services/Users.service'
   selector: 'app-display-user-summary',
   templateUrl: './display-user-summary.component.html',
   styleUrls: ['./display-user-summary.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class DisplayUserSummaryComponent implements OnInit {
   model: UserSummary

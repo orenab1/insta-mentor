@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using DAL;
 using DAL.DTOs;
+using DAL.DTOs.Full;
 using DAL.DTOs.Summary;
 using DAL.Entities;
 using DAL.Interfaces;
@@ -28,34 +29,65 @@ namespace DAL.Repositories
             this._mapper = mapper;
         }
 
-        public  List<string> GetConnectionIdsForUser(int userId){
-            return  _context.Connections.Where(c=>c.User.Id==userId && !c.DisconnectedTime.HasValue).Select(c=>c.ConnectionID).ToList();
-        }
-
-
-         public async Task<bool>
-        MarkConnectionClosed(
-            string connectionId
-        )
+        public List<string> GetConnectionIdsForUser(int userId)
         {
-            var connection =_context.Connections.Find(connectionId);
-            connection.DisconnectedTime=DateTime.Now;
-            return await _context.SaveChangesAsync()>0;
+            return _context
+                .Connections
+                .Where(c => c.User.Id == userId && !c.DisconnectedTime.HasValue)
+                .Select(c => c.ConnectionID)
+                .ToList();
         }
 
-        public string[]
-        GetOnlineUsers(
-        )
+        public async Task<bool> MarkConnectionClosed(string connectionId)
         {
-            return _context.Connections.Where(c=>!c.DisconnectedTime.HasValue).Select(c=>c.User.UserName).Distinct().ToArray();
+            var connection = _context.Connections.Find(connectionId);
+            connection.DisconnectedTime = DateTime.Now;
+            return await _context.SaveChangesAsync() > 0;
         }
 
-        public bool IsUserOnline(string username){
-
-            return _context.Users.Include(u => u.Connections).SingleOrDefault(u=>u.UserName == username).Connections.Any(c=>!c.DisconnectedTime.HasValue && DateTime.Now.Subtract(c.ConnectedTime).TotalDays<=1);
+// This should check if user connected in last day
+        public string[] GetOnlineUsers()
+        {
+            return _context
+                .Connections
+                .Where(c => !c.DisconnectedTime.HasValue)
+                .Select(c => c.User.UserName)
+                .Distinct()
+                .ToArray();
         }
 
-       
+        public UserConnectedDurationDto[] GetOnlineUsersWithTimes()
+        {
+
+
+            return _context
+                .Connections
+                .Include(c => c.User)
+                .Where(c => !c.DisconnectedTime.HasValue)
+                .ToList()
+                .Where(c=>
+                    DateTime.Now.Subtract(c.ConnectedTime).TotalDays <= 1)
+                .GroupBy(c => c.User.UserName)
+                .Select(g =>
+                    new UserConnectedDurationDto {
+                        Username = g.Key,
+                        SecondsElapsed =Convert.ToInt32((DateTime.Now- g.Min(c => c.ConnectedTime)).TotalSeconds)
+                    })
+                .ToArray();
+        }
+
+        public bool IsUserOnline(string username)
+        {
+            return _context
+                .Users
+                .Include(u => u.Connections)
+                .SingleOrDefault(u => u.UserName == username)
+                .Connections
+                .Any(c =>
+                    !c.DisconnectedTime.HasValue &&
+                    DateTime.Now.Subtract(c.ConnectedTime).TotalDays <= 1);
+        }
+
         public async Task<bool>
         SaveNewConnectionForUser(
             string username,
@@ -77,7 +109,7 @@ namespace DAL.Repositories
                     ConnectedTime = DateTime.Now
                 });
 
-           return await _context.SaveChangesAsync()>0;
+            return await _context.SaveChangesAsync() > 0;
         }
 
         public void Update(AppUser user)

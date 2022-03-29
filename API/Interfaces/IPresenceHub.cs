@@ -1,5 +1,6 @@
 using System.Threading.Tasks;
 using DAL.DTOs.Partial;
+using DAL.DTOs.Full;
 
 namespace API.Interfaces
 {
@@ -11,6 +12,8 @@ namespace API.Interfaces
          Task UserIsOnline(string username);
 
          Task GetOnlineUsers(string[] onlineUsers);
+
+         Task GetOnlineUsersWithTimes(UserConnectedDurationDto[] onlineUsers);
 
          Task UserIsOffline(string username);
 

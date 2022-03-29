@@ -42,6 +42,13 @@ export interface QuestionSummary {
   howLongAgo: string
   length: number
   lengthAsString: string
+  isActive: boolean
+
+  isUserOnline:boolean
+  ageInSeconds:number
+  onlineAgeString:string
+
+  onlineAgeSeconds:number
 }
 
 export interface Comment {

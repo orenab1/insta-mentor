@@ -304,7 +304,7 @@ namespace DAL.Repositories
 
             return result
                 .OrderBy(myQuestionSummary =>
-                    myQuestionSummary.IsActive && !myQuestionSummary.IsSolved
+                    !myQuestionSummary.IsSolved
                         ? 0
                         : 1)
                 .ThenByDescending(myQuestionSummary =>
@@ -318,7 +318,7 @@ namespace DAL.Repositories
                 await _mapper
                     .ProjectTo<QuestionSummaryDto>(_context
                         .Questions
-                        .Where(q => q.IsActive && !q.IsSolved))
+                        .Where(q => !q.IsSolved))
                     .ToListAsync();
 
             if (userTagsIds != null)
@@ -349,12 +349,9 @@ namespace DAL.Repositories
 
             return result
                 .OrderBy(questionSummary =>
-                    questionSummary.HasCommonCommunities &&
-                    questionSummary.HasCommonTags
-                        ? 0
-                        : questionSummary.HasCommonTags
-                            ? 1
-                            : questionSummary.HasCommonCommunities ? 2 : 3)
+                  questionSummary.IsActive?                    
+                    questionSummary.HasCommonTags? 0 :1
+                        :2)
                 .ThenByDescending(questionSummary => questionSummary.Created);
         }
 

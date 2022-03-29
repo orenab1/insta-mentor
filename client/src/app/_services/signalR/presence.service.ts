@@ -4,6 +4,7 @@ import { HubConnection, HubConnectionBuilder } from '@microsoft/signalr'
 import { ToastrService } from 'ngx-toastr'
 import { BehaviorSubject } from 'rxjs'
 import { take } from 'rxjs/operators'
+import { UserConnectedDuration } from 'src/app/_models/userConnectedDuration'
 import { environment } from 'src/environments/environment'
 import { User } from '../../_models/user'
 
@@ -18,11 +19,11 @@ export class PresenceService {
   private onlineUsersSource = new BehaviorSubject<string[]>([])
   onlineUsers$ = this.onlineUsersSource.asObservable()
 
-  constructor(private router: Router, private toastr: ToastrService) {}
+  private onlineUsersTimesSource = new BehaviorSubject<UserConnectedDuration[]>([])
+  onlineUsersTimesSource$ = this.onlineUsersTimesSource.asObservable()
 
-  isUserOnline(){
-    
-  }
+  constructor(private router: Router, private toastr: ToastrService) {}
+  
 
   createHubConnection(user: User) {
     this.hubConnection = new HubConnectionBuilder()
@@ -53,6 +54,10 @@ export class PresenceService {
 
     this.hubConnection.on('GetOnlineUsers', (usernames: string[]) => {
       this.onlineUsersSource.next(usernames)
+    })
+
+    this.hubConnection.on('GetOnlineUsersWithTimes', (users: UserConnectedDuration[]) => {
+      this.onlineUsersTimesSource.next(users)
     })
 
     this.hubConnection.on('NewOfferReceived', (questionId) => {

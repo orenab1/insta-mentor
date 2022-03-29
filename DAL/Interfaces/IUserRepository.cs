@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Threading.Tasks;
 using DAL.DTOs;
+using DAL.DTOs.Full;
 using DAL.DTOs.Summary;
 using DAL.Entities;
 
@@ -45,6 +46,8 @@ namespace DAL.Interfaces
         );
 
         string[] GetOnlineUsers();
+
+        UserConnectedDurationDto[] GetOnlineUsersWithTimes();
 
         public bool IsUserOnline(string username);
 

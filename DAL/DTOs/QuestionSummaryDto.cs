@@ -32,6 +32,6 @@ namespace DAL.DTOs
         public bool IsActive { get; set; }
         public bool IsSolved { get; set; }
 
-        
+        public int AgeInSeconds{get;set;}
     }
 }

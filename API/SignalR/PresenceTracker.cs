@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Web;
 using DAL.Repositories;
 using DAL.Interfaces;
+using DAL.DTOs.Full;
 
 namespace API.SignalR
 {
@@ -34,6 +35,11 @@ namespace API.SignalR
         public Task<string[]> GetOnlineUsers()
         {
             return Task.FromResult(_unitOfWork.UserRepository.GetOnlineUsers());
+        }
+
+        public Task<UserConnectedDurationDto[]> GetOnlineUsersWithTimes()
+        {
+            return Task.FromResult(_unitOfWork.UserRepository.GetOnlineUsersWithTimes());
         }
 
         public Task<bool> IsUserOnline(string username){

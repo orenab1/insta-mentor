@@ -59,7 +59,11 @@
 }
 
 .question-not-active{
-  opacity: 0.7;
+  opacity: 0.6;
+
+  > .waiting-for{
+    display: none;
+  }
 }
 
 .header-line{

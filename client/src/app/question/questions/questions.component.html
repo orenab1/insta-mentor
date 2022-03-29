@@ -163,7 +163,7 @@
           'medium-bg': question.length == 2,
           'long-bg': question.length == 3
         }"
-        [class.question-not-active]="!question.isActive || question.isSolved"
+        [class.question-not-active]="!question.isActive || question.isSolved || !question.isUserOnline"
         (click)="router.navigateByUrl('/display-question/' + question.id)"
       >
         <div class="first-question-row d-flex justify-content-between">
@@ -203,19 +203,20 @@
               style="font-size: 10px; margin-top: 5px;"
             >
               {{ question.howLongAgo }}
+
             </div>
           </div>
         </div>
-        <div style="float: right; color: green;" class="semi-bold-font">
+        <div style="float: right; color: green;" class="semi-bold-font waiting-for">
           <div>
-            <img src="./assets/timer.png" style="height: 25px; margin-right: 3px;" />
-            <div style="margin-top: 2px; float: right;">5 Mins.</div>
+            <img *ngIf="question.isUserOnline"  src="./assets/timer.png" style="height: 25px; margin-right: 3px;" />
+            <div style="margin-top: 2px; float: right;">   {{ question.onlineAgeString }}</div>
           </div>
-          <div style='
+          <div *ngIf="question.isUserOnline" style='
           color: black;
           font-size: 11px;
           font-family: poppins;
-          margin-left: 5px;'>Waiting Time</div>
+          margin-left: 5px;'>Waiting Online</div>
         </div>
         
         <div>
@@ -230,6 +231,8 @@
               "
               class="rounded-circle"
             ></div>
+            {{question.onlineAgeSeconds}}
+            {{question.ageInSeconds}}
             <div class="bold-font question-header my-2">{{ question.header }}</div>
           </div>
           <div
@@ -237,6 +240,7 @@
             style="margin-left: 10px; margin-bottom: 5px;"
           >
             {{ question.body }}
+         
           </div>
 
           <div class="d-flex" style="margin-left: 10px;">

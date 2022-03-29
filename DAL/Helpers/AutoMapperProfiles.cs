@@ -163,7 +163,9 @@ namespace API.Helpers
                         .MapFrom(src =>
                             src.Comments.Where(x => x.IsActive).Count()))
                 .ForMember(dest => dest.HowLongAgo,
-                opt => opt.MapFrom(src => src.Created.AsLongAgo()));
+                opt => opt.MapFrom(src => src.Created.AsLongAgo()))
+                .ForMember(dest => dest.AgeInSeconds,
+                opt => opt.MapFrom(src => Convert.ToInt32((DateTime.Now- src.Created).TotalSeconds)));
 
             CreateMap<Question, MyQuestionSummaryDto>()
                 .ForMember(dest => dest.NumOfOffers,

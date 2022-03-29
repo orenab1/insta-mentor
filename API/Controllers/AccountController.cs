@@ -56,7 +56,7 @@ namespace API.Controllers
             {
                 PasswordHash = getComutedHash(registerDto.Password,hmac.Key),
                 PasswordSalt = hmac.Key,
-                Created=DateTime.Now
+                Created=DateTime.UtcNow
             };
 
             if (user.EmailPrefrence==null)

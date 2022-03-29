@@ -43,6 +43,7 @@ import { RouterModule, ROUTES } from '@angular/router';
 import { DisplayUserSummaryComponent } from './_components/user/display-user-summary/display-user-summary.component';
 import { DisplayUsernameComponent } from './_components/user/display-username/display-username.component';
 import { DisplayUserImageComponent } from './_components/user/display-user-image/display-user-image.component';
+import { EventsComponent } from './_components/questions/events/events.component';
 
 
 @NgModule({
@@ -69,6 +70,7 @@ import { DisplayUserImageComponent } from './_components/user/display-user-image
     DisplayUserSummaryComponent,
     DisplayUsernameComponent,
     DisplayUserImageComponent,
+    EventsComponent,
   ],
   imports: [
     BrowserModule,

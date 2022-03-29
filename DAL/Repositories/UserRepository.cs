@@ -41,7 +41,7 @@ namespace DAL.Repositories
         public async Task<bool> MarkConnectionClosed(string connectionId)
         {
             var connection = _context.Connections.Find(connectionId);
-            connection.DisconnectedTime = DateTime.Now;
+            connection.DisconnectedTime = DateTime.UtcNow;
             return await _context.SaveChangesAsync() > 0;
         }
 
@@ -66,12 +66,12 @@ namespace DAL.Repositories
                 .Where(c => !c.DisconnectedTime.HasValue)
                 .ToList()
                 .Where(c=>
-                    DateTime.Now.Subtract(c.ConnectedTime).TotalDays <= 1)
+                    DateTime.UtcNow.Subtract(c.ConnectedTime).TotalDays <= 1)
                 .GroupBy(c => c.User.UserName)
                 .Select(g =>
                     new UserConnectedDurationDto {
                         Username = g.Key,
-                        SecondsElapsed =Convert.ToInt32((DateTime.Now- g.Min(c => c.ConnectedTime)).TotalSeconds)
+                        SecondsElapsed =Convert.ToInt32((DateTime.UtcNow- g.Min(c => c.ConnectedTime)).TotalSeconds)
                     })
                 .ToArray();
         }
@@ -85,7 +85,7 @@ namespace DAL.Repositories
                 .Connections
                 .Any(c =>
                     !c.DisconnectedTime.HasValue &&
-                    DateTime.Now.Subtract(c.ConnectedTime).TotalDays <= 1);
+                    DateTime.UtcNow.Subtract(c.ConnectedTime).TotalDays <= 1);
         }
 
         public async Task<bool>
@@ -106,7 +106,7 @@ namespace DAL.Repositories
                 .Add(new Connection {
                     ConnectionID = connectionId,
                     UserAgent = userAgent,
-                    ConnectedTime = DateTime.Now
+                    ConnectedTime = DateTime.UtcNow
                 });
 
             return await _context.SaveChangesAsync() > 0;

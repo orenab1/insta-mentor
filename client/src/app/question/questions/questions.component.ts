@@ -12,6 +12,7 @@ import { filter, interval, Observable, takeWhile } from 'rxjs'
 })
 export class QuestionsComponent implements OnInit {
   questions: QuestionSummary[]
+
   isFromMyQuestionsRoute: boolean = false
 
   intervalSeconds=10;
@@ -36,15 +37,10 @@ export class QuestionsComponent implements OnInit {
       this.loadQuestions(this.intervalSeconds)
     }, this.intervalSeconds*1000)
 
-    // interval(10000)
-    //   .pipe(takeWhile(() => !stop))
-    //   .subscribe(() => {
-    //     alert();
-    //     this.loadQuestions();
-    //   })
-
-    this.loadQuestions(0)
+    this.loadQuestions(0);
   }
+
+ 
 
   loadQuestions(interval): void {
     let questions = new Observable<QuestionSummary[]>()

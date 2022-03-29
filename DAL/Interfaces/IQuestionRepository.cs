@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Threading.Tasks;
 using DAL.DTOs;
+using DAL.DTOs.Full;
 using DAL.Entities;
 
 namespace DAL.Interfaces
@@ -35,5 +36,7 @@ namespace DAL.Interfaces
         Task<int> GetOffererUserIdByOfferId(int offerId);
         Task<bool>
         UpdateQuestionLastOfferer(int questionId, int userId);
+
+         public EventDto[] GetNextEvents();
     }
 }

@@ -127,7 +127,7 @@ namespace API.Controllers
             if (
                 (
                 lastCreatedCommunityByUser.HasValue &&
-                (DateTime.Now - lastCreatedCommunityByUser.Value).TotalHours <
+                (DateTime.UtcNow - lastCreatedCommunityByUser.Value).TotalHours <
                 24
                 )
             )

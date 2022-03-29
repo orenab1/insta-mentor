@@ -17,6 +17,7 @@ using API.SignalR;
 using AutoMapper;
 using DAL;
 using DAL.DTOs;
+using DAL.DTOs.Full;
 using DAL.DTOs.Partial;
 using DAL.Entities;
 using DAL.Interfaces;
@@ -67,23 +68,6 @@ namespace API.Controllers
             this._mapper = mapper;
             this._messagesService = messagesService;
             this._zoomService = zoomService;
-
-            // int
-            //     a = 10,
-            //     b = 0;
-            // try
-            // {
-            //     this._logger.Debug("Dividing {A} by {B}", a, b);
-            //     Console.WriteLine(a / b);
-            // }
-            // catch (Exception ex)
-            // {
-            //     this._logger.Error(ex, "Something went wrong");
-            // }
-            // finally
-            // {
-            //     //Log.CloseAndFlush();
-            // }
         }
 
         [HttpPost]
@@ -367,6 +351,17 @@ namespace API.Controllers
             if (await _unitOfWork.Complete()) return Ok();
 
             return BadRequest("Failed to delete the photo");
+        }
+
+
+        [HttpGet()]
+        [ActionName("events")]
+        public ActionResult<IEnumerable<EventDto>>
+        GetEvents()
+        {
+            return Ok(_unitOfWork
+                .QuestionRepository
+                .GetNextEvents());
         }
     }
 }

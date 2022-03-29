@@ -5,6 +5,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using AutoMapper;
 using DAL.DTOs;
+using DAL.DTOs.Full;
 using DAL.DTOs.Summary;
 using DAL.Entities;
 using DAL.Extensions;
@@ -13,9 +14,6 @@ namespace API.Helpers
 {
     public class AutoMapperProfiles : Profile
     {
-        private readonly CultureInfo
-            CULTURE = CultureInfo.GetCultureInfo("en-US");
-
         public AutoMapperProfiles()
         {
             MapUser();
@@ -165,7 +163,7 @@ namespace API.Helpers
                 .ForMember(dest => dest.HowLongAgo,
                 opt => opt.MapFrom(src => src.Created.AsLongAgo()))
                 .ForMember(dest => dest.AgeInSeconds,
-                opt => opt.MapFrom(src => Convert.ToInt32((DateTime.Now- src.Created).TotalSeconds)));
+                opt => opt.MapFrom(src => Convert.ToInt32((DateTime.UtcNow- src.Created).TotalSeconds)));
 
             CreateMap<Question, MyQuestionSummaryDto>()
                 .ForMember(dest => dest.NumOfOffers,
@@ -211,6 +209,9 @@ namespace API.Helpers
 
             CreateMap<ReviewDto, Review>();
             CreateMap<Review, ReviewDto>();
+            CreateMap<Event,EventDto>()
+             .ForMember(dest => dest.UtcTime,
+                opt => opt.MapFrom(src => src.Time));
         }
     }
 }

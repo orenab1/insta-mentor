@@ -21,8 +21,8 @@ export interface Question {
   lastAnswererUserId: number
   lastAnswererUserName: string
   revieweeUsername: string
-  photoUrl:string
-  photoId:number
+  photoUrl: string
+  photoId: number
 }
 
 export interface QuestionSummary {
@@ -44,11 +44,11 @@ export interface QuestionSummary {
   lengthAsString: string
   isActive: boolean
 
-  isUserOnline:boolean
-  ageInSeconds:number
-  onlineAgeString:string
+  isUserOnline: boolean
+  ageInSeconds: number
+  onlineAgeString: string
 
-  onlineAgeSeconds:number
+  onlineAgeSeconds: number
 }
 
 export interface Comment {
@@ -73,4 +73,14 @@ export interface Review {
   text: string
   reviewerId: number
   revieweeId: number
+}
+
+export interface Event {
+  nextText: string
+  nowText: string
+  utcTime: Date
+  localTime: Date
+  minutesToStart:number
+  minutesToEnd:number
+  durationMinutes: number
 }

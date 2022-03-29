@@ -7,7 +7,7 @@ namespace DAL.Extensions
         public static string AsLongAgo(this DateTime inputDateTime)
         {
             string outputDateTime = string.Empty;
-            TimeSpan ts = DateTime.Now - inputDateTime;
+            TimeSpan ts = DateTime.UtcNow - inputDateTime;
 
             if (ts.Days > 7)
             { outputDateTime = inputDateTime.ToString("MMMM d, yyyy"); }

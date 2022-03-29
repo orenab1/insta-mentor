@@ -67,7 +67,7 @@ namespace DAL.Repositories
             {
                 Tag newTag = new Tag
                 {
-                    Created = DateTime.Now,
+                    Created = DateTime.UtcNow,
                     CreatorId = creatorUserId,
                     IsApproved = false,
                     Text = tag.Display

@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using DAL;
 using DAL.DTOs;
+using DAL.DTOs.Full;
 using DAL.Entities;
 using DAL.Interfaces;
 using Microsoft.EntityFrameworkCore;
@@ -82,7 +83,7 @@ namespace DAL.Repositories
         {
             if (questionEditDto.PhotoId == 0)
             {
-                questionEditDto.PhotoId=null;
+                questionEditDto.PhotoId = null;
             }
             int? photoID = questionEditDto.PhotoId;
             questionEditDto.PhotoId = null;
@@ -91,7 +92,7 @@ namespace DAL.Repositories
 
             if (question.Id == 0)
             {
-                question.Created = DateTime.Now;
+                question.Created = DateTime.UtcNow;
                 question.IsActive = true;
                 await _context.Questions.AddAsync(question);
             }
@@ -118,14 +119,15 @@ namespace DAL.Repositories
             questionEditDto.AskerId,
             question.Id);
 
-            if (questionEditDto.Communities!=null){
-            await UpdateCommunitiesForQuestion(questionEditDto
-                .Communities
-                .ToArray(),
-            questionEditDto.AskerId,
-            question.Id);
+            if (questionEditDto.Communities != null)
+            {
+                await UpdateCommunitiesForQuestion(questionEditDto
+                    .Communities
+                    .ToArray(),
+                questionEditDto.AskerId,
+                question.Id);
             }
-            
+
             return question.Id;
         }
 
@@ -243,7 +245,7 @@ namespace DAL.Repositories
             _context
                 .Offers
                 .Add(new Offer {
-                    Created = DateTime.Now,
+                    Created = DateTime.UtcNow,
                     OffererId = userId,
                     QuestionId = questionId
                 });
@@ -258,7 +260,7 @@ namespace DAL.Repositories
                 .Comments
                 .Add(new Comment {
                     Text = commentDto.Text,
-                    Created = DateTime.Now,
+                    Created = DateTime.UtcNow,
                     QuestionId = commentDto.QuestionId,
                     CommentorId = userId
                 });
@@ -304,9 +306,7 @@ namespace DAL.Repositories
 
             return result
                 .OrderBy(myQuestionSummary =>
-                    !myQuestionSummary.IsSolved
-                        ? 0
-                        : 1)
+                    !myQuestionSummary.IsSolved ? 0 : 1)
                 .ThenByDescending(myQuestionSummary =>
                     myQuestionSummary.Created);
         }
@@ -349,16 +349,16 @@ namespace DAL.Repositories
 
             return result
                 .OrderBy(questionSummary =>
-                  questionSummary.IsActive?                    
-                    questionSummary.HasCommonTags? 0 :1
-                        :2)
+                    questionSummary.IsActive
+                        ? questionSummary.HasCommonTags ? 0 : 1
+                        : 2)
                 .ThenByDescending(questionSummary => questionSummary.Created);
         }
 
         public async Task PublishReview(ReviewDto reviewDto)
         {
             Review review = _mapper.Map<Review>(reviewDto);
-            review.Created = DateTime.Now;
+            review.Created = DateTime.UtcNow;
             review.IsRevieweeAnswerer = true;
             _context.Reviews.Add (review);
             await _context.SaveChangesAsync();
@@ -388,6 +388,29 @@ namespace DAL.Repositories
                     .FirstOrDefaultAsync(q => q.Id == questionId);
             question.LastAnswererUserId = userId;
             return await _context.SaveChangesAsync() > 0;
+        }
+
+        public EventDto[] GetNextEvents()
+        {
+            var result =
+                _mapper
+                    .ProjectTo<EventDto>(_context
+                        .Events
+                        .Where(e => e.Time > DateTime.UtcNow.AddHours(-15))).ToList();
+
+            var topicIdMinTime =
+                result
+                    .GroupBy(e => e.TopicIdentifier)
+                    .Select(g =>
+                        new { topic = g.Key, time = g.Min(c => c.UtcTime) });
+
+            return result
+                .Where(e =>
+                    topicIdMinTime
+                        .Any(t =>
+                            t.topic == e.TopicIdentifier &&
+                            t.time == e.UtcTime))
+                .ToArray();
         }
     }
 }

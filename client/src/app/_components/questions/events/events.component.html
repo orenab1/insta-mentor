@@ -1,0 +1,78 @@
+<div *ngFor="let event of model">
+  
+  {{event.minutesToStart}}
+  {{event.minutesToEnd}}
+
+
+
+
+
+  <div *ngIf="event.minutesToStart<=0 && event.minutesToEnd>0" class="row" style="padding-top: 20px;">
+    <div class="col-lg-1"></div>
+    <div class="col-lg-10 container-fluid">
+      <div class="row semi-bold-font mb-3">
+        <div
+          class="col-1"
+          style="
+            background-color: green;
+            color: white;
+            text-align: center;
+            padding-top: 8px;
+          "
+        >
+          <span style="font-size: 20px;">NOW</span>
+        </div>
+        <div class="col-11">
+          <div>
+            <div [innerHTML]="(event.nowText)"></div>
+          </div>
+          <div style="opacity: 0.6;">
+            Please do consider accepting other helpers’ help offers as well
+          </div>
+        </div>
+      </div>
+
+      <div class="row semi-bold-font">
+        <a
+          href=""
+          style="
+            padding-left: 0px;
+            color: blue;
+            margin-left: 0px;
+            text-decoration: underline;
+            margin-top: -10px;
+          "
+        >
+          All
+        </a>
+      </div>
+    </div>
+    <div class="col-lg-1"></div>
+  </div>
+
+
+  <div class="row" *ngIf="event.minutesToStart>0" style="padding-top: 20px;">
+    <div class="col-lg-1"></div>
+    <div class="col-lg-10 container-fluid">      
+
+      <div class="row semi-bold-font">
+        <div
+          class="col-1"
+          style="
+            color: #08092f;
+            border: #08092f 1px solid;
+            text-align: center;
+            padding-top: 8px;
+          "
+        >
+          <span style="font-size: 20px;">NEXT</span>
+        </div>
+        <div class="col-11">
+            <div [innerHTML]="(event.nextText)"></div>        
+            <span style="color: red;" *ngIf="event.minutesToStart<=60">Starts in less than 1 hour!</span>
+          </div>
+      </div>
+    </div>
+    <div class="col-lg-1"></div>
+  </div>
+</div>

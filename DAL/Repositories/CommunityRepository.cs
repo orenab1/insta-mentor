@@ -167,7 +167,7 @@ namespace DAL.Repositories
         {
             Community newCommunity =
                 new Community {
-                    Created = DateTime.Now,
+                    Created = DateTime.UtcNow,
                     CreatorId = userId,
                     IsActive = true,
                     Name = addCommunityDto.Name,

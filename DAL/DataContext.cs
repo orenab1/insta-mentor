@@ -42,6 +42,8 @@ namespace DAL
 
         public DbSet<Connection> Connections { get; set; }
 
+         public DbSet<Event> Events { get; set; }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);

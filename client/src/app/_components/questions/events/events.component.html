@@ -1,12 +1,5 @@
 <div *ngFor="let event of model">
   
-  {{event.minutesToStart}}
-  {{event.minutesToEnd}}
-
-
-
-
-
   <div *ngIf="event.minutesToStart<=0 && event.minutesToEnd>0" class="row" style="padding-top: 20px;">
     <div class="col-lg-1"></div>
     <div class="col-lg-10 container-fluid">

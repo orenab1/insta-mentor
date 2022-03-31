@@ -30,6 +30,9 @@ export class EditQuestionComponent implements OnInit {
   allTags: Tag[]
   allCommunities: Community[]
 
+  userFilledHeader = true
+  userFilledTags = true
+
   constructor(
     private questionService: QuestionService,
     private router: Router,
@@ -75,21 +78,19 @@ export class EditQuestionComponent implements OnInit {
         length: 1,
         created: '',
         lastAnswererUserId: undefined,
-        lastAnswererUserName:'',
-        revieweeUsername:'',
-        photoUrl:'',
-        photoId:0
+        lastAnswererUserName: '',
+        revieweeUsername: '',
+        photoUrl: '',
+        photoId: 0,
       }
       this.getQuestion()
     })
 
     this.loadTags()
-    //this.loadCommunities()
   }
 
-
-  openImage(){
-    window.open( this.model.photoUrl,'Question Image');
+  openImage() {
+    window.open(this.model.photoUrl, 'Question Image')
   }
 
   toggleDisplayComments() {
@@ -144,17 +145,30 @@ export class EditQuestionComponent implements OnInit {
   }
 
   askQuestion() {
+        
+    if (!this.model.header) {
+      this.userFilledHeader = false
+    } else {
+      this.userFilledHeader = true
+    }
 
-    if (this.model.tags!=null && this.model.tags.length!=0) {
-      for (let i=0;i<this.model.tags.length; i++){
+    if (this.model.tags == null || this.model.tags.length == 0) {
+      this.userFilledTags = false
+    } else {
+      this.userFilledTags = true
+    }
 
-        if (isNaN(this.model.tags[i].value)){
-          this.model.tags[i].value=0;
+    if (!this.userFilledHeader || !this.userFilledTags){
+      return;
+    }
+
+    if (this.model.tags != null && this.model.tags.length != 0) {
+      for (let i = 0; i < this.model.tags.length; i++) {
+        if (isNaN(this.model.tags[i].value)) {
+          this.model.tags[i].value = 0
         }
       }
     }
-
-  
 
     this.questionService.askQuestion(this.model).subscribe({
       next: (questionId) =>

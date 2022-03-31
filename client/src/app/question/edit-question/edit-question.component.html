@@ -11,15 +11,13 @@
           <h5 class="semi-bold-font text-center my-3">{{ pageTitle }}</h5>
           <hr class="seperator mx-auto" />
 
-          <div style="text-align:center">
+          <div style="text-align: center;">
             <div *ngIf="model && !isNew">
               <ng-toggle
-                
                 [color]="{
                   unchecked: '#dcdcdc',
                   checked: '#0099cc'
                 }"
-               
                 [(ngModel)]="model.isActive"
                 [switchColor]="{
                   checked: '#fff',
@@ -46,7 +44,7 @@
               class="form-control"
               name="header"
               [(ngModel)]="model.header"
-              id='header'
+              id="header"
             />
           </div>
         </div>
@@ -65,7 +63,7 @@
             name="body"
             [(ngModel)]="model.body"
             rows="7"
-            id='body'
+            id="body"
           ></textarea>
         </div>
 
@@ -75,14 +73,33 @@
             [onUploadSuccess]="onUploadPhotoSuccess"
             [onDeletePhoto]="deletePhoto"
           ></app-photo-editor>
-          <img *ngIf="model.photoUrl" src="{{model.photoUrl}}" class="card-img-top img-thumbnail" style="height: auto; max-height: 400px; max-width: 100%;width: auto;" 
-          (click)="openImage();"/>
-          <div *ngIf="model.photoUrl" style='font-size: 12px;' class='semi-bold-font'>Click image to enlarge</div>
+          <img
+            *ngIf="model.photoUrl"
+            src="{{ model.photoUrl }}"
+            class="card-img-top img-thumbnail"
+            style="
+              height: auto;
+              max-height: 400px;
+              max-width: 100%;
+              width: auto;
+            "
+            (click)="openImage()"
+          />
+          <div
+            *ngIf="model.photoUrl"
+            style="font-size: 12px;"
+            class="semi-bold-font"
+          >
+            Click image to enlarge
+          </div>
 
           <div class="form-group mt-4">
             <label for="aboutMe">Tags</label>
-            <tag-input name="tags" [(ngModel)]="model.tags"
-            [secondaryPlaceholder]="'Choose or Add a Tag'">
+            <tag-input
+              name="tags"
+              [(ngModel)]="model.tags"
+              [secondaryPlaceholder]="'Choose or Add a Tag'"
+            >
               <tag-input-dropdown
                 [autocompleteItems]="allTags"
                 [showDropdownIfEmpty]="true"
@@ -119,7 +136,7 @@
               <button
                 [class.checked-length]="model.length == 1"
                 class="btn btn-secondary"
-                type='button'
+                type="button"
                 (click)="setLength(1)"
               >
                 Up to 5
@@ -128,7 +145,7 @@
                 [class.checked-length]="model.length == 2"
                 class="btn btn-secondary"
                 style="margin-left: 20px;"
-                type='button'
+                type="button"
                 (click)="setLength(2)"
               >
                 Up to 15
@@ -137,7 +154,7 @@
                 [class.checked-length]="model.length == 3"
                 class="btn btn-secondary"
                 style="margin-left: 20px;"
-                type='button'
+                type="button"
                 (click)="setLength(3)"
               >
                 More Than 15
@@ -151,26 +168,43 @@
             [class.flex-column]="isEditMode"
             class="form-group mt-5"
           >
-            <button class="btn btn-success mr-2" type="submit" style='font-size: 18px; width:150px;'>Publish</button>
+            <button
+              class="btn btn-success mr-2"
+              type="submit"
+              style="font-size: 18px; width: 150px;"
+            >
+              Publish
+            </button>
             <button
               *ngIf="!isEditMode"
               class="btn btn-danger"
               style="margin-left: 15px;"
               (click)="router.navigateByUrl('/display-question/' + model.id)"
               style="
-              color: red !important;
-              background-color: white !important;
-              border: none;
-              font-size: 18px;
-              margin-left: 2%;"
+                color: red !important;
+                background-color: white !important;
+                border: none;
+                font-size: 18px;
+                margin-left: 2%;
+              "
             >
               Cancel
             </button>
           </div>
+          <div
+            style="
+              font-size: 16px;
+              color: red;
+              font-family: Poppins-SemiBold;
+              margin-top: 10px;
+            "
+          >
+            <div *ngIf="!userFilledHeader">
+              Please fill in a title for your question
+            </div>
+            <div *ngIf="!userFilledTags">Please fill in at least one tag</div>
+          </div>
         </div>
-
-       
-     
       </div>
     </div>
   </div>

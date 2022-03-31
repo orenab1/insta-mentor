@@ -318,7 +318,7 @@ namespace DAL.Repositories
                 await _mapper
                     .ProjectTo<QuestionSummaryDto>(_context
                         .Questions
-                        .Where(q => !q.IsSolved))
+                        .Where(q => !q.IsSolved && q.IsActive))
                     .ToListAsync();
 
             if (userTagsIds != null)
@@ -334,18 +334,18 @@ namespace DAL.Repositories
                 }
             }
 
-            if (userCommunitiesIds != null)
-            {
-                foreach (var questionSummary in result)
-                {
-                    questionSummary.HasCommonCommunities =
-                        questionSummary
-                            .Communities
-                            .Select(x => x.Value)
-                            .Intersect(userCommunitiesIds)
-                            .Any();
-                }
-            }
+            // if (userCommunitiesIds != null)
+            // {
+            //     foreach (var questionSummary in result)
+            //     {
+            //         questionSummary.HasCommonCommunities =
+            //             questionSummary
+            //                 .Communities
+            //                 .Select(x => x.Value)
+            //                 .Intersect(userCommunitiesIds)
+            //                 .Any();
+            //     }
+            // }
 
             return result
                 .OrderBy(questionSummary =>

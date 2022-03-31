@@ -35,8 +35,8 @@ export class EventsComponent implements OnInit {
         x.minutesToStart =this.getMinutesToStart(x);
         x.minutesToEnd =this.getMinutesToEnd(x);
 
-        var breakAfterCharsNums = x.nextText.lastIndexOf('Featuring')
-        x.nextText = x.nextText.substring(0, breakAfterCharsNums) + ' <br/> ' + x.nextText.substring(breakAfterCharsNums)
+        // var breakAfterCharsNums = x.nextText.lastIndexOf('Featuring')
+        // x.nextText = x.nextText.substring(0, breakAfterCharsNums) + ' <br/> ' + x.nextText.substring(breakAfterCharsNums)
       })
 
 

@@ -29,6 +29,7 @@ export class EditQuestionComponent implements OnInit {
   pageTitle = ''
   allTags: Tag[]
   allCommunities: Community[]
+  doesQuestionHavePhotoBeforeEdit:boolean
 
   userFilledHeader = true
   userFilledTags = true
@@ -49,6 +50,8 @@ export class EditQuestionComponent implements OnInit {
   ngOnInit(): void {
     this.routeSub = this.route.params.subscribe((params) => {
       this.id = parseInt(params['id']) || 0
+
+      
 
       if (this.id === 0) {
         this.isInEditMode = true
@@ -118,6 +121,8 @@ export class EditQuestionComponent implements OnInit {
           this.model = response
           this.isCurrentUserQuestionOwner =
             this.model.askerUsername === this.currentUserUsername
+
+          this.doesQuestionHavePhotoBeforeEdit=this.model.photoId!=0;
         }
       },
       (error) => {
@@ -145,7 +150,6 @@ export class EditQuestionComponent implements OnInit {
   }
 
   askQuestion() {
-        
     if (!this.model.header) {
       this.userFilledHeader = false
     } else {
@@ -158,8 +162,8 @@ export class EditQuestionComponent implements OnInit {
       this.userFilledTags = true
     }
 
-    if (!this.userFilledHeader || !this.userFilledTags){
-      return;
+    if (!this.userFilledHeader || !this.userFilledTags) {
+      return
     }
 
     if (this.model.tags != null && this.model.tags.length != 0) {
@@ -190,5 +194,22 @@ export class EditQuestionComponent implements OnInit {
     this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
       this.router.navigate([currentUrl])
     })
+  }
+
+  cancel() {
+    let url='';
+    if (this.model.id == 0) {
+      url=''
+    } else {
+      url='display-question/' + this.model.id
+    }
+
+    this.router.navigateByUrl(url)
+  }
+
+  removePhoto(){
+    this.model.photoId=0;
+    this.model.photoUrl=''
+    this.model.photo={ Url: '', Id: 0 }
   }
 }

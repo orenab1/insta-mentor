@@ -52,5 +52,7 @@ namespace DAL.Interfaces
         public bool IsUserOnline(string username);
 
         public  List<string> GetConnectionIdsForUser(int userId);
+
+        Task<bool> MarkUserAsVerified(int userId);
     }
 }

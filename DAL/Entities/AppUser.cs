@@ -1,6 +1,6 @@
 using System;
-using DAL.Entities;
 using System.Collections.Generic;
+using DAL.Entities;
 
 namespace DAL.Entities
 {
@@ -10,15 +10,15 @@ namespace DAL.Entities
 
         public string UserName { get; set; }
 
-        public byte[] PasswordHash{get;set;}
+        public byte[] PasswordHash { get; set; }
 
-        public byte[] PasswordSalt{get;set;}
+        public byte[] PasswordSalt { get; set; }
 
-        public string Email{get;set;}
+        public string Email { get; set; }
 
-        public string Title{get;set;}
+        public string Title { get; set; }
 
-        public string AboutMe{get;set;}
+        public string AboutMe { get; set; }
 
         public Photo Photo { get; set; }
 
@@ -28,14 +28,22 @@ namespace DAL.Entities
 
         public bool IsOnline { get; set; }
 
+        public bool IsVerified { get; set; }
+
+        public string VerificationCode { get; set; }
+
         public ICollection<Question> Questions { get; set; }
 
         public ICollection<Review> ReviewsGiven { get; set; }
+
         public ICollection<Review> ReviewsReceived { get; set; }
 
-        public ICollection<UsersTags> Tags { get; set; } 
+        public ICollection<UsersTags> Tags { get; set; }
+
         public ICollection<UsersCommunities> Communities { get; set; }
 
         public ICollection<Connection> Connections { get; set; }
+
+        public string Password { get; set; }
     }
 }

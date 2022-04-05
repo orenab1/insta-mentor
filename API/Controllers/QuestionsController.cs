@@ -243,9 +243,7 @@ namespace API.Controllers
         public async Task<ActionResult<IEnumerable<MyQuestionSummaryDto>>>
         GetMyQuestions()
         {
-            this._logger.Debug("Dividing 10 by 20", 10, 20);
-
-            this._logger.Error("Something went wrong");
+            this._logger.Error("just check");
 
             Log.CloseAndFlush();
 

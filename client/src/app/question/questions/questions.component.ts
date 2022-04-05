@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core'
-import { Question, QuestionSummary } from 'src/app/_models/question'
+import { Question, QuestionSummary,QuestionBackground } from 'src/app/_models/question'
 import { PresenceService } from 'src/app/_services/signalR/presence.service'
 import { QuestionService } from 'src/app/_services/question.service'
 import { NavigationEnd, Router } from '@angular/router'
@@ -35,7 +35,7 @@ export class QuestionsComponent implements OnInit {
   ngOnInit(): void {
     setInterval(() => {
       this.loadQuestions(this.intervalSeconds)
-    }, this.intervalSeconds*1000)
+    }, this.intervalSeconds*100000)
 
     this.loadQuestions(0);
   }
@@ -60,6 +60,15 @@ export class QuestionsComponent implements OnInit {
 
         this.questions = response
         this.questions.forEach((q) => {
+          q.isWaitingOnlineForTooLong=q.ageInSeconds>60*60;
+          q.questionBackground=
+            (!q.isActive || !q.isUserOnline)?
+            QuestionBackground.None:
+            q.isWaitingOnlineForTooLong?
+            QuestionBackground.WaitingOnlineForLongTime:
+            QuestionBackground.WaitingOnlineForShortTime;
+
+
           // this.presenceService.onlineUsers$.subscribe((usernames) => {
           //   q.isUserOnline = usernames.indexOf(q.askerUsername) > -1
           // })

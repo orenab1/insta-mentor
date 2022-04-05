@@ -16,6 +16,8 @@ using DAL.Repositories;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
+using Microsoft.Extensions.Configuration;
+using Microsoft.AspNetCore.Hosting;
 
 namespace API.Services
 {
@@ -27,20 +29,26 @@ namespace API.Services
 
         private readonly PresenceTracker _tracker;
 
+        private readonly IConfiguration _config;
+
         private readonly IHubContext<PresenceHub, IPresenceHub> _presenceHub;
+ 
 
         public MessagesService(
             IUnitOfWork unitOfWork,
             IMailService mailService,
             PresenceTracker tracker,
-            IHubContext<PresenceHub, IPresenceHub> presenceHub
-        )
+            IHubContext<PresenceHub, IPresenceHub> presenceHub,
+            IConfiguration config)
+        
         {
             this._unitOfWork = unitOfWork;
             this._mailService = mailService;
             this._tracker = tracker;
             this._presenceHub = presenceHub;
+            this._config = config;
         }
+
 
         public async Task NotifyOffererAskerAcceptedOfferAsync(int offererId,
             AskerAcceptedOfferDto askerAcceptedOfferDto)
@@ -185,6 +193,54 @@ namespace API.Services
                         "\nYou'll be able to ask me and others question there, and get LIVE answers on ZOOM.\n\nCheck it out here!",
                     To = user.Email
                 });
+        }
+
+
+        public async Task SendVerificationEmail(string email, string verificationCode)
+        {
+            
+                  _mailService
+                .SendEmailAsync(new EmailDto {
+                    Subject = "Wellcome to VidCallMe!",
+                    Body ="Please click the link below to verify your account <br/><br/>"+ GenerateConfirmEmailLink(email,verificationCode),
+                    To = email
+                });
+        }
+
+        public async Task SendPasswordEmail(string email,string password)
+        {
+            _mailService
+                .SendEmailAsync(new EmailDto {
+                    Subject = "Your VidCallMe Password",
+                    Body ="Your password is: "+password+ "<br/>-The "+this._config["baseWebUrl"]+" Team",
+                    To = email
+                });
+        }
+
+        public async Task SendPasswordAndVerificationEmail(string email,string verificationCode, string password)
+        {
+            _mailService
+                .SendEmailAsync(new EmailDto {
+                    Subject = "Your VidCallMe Password & verification code",
+                    Body ="Your password is: "+password+ "<br/>Please click the link below to verify your account <br/><br/>"+ GenerateConfirmEmailLink(email,verificationCode),
+                    To = email
+                });
+        }
+
+        private string GenerateConfirmEmailLink(string email,string verificationCode)
+        {
+            // var callbackLink = _generator.GetUriByAction(
+            //     this._generator,
+            //     "register",
+            //     "account",
+            //     "http"
+            // )
+
+
+            var callbackLink=this._config["baseWebUrl"]+"?email="+email+"&verificationCode="+verificationCode;
+         
+
+            return callbackLink;
         }
     }
 }

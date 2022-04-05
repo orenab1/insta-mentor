@@ -72,7 +72,9 @@
             [addPhotoUrlExtension]="'questions/add-photo/'"
             [onUploadSuccess]="onUploadPhotoSuccess"
             [onDeletePhoto]="deletePhoto"
+            style='float: left; width:100%'
           ></app-photo-editor>
+          <button (click)='removePhoto()' *ngIf="model.photoUrl && !doesQuestionHavePhotoBeforeEdit" type="button" class="btn btn-sm btn-danger ng-star-inserted" style='margin-top: 17px;'><i class="fa fa-trash"></i></button>
           <img
             *ngIf="model.photoUrl"
             src="{{ model.photoUrl }}"
@@ -82,6 +84,7 @@
               max-height: 400px;
               max-width: 100%;
               width: auto;
+              margin-top:15px;
             "
             (click)="openImage()"
           />
@@ -93,8 +96,11 @@
             Click image to enlarge
           </div>
 
-          <div class="form-group mt-4">
+          <div class="form-group" style='margin-top:60px;'>
             <label for="aboutMe">Tags</label>
+            <div>
+            <small id="emailHelp" class="form-text text-muted">Feel free to add your own if you don't find what you're looking for</small>
+          </div>
             <tag-input
               name="tags"
               [(ngModel)]="model.tags"
@@ -134,7 +140,7 @@
 
             <div class="mt-4">
               <button
-                [class.checked-length]="model.length == 1"
+                [class.checked-length]="model.length ==0 || model.length == 1"
                 class="btn btn-secondary"
                 type="button"
                 (click)="setLength(1)"
@@ -179,7 +185,7 @@
               *ngIf="!isEditMode"
               class="btn btn-danger"
               style="margin-left: 15px;"
-              (click)="router.navigateByUrl('/display-question/' + model.id)"
+              (click)="cancel()"
               style="
                 color: red !important;
                 background-color: white !important;

@@ -11,6 +11,7 @@ using DAL.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.AspNetCore.Http;
 
 namespace API.Extensions
 {
@@ -38,6 +39,9 @@ namespace API.Extensions
             services.AddScoped<ITokenService, TokenService>();
             services.AddScoped<IPhotoService, PhotoService>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+
             services.AddAutoMapper(typeof (AutoMapperProfiles).Assembly);
 
             // services

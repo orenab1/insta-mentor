@@ -15,5 +15,11 @@ namespace API.Interfaces
         Task NotifyOffererAskerAcceptedOfferAsync(int offererId,AskerAcceptedOfferDto askerAcceptedOfferDto);
 
         Task InviteToCommunity(int communityId, int userId, string username);
+
+        Task SendVerificationEmail(string email, string verificationCode);
+
+        Task SendPasswordEmail(string email,string password);
+
+        Task SendPasswordAndVerificationEmail(string email,string verificationCode, string password);
     }
 }

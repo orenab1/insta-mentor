@@ -47,8 +47,16 @@ export interface QuestionSummary {
   isUserOnline: boolean
   ageInSeconds: number
   onlineAgeString: string
+  isWaitingOnlineForTooLong:boolean
 
-  onlineAgeSeconds: number
+  onlineAgeSeconds: number  
+  questionBackground:QuestionBackground
+}
+
+export enum QuestionBackground {
+  None=0,
+  WaitingOnlineForShortTime=1,
+  WaitingOnlineForLongTime=2
 }
 
 export interface Comment {

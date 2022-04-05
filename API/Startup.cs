@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,6 +10,7 @@ using API.Services;
 using API.Settings;
 using API.SignalR;
 using DAL;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.CookiePolicy;
@@ -25,10 +27,11 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using System.IdentityModel.Tokens.Jwt;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Serilog;
 
+using Serilog;
+using Serilog.AspNetCore;
+using Serilog.Sinks.File;
+using Serilog.Sinks.MSSqlServer;
 
 namespace API
 {
@@ -55,9 +58,11 @@ namespace API
             //         // This lambda determines whether user consent for non-essential cookies is needed for a given request.
             //         // options.CheckConsentNeeded = context => true;
             //         options.MinimumSameSitePolicy = SameSiteMode.None;
-                    
-            //         // options.Cookie.SameSite = SameSiteMode.None; 
+            //         // options.Cookie.SameSite = SameSiteMode.None;
             //     });
+            services
+                .AddLogging(loggingBuilder =>
+                    loggingBuilder.AddSerilog(dispose: true));
 
             services.AddApplicationServices (_config);
 
@@ -82,7 +87,14 @@ namespace API
                         builder =>
                         {
                             builder
-                                .WithOrigins("https://vidcallme.azurewebsites.net","https://localhost:4200", "https://vidcallme-app.azurewebsites.net","https://vidcallme.azurewebsites.net/hubs/", "http://vidcallme.com","http://vidcallme.com/hubs/", "http://www.vidcallme.com", "http://www.vidcallme.com/hubs/")
+                                .WithOrigins("https://vidcallme.azurewebsites.net",
+                                "https://localhost:4200",
+                                "https://vidcallme-app.azurewebsites.net",
+                                "https://vidcallme.azurewebsites.net/hubs/",
+                                "http://vidcallme.com",
+                                "http://vidcallme.com/hubs/",
+                                "http://www.vidcallme.com",
+                                "http://www.vidcallme.com/hubs/")
                                 .AllowAnyHeader()
                                 .AllowAnyMethod()
                                 .AllowCredentials();
@@ -99,8 +111,7 @@ namespace API
                 .AddAuthentication()
                 .AddFacebook(facebookOptions =>
                 {
-                    facebookOptions.AppId =
-                        "490846212400326";
+                    facebookOptions.AppId = "490846212400326";
                     facebookOptions.AppSecret =
                         "8bb6f6b0a64fcf5d88e6f48bfd10e026";
                 })
@@ -118,19 +129,11 @@ namespace API
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            
-
-        //     Log.Logger = new LoggerConfiguration()
-        // .ReadFrom.Configuration(_config)
-        // .CreateLogger();
-
-            // Log.Logger=new LoggerConfiguration()
-            //     .ReadFrom.Configuration(Configuration)
-            //     .Enrich.FromLogContext()
-            //     .CreateLogger();
-
-            // loggerFactory.AddSerilog();
-
+            Log.Logger =
+                new LoggerConfiguration()
+                    .ReadFrom
+                    .Configuration(_config)
+                    .CreateLogger();
             app.UseDeveloperExceptionPage();
 
             if (env.IsDevelopment())
@@ -152,7 +155,6 @@ namespace API
 
             // app.UseCors(policy => policy.AllowAnyHeader().AllowAnyMethod().WithOrigins("http://localhost:4200/"));
             //  app.UseCookiePolicy();
-
             JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
             app.UseAuthentication();
             app.UseAuthorization();
@@ -163,7 +165,6 @@ namespace API
                     endpoints.MapControllers();
                     endpoints.MapHub<PresenceHub>("hubs/presence");
                 });
-
         }
 
         private void CheckSameSite(

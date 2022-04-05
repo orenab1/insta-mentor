@@ -17,6 +17,11 @@ using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using DAL.Interfaces;
 using System;
+using API.Services;
+using Microsoft.Extensions.Logging;
+using System.Diagnostics;
+using Serilog;
+using Serilog.AspNetCore;
 
 namespace API.Controllers
 {
@@ -27,21 +32,28 @@ namespace API.Controllers
         private readonly ITokenService _tokenService;
         private readonly IMessagesService _messagesService;
         private readonly IUnitOfWork _unitOfWork;
+        readonly ILogger<HomeController> _logger;
 
         public AccountController(
             ITokenService tokenService, 
             IMessagesService messagesService,
-            IUnitOfWork unitOfWork)
+            IUnitOfWork unitOfWork,
+            ILogger<HomeController> logger)
         {
             this._tokenService = tokenService;
             this._messagesService = messagesService;
             this._unitOfWork = unitOfWork;
+            this._logger = logger ?? throw new ArgumentNullException(nameof(logger));
+             _logger.LogDebug("Hello, world!");
+             Log.CloseAndFlush();
         }
 
  [HttpPost]
         [ActionName("register")]
         public async Task<ActionResult<UserDto>> Register(RegisterDto registerDto)
         {
+            
+
             if (await UserExists(registerDto.Email))
             {
                 return BadRequest("Email already exists. If you forgot your password, please consider navigating to \"Sign In\", and clicking \"Forgot Password\"");
@@ -51,12 +63,16 @@ namespace API.Controllers
 
             Random rnd=new Random();
 
+            string verificationCode=Guid.NewGuid().ToString();
 
             var user = new AppUser
             {
-                PasswordHash = getComutedHash(registerDto.Password,hmac.Key),
+                PasswordHash = getComputedHash(registerDto.Password,hmac.Key),
                 PasswordSalt = hmac.Key,
-                Created=DateTime.UtcNow
+                Created=DateTime.UtcNow,
+                VerificationCode=verificationCode,
+                Email=registerDto.Email,
+                Password=registerDto.Password
             };
 
             if (user.EmailPrefrence==null)
@@ -67,6 +83,8 @@ namespace API.Controllers
             await this._unitOfWork.AccountRepository.CreateUserAsync(user);
 
 
+           await _messagesService.SendVerificationEmail(registerDto.Email, verificationCode);
+
             return new UserDto
             {
                 Username = user.UserName,
@@ -75,15 +93,25 @@ namespace API.Controllers
             };
         }
 
- [HttpPost]
+        [HttpPost]
         [ActionName("forgot-password")]
         public async Task<ActionResult<UserDto>> ForgotPassword(ForgotPasswordDto forgotPasswordDto){
-            if (await UserExists(forgotPasswordDto.Email))
-            {
-                throw new NotImplementedException();
-            }else{
+
+            AppUser user=await _unitOfWork.UserRepository.GetUserByEmailAsync(forgotPasswordDto.Email);
+
+           if (user==null){
                 return BadRequest("Email address not found. Please make sure you typed it correctly, or register");
+           }
+
+            if (user.IsVerified){
+                await _messagesService.SendPasswordEmail(forgotPasswordDto.Email, user.Password);
+                return BadRequest("Your password has been sent to the email address you provided");
+            }else {
+                await _messagesService.SendPasswordAndVerificationEmail(forgotPasswordDto.Email, user.VerificationCode,user.Password);
+                return BadRequest("Your account has not been verified yet. Your password, and a verification link has been sent to the email address you provided");
             }
+
+           
         }
 
         [HttpPost]
@@ -97,7 +125,7 @@ namespace API.Controllers
                 return Unauthorized("Email address not found. Please make sure you typed it correctly, or register");
             }
 
-           var computedHash=getComutedHash(loginDto.Password,user.PasswordSalt);
+           var computedHash=getComputedHash(loginDto.Password,user.PasswordSalt);
 
             for (int i = 0; i < computedHash.Length; i++)
             {
@@ -106,6 +134,17 @@ namespace API.Controllers
                     return Unauthorized("Your email and password do not match. Please try again or click \"Forgot Password\"");
                 }
             }
+
+            if (!user.IsVerified){
+                if (user.VerificationCode==loginDto.VerificationCode)
+                {
+                    await _unitOfWork.UserRepository.MarkUserAsVerified(user.Id);                    
+                }
+                else{
+                    return Unauthorized("Something went wrong. Please email us at oren@vidcallme.com");
+                }
+            }
+
 
             await _messagesService.NotifyAskersOffererLoggedInAsync(user.Id);
 
@@ -124,7 +163,7 @@ namespace API.Controllers
            // return await _context.Users.AnyAsync(x => x.UserName == username.ToLower());
         }
 
-        private byte[] getComutedHash(string text,byte[] salt)
+        private byte[] getComputedHash(string text,byte[] salt)
         {
             using var hmac = new HMACSHA512(salt);
 

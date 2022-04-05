@@ -45,7 +45,7 @@ namespace DAL.Repositories
             return await _context.SaveChangesAsync() > 0;
         }
 
-// This should check if user connected in last day
+        // This should check if user connected in last day
         public string[] GetOnlineUsers()
         {
             return _context
@@ -58,20 +58,22 @@ namespace DAL.Repositories
 
         public UserConnectedDurationDto[] GetOnlineUsersWithTimes()
         {
-
-
             return _context
                 .Connections
                 .Include(c => c.User)
                 .Where(c => !c.DisconnectedTime.HasValue)
                 .ToList()
-                .Where(c=>
+                .Where(c =>
                     DateTime.UtcNow.Subtract(c.ConnectedTime).TotalDays <= 1)
                 .GroupBy(c => c.User.UserName)
                 .Select(g =>
                     new UserConnectedDurationDto {
                         Username = g.Key,
-                        SecondsElapsed =Convert.ToInt32((DateTime.UtcNow- g.Min(c => c.ConnectedTime)).TotalSeconds)
+                        SecondsElapsed =
+                            Convert
+                                .ToInt32((
+                                DateTime.UtcNow - g.Min(c => c.ConnectedTime)
+                                ).TotalSeconds)
                     })
                 .ToArray();
         }
@@ -117,6 +119,15 @@ namespace DAL.Repositories
             _context.Entry(user).State = EntityState.Modified;
         }
 
+        public async Task<AppUser> GetUserByEmailAsync(string email)
+        {
+            return await _context
+                .Users
+                .Include(x => x.EmailPrefrence)
+                .Include(x => x.Photo)
+                .SingleOrDefaultAsync(x => x.Email == email);
+        }
+
         public async Task<AppUser> GetUserAsync(string username)
         {
             return await _context
@@ -143,15 +154,6 @@ namespace DAL.Repositories
                     .Users
                     .Where(x => x.Id == id))
                 .SingleOrDefaultAsync();
-        }
-
-        public async Task<AppUser> GetUserByEmailAsync(string email)
-        {
-            return await _context
-                .Users
-                .Include(x => x.EmailPrefrence)
-                .Include(x => x.Photo)
-                .SingleOrDefaultAsync(x => x.Email == email);
         }
 
         public async Task<IEnumerable<UserFullDto>> GetMembersAsync()
@@ -220,6 +222,17 @@ namespace DAL.Repositories
                     });
             }
 
+            return await _context.SaveChangesAsync() > 0;
+        }
+
+        public async Task<bool> MarkUserAsVerified(int userId)
+        {
+            var user =
+                _context
+                    .Users
+                    .Include(u => u.Connections)
+                    .SingleOrDefault(u => u.Id == userId);
+            user.IsVerified = true;
             return await _context.SaveChangesAsync() > 0;
         }
     }

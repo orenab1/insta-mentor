@@ -89,15 +89,16 @@
       <div
         *ngFor="let question of questions"
         style="background-color: white; border-radius: 10px;"
-        class="my-2 p-2 short-bg question-container"
-        [ngClass]="{
-          'short-bg': question.length == 1,
-          'medium-bg': question.length == 2,
-          'long-bg': question.length == 3
-        }"
+        class="my-2 p-2 question-container"
+
+      
+        
+        [class.short-bg]="question.isActive && question.isUserOnline && question.ageInSeconds<60*60"
+        [class.long-bg]="question.isActive && question.isUserOnline && question.ageInSeconds>=60*60"
         [class.question-not-active]="!question.isActive || question.isSolved || !question.isUserOnline"
         (click)="router.navigateByUrl('/display-question/' + question.id)"
       >
+   
         <div class="first-question-row d-flex justify-content-between">
           <div class="user semi-bold-font">
             <app-display-user-image
@@ -139,16 +140,16 @@
             </div>
           </div>
         </div>
-        <div *ngIf="question.isUserOnline"  style="float: right; color: green;" class="semi-bold-font waiting-for">
+        <div *ngIf="question.isUserOnline"  style="float: right;" class="semi-bold-font waiting-for mt-3">
           <div>
-            <img  src="./assets/timer.png" style="height: 25px; margin-right: 3px;" />
-            <div style="margin-top: 2px; float: right;">   {{ question.onlineAgeString }}</div>
+            <div style="float: right; font-size:20px;" title='Waiting online for..'>   {{ question.onlineAgeString }}</div>
+            <img title='Waiting online for..'  src="./assets/timer.png" style="height: 28px; margin-right: 3px; float: right;" />            
           </div>
-          <div style='
+          <!-- <div style='
           color: black;
           font-size: 11px;
           font-family: poppins;
-          margin-left: 5px;'>Waiting Online</div>
+          margin-left: 5px;'>Waiting Online</div> -->
         </div>
         
         <div>

@@ -7,7 +7,9 @@ namespace DAL.DTOs
         [Required]
         public string Email { get; set; }
 
-         [Required]
+        [Required]
         public string Password { get; set; }
+
+        public string VerificationCode { get; set; }
     }
 }

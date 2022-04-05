@@ -37,6 +37,7 @@ namespace API.Services
             string subject = emailDto.Subject;
             string body = emailDto.Body;
             MailMessage message = new MailMessage(from, to, subject, body);
+            message.IsBodyHtml=true;
             SmtpClient client = new SmtpClient(_mailSettings.Host, _mailSettings.Port);
             client.EnableSsl = true;
 

@@ -1,6 +1,6 @@
 import { Component, Input, OnInit, Output } from '@angular/core'
-import { Router } from '@angular/router'
-import { take } from 'rxjs'
+import { ActivatedRoute, Router } from '@angular/router'
+import { Subscription, take } from 'rxjs'
 import { Register } from '../_models/register'
 import { AccountService } from '../_services/account.service'
 
@@ -17,11 +17,13 @@ export class RegisterComponent implements OnInit {
   hasForgotPassword = false
   user: any = {}
   errorMessage: string = ''
+  routeSub: Subscription
 
-  constructor(private accountService: AccountService, private router: Router) {
+  constructor(private accountService: AccountService, private router: Router,private route: ActivatedRoute) {
     this.model = {
       email: 'orenab1@gmail.com',
       password: 'password1',
+      verificationCode:''
     }
 
     this.accountService.currentUser$
@@ -29,7 +31,19 @@ export class RegisterComponent implements OnInit {
       .subscribe((user) => (this.user = user))
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.routeSub = this.route.queryParams.subscribe((params) => {
+      if (params['verificationCode']){
+        console.log(this.model);
+      this.setSignInMode();
+      this.model.verificationCode=params['verificationCode'];
+      this.model.email=params['email'];
+      this.model.password='';
+      }
+      
+    });
+
+  }
 
   login() {
     this.accountService.login(this.model).subscribe(
@@ -80,12 +94,9 @@ export class RegisterComponent implements OnInit {
   register() {
     this.accountService.register(this.model).subscribe(
       (response) => {
-        setTimeout(() => {
-          this.router.navigateByUrl('/questions')
-        }, 500)
+        this.errorMessage='We have sent an email with a confirmation link to your email address.<br/>In order to complete the registration process, please click the confirmation link. <br/>If you do not receive a confirmation email,<br/>please check your spam folder.<br/>Also, please verify that you entered a valid email address in our sign-up form.'
       },
       (error) => {
-        console.log(error);
         this.errorMessage = error.error;
       },
     )
@@ -104,6 +115,12 @@ export class RegisterComponent implements OnInit {
   toggleForgotPassword() {
     this.hasForgotPassword = !this.hasForgotPassword;
     this.model.password = '';
+    this.errorMessage ='';
+  }
+
+  setSignInMode(){
+    this.formMode = 'signin';
+    this.hasForgotPassword = false;
     this.errorMessage ='';
   }
 }

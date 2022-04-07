@@ -8,5 +8,7 @@ namespace DAL.DTOs.Summary
 
         public string Title { get; set; }
         public string PhotoUrl { get; set; }
+
+        public float AverageRating{get;set;}
     }
 }

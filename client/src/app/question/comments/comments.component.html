@@ -19,7 +19,7 @@
   <div style="margin-left: 61px; margin-bottom: 21px;">{{ comment.text }}</div>
 </div>
 
-<div>
+<div *ngIf='currentUserId!=undefined'>
   <textarea
     name="text"
     [(ngModel)]="model.text"

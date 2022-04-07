@@ -63,7 +63,15 @@ namespace API.Helpers
         {
             CreateMap<AppUser, UserSummaryDto>()
                 .ForMember(dest => dest.PhotoUrl,
-                opt => opt.MapFrom(src => src.Photo.Url));
+                opt => opt.MapFrom(src => src.Photo.Url))
+                .ForMember(dest => dest.AverageRating,
+                opt =>
+                    opt
+                        .MapFrom(src =>
+                            (src.ReviewsReceived == null || src.ReviewsReceived.Count == 0)
+                                ? 0
+                                : (float)
+                                src.ReviewsReceived.Average(r => r.Rating)));
 
             CreateMap<AppUser, UserFullDto>()
                 .ForMember(dest => dest.PhotoUrl,

@@ -54,5 +54,7 @@ namespace DAL.Interfaces
         public  List<string> GetConnectionIdsForUser(int userId);
 
         Task<bool> MarkUserAsVerified(int userId);
+
+        Task<bool> DoesUsernameExistForDifferentUser(int userId, string username);
     }
 }

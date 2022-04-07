@@ -85,13 +85,13 @@ namespace API
                         .FromLogContext()
                         .WriteTo
                         .Console()
-                        // .WriteTo
-                        // .File("logs/logs.txt",
-                        // rollingInterval: RollingInterval.Day)
+                        .WriteTo
+                        .File("logs/logs.txt",
+                        rollingInterval: RollingInterval.Day)
                         // .MinimumLevel
                         // .Debug()
                         )
-                .ConfigureWebHostDefaults(webBuilder =>
+                .ConfigureWebHostDefaults(webBuilder => 
                 {
                     webBuilder.UseStartup<Startup>();
                 });

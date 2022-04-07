@@ -5,3 +5,9 @@
 .online{
     background-color: green;
 }
+
+.width-limitation{     
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}

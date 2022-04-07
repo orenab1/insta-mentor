@@ -10,4 +10,5 @@ export interface UserSummary {
     username: string;
     title: string;
     photoUrl: string;
+    averageRating:number;
 }

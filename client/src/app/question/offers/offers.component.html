@@ -8,25 +8,30 @@
     X
   </div>
 
-  <div   class="mb-3">
+  <div   class="mb-3" style="display: inline-flex;">
     <app-display-user-summary
-    
+    style='display: inline-flex;'
       [userId]="offer.offererId"
+      [showRating]='true'
+      [widthInPx]=100
     ></app-display-user-summary>
   </div>
+  <div style="float: right; text-align: right;">
   <div
-    style="float: right; margin-top: -76px; font-size: 11px;"
+    style="font-size: 11px;"
     class="faded-text"
   >
-    {{ offer.howLongAgo }}
+    {{offer.howLongAgo}}
   </div>
   <button
     *ngIf='isCurrentUserQuestionOwner'
+    [ngClass]="{'disabled': !offer.isUserOnline}"
     type="button"
     class="btn btn-primary"
-    style="float: right; padding: 1px 7px; font-size: 13px; margin-top: -48px;"
+    style="padding: 1px 7px; font-size: 13px;"
     (click)="acceptOffer(offer.id)"
   >
     Start 1:1 Session
   </button>
+</div>
 </div>

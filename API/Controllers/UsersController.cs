@@ -78,6 +78,18 @@ namespace API.Controllers
         public async Task<ActionResult>
         UpdateUser(MemberUpdateDto memberUpdateDto)
         {
+            if(await _unitOfWork
+                    .UserRepository.DoesUsernameExistForDifferentUser(User.GetUserId(),memberUpdateDto.Username)){
+                return BadRequest("Username already exists, please try a different username");
+            }
+
+            var k=User.GetUsername();
+
+            if ((User.GetUsername() != memberUpdateDto.Username) && memberUpdateDto.Username.StartsWith("Guest")){
+                return BadRequest("Please don't change your username to a username that starts with the word \"Guest\"");
+            }
+
+
             AppUser user =
                 await _unitOfWork
                     .UserRepository

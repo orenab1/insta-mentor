@@ -4,6 +4,7 @@ import { take } from 'rxjs'
 import { OfferInQuestion } from 'src/app/_models/question'
 import { AccountService } from 'src/app/_services/account.service'
 import { QuestionService } from 'src/app/_services/question.service'
+import { PresenceService } from 'src/app/_services/signalR/presence.service'
 
 @Component({
   selector: 'app-offers',
@@ -15,13 +16,19 @@ export class OffersComponent implements OnInit {
   @Input() isCurrentUserQuestionOwner: boolean
   @Input() currentUserId:number
 
-  constructor(private questionService: QuestionService, private accountService: AccountService,private router: Router) {
+  constructor(private questionService: QuestionService, private accountService: AccountService,private router: Router,private presenceService: PresenceService) {
     this.accountService.currentUser$
     .pipe(take(1))
     .subscribe((user) => (this.currentUserId = user.id))
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.presenceService.onlineUsers$.subscribe((usernames) => {
+      this.offers.forEach(offer => {
+        offer.isUserOnline= usernames.indexOf(offer.username) > -1
+      });
+    })
+  }
 
   acceptOffer(offerId: number) {
     this.questionService.acceptOffer(offerId).subscribe(

@@ -70,21 +70,20 @@
             <div *ngIf="model.photoUrl" style='font-size: 12px;' class='semi-bold-font mb-5'>Click image to enlarge</div>
             <div style="text-align: center;">
               <div
-                *ngIf="model.revieweeUsername"
+                *ngIf="model.lastAnswererUserName"
                 style="text-align: center; font-size: 20px;"
                 class="semi-bold-font"
               >
                 Solved with help from
                 <app-display-username
-                  [username]="model.revieweeUsername"
+                  [username]="model.lastAnswererUserName"
                 ></app-display-username>
               </div>
 
               <button
                 *ngIf="
                   this.isCurrentUserQuestionOwner &&
-                  model.lastAnswererUserId > 0 &&
-                  model.reviewerUsername == ''
+                  model.lastAnswererUserName ===null
                 "
                 class="btn btn-primary"
                 style="width: 250px;"
@@ -95,7 +94,7 @@
 
               <button
                 *ngIf="
-                  !this.isCurrentUserQuestionOwner && !hasCurrentUserMadeAnOffer
+                  (!this.isCurrentUserQuestionOwner && !hasCurrentUserMadeAnOffer) && this.currentUserUsername!==undefined
                 "
                 (click)="addOffer()"
                 class="btn btn-primary"

@@ -21,8 +21,8 @@ export class RegisterComponent implements OnInit {
 
   constructor(private accountService: AccountService, private router: Router,private route: ActivatedRoute) {
     this.model = {
-      email: 'orenab1@gmail.com',
-      password: 'password1',
+      email: '',
+      password: '',
       verificationCode:''
     }
 
@@ -48,12 +48,11 @@ export class RegisterComponent implements OnInit {
   login() {
     this.accountService.login(this.model).subscribe(
       (response) => {
-        setTimeout(() => {
-          this.router.navigateByUrl('/questions')
-        }, 500)
+        this.router.navigateByUrl('/questions')
+
+      
       },
       (error) => {
-        console.log(error)
         this.errorMessage = error.error;
       },
     )

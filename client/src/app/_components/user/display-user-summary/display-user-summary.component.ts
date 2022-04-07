@@ -16,6 +16,8 @@ export class DisplayUserSummaryComponent implements OnInit {
   @Input() userId: number
   communitiesAsString: string
   isUserOnline: boolean = false
+  @Input() showRating:false
+  @Input() widthInPx:number=500;
 
   constructor(
     private usersService: UsersService,
@@ -29,6 +31,8 @@ export class DisplayUserSummaryComponent implements OnInit {
     this.presenceService.onlineUsers$.subscribe((usernames) => {
       this.isUserOnline = usernames.indexOf(this.username) > -1
     })
+
+  
   }
 
   loadUserSummary(): void {

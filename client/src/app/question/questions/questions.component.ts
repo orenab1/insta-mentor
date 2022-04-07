@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core'
-import { Question, QuestionSummary,QuestionBackground } from 'src/app/_models/question'
+import { Question, QuestionSummary } from 'src/app/_models/question'
 import { PresenceService } from 'src/app/_services/signalR/presence.service'
 import { QuestionService } from 'src/app/_services/question.service'
 import { NavigationEnd, Router } from '@angular/router'
-import { filter, interval, Observable, takeWhile } from 'rxjs'
+import { filter, interval, Observable, take, takeWhile } from 'rxjs'
+import { User } from 'src/app/_models/user'
+import { AccountService } from 'src/app/_services/account.service'
 
 @Component({
   selector: 'app-questions',
@@ -12,6 +14,7 @@ import { filter, interval, Observable, takeWhile } from 'rxjs'
 })
 export class QuestionsComponent implements OnInit {
   questions: QuestionSummary[]
+  currentUser: User;
 
   isFromMyQuestionsRoute: boolean = false
 
@@ -21,6 +24,7 @@ export class QuestionsComponent implements OnInit {
     private questionService: QuestionService,
     public presenceService: PresenceService,
     private router: Router,
+    private accountService: AccountService,
   ) {
     router.events
       .pipe(filter((event) => event instanceof NavigationEnd))
@@ -30,12 +34,14 @@ export class QuestionsComponent implements OnInit {
           this.isFromMyQuestionsRoute = true
         }
       })
+
+      this.accountService.currentUser$.pipe(take(1)).subscribe(user => this.currentUser = user);
   }
 
   ngOnInit(): void {
     setInterval(() => {
       this.loadQuestions(this.intervalSeconds)
-    }, this.intervalSeconds*100000)
+    }, this.intervalSeconds*1000)
 
     this.loadQuestions(0);
   }
@@ -61,19 +67,9 @@ export class QuestionsComponent implements OnInit {
         this.questions = response
         this.questions.forEach((q) => {
           q.isWaitingOnlineForTooLong=q.ageInSeconds>60*60;
-          q.questionBackground=
-            (!q.isActive || !q.isUserOnline)?
-            QuestionBackground.None:
-            q.isWaitingOnlineForTooLong?
-            QuestionBackground.WaitingOnlineForLongTime:
-            QuestionBackground.WaitingOnlineForShortTime;
 
 
-          // this.presenceService.onlineUsers$.subscribe((usernames) => {
-          //   q.isUserOnline = usernames.indexOf(q.askerUsername) > -1
-          // })
-
-          // if (q.isUserOnline) {
+       
           this.presenceService.onlineUsersTimesSource$.subscribe(
             (usernamesTimes) => {
               q.isUserOnline =
@@ -81,13 +77,6 @@ export class QuestionsComponent implements OnInit {
                 undefined
 
               if (q.isUserOnline) {
-                // console.log('--------------------------');
-                // console.log('username:'+q.askerUsername);
-                // console.log('user connected for:'+ usernamesTimes.find((x) => x.username == q.askerUsername)
-                // .secondsElapsed);
-
-                // console.log('question time:'+ q.ageInSeconds);
-                // console.log('^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^');
 
                 
                 q.onlineAgeSeconds=Math.min(
@@ -97,15 +86,12 @@ export class QuestionsComponent implements OnInit {
                 );
 
                 q.onlineAgeString = this.getQuestionTime(
-                  q.onlineAgeSeconds)
-
-                // usernamesTimes.find((x) => x.username == q.askerUsername)
-                //       .secondsElapsed+=interval;
+                  q.onlineAgeSeconds);
 
               }
             },
           )
-          //}
+          
 
           switch (q.length) {
             case 1:
@@ -166,6 +152,10 @@ export class QuestionsComponent implements OnInit {
   }
 
   goToAsk() {
+    if (this.currentUser==null){
+      this.router.navigateByUrl('register')
+    }else{
     this.router.navigateByUrl('question/edit-question')
+    }
   }
 }

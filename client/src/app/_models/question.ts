@@ -50,14 +50,8 @@ export interface QuestionSummary {
   isWaitingOnlineForTooLong:boolean
 
   onlineAgeSeconds: number  
-  questionBackground:QuestionBackground
 }
 
-export enum QuestionBackground {
-  None=0,
-  WaitingOnlineForShortTime=1,
-  WaitingOnlineForLongTime=2
-}
 
 export interface Comment {
   id: number
@@ -72,6 +66,7 @@ export interface OfferInQuestion {
   username: string
   howLongAgo: string
   offererId: number
+  isUserOnline:boolean
 }
 
 export interface Review {

@@ -20,6 +20,7 @@ export class EditUserComponent implements OnInit {
   user: User
   allTags: Tag[]
   allCommunities: Community[]
+  errorMessage:string
 
   constructor(
     private usersService: UsersService,
@@ -48,14 +49,15 @@ export class EditUserComponent implements OnInit {
     })
   }
 
-  loadCommunities() {
-    this.communityService.getCommunitiesTags().subscribe((response) => {
-      this.allCommunities = response
-      error: (error) => console.log(error)
-    })
-  }
+  // loadCommunities() {
+  //   this.communityService.getCommunitiesTags().subscribe((response) => {
+  //     this.allCommunities = response
+  //     error: (error) => console.log(error)
+  //   })
+  // }
 
   editMember() {
+    this.errorMessage=''
     if (this.member.tags!=null && this.member.tags.length!=0) {
       for (let i=0;i<this.member.tags.length; i++){
 
@@ -66,8 +68,15 @@ export class EditUserComponent implements OnInit {
     }
 
     this.usersService.updateUser(this.member).subscribe(() => {
+      if (this.member.username.length===0){
+        this.errorMessage='Username must contain at least 1 character'
+        return;
+      }
+
       this.accountService.setCurrentUser({username:this.member.username,token:this.user.token,photoUrl:this.member.photoUrl,id:this.member.id})
       this.router.navigateByUrl('users/' + this.user.username)
+    },error=>{
+      this.errorMessage=error.error
     })
   }
 
@@ -77,6 +86,7 @@ export class EditUserComponent implements OnInit {
       .subscribe((response) => {
         this.member = response
       })
+      
   }
 
   onUploadPhotoSuccess = (response: any) => {

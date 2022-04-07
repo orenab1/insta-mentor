@@ -11,7 +11,7 @@ import { QuestionsComponent } from './question/questions/questions.component'
 import { RegisterComponent } from './register/register.component'
 
 const routes: Routes = [
-  { path: '', component: QuestionsComponent },
+  { path: '', redirectTo:'questions', pathMatch: 'full' },
   { path: 'communities', component: CommunitiesComponent },
   { path: 'questions', component: QuestionsComponent },
   { path: 'my-questions', component: QuestionsComponent },

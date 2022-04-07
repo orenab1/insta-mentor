@@ -1,9 +1,10 @@
 <rating
+  *ngIf="!isDisplayOnly"
   class="rating-c text-warning"
   [(ngModel)]="rate"
   [max]="max"
   [readonly]="isReadonly"
- (click)='clicked($event)'
+  (click)="clicked($event)"
   (onHover)="hoveringOver($event)"
 ></rating>
 <!-- <div>
@@ -14,15 +15,20 @@
     Toggle ReadOnly
   </button>
 </div> -->
-<div>{{ starsAsText }}</div>
+<div *ngIf="!isDisplayOnly">{{ starsAsText }}</div>
 <!-- Rating:
         <div>{{ rate }}</div> -->
 
-<!-- <div class="ratings">
+<div   *ngIf="isDisplayOnly"
+  style="display: inline; margin-left: 9px; font-family: Poppins; color: gray;"
+>
+  {{ ratingOneToFive | number: '1.1-1' }}
+</div>
+<div   *ngIf="isDisplayOnly" class="ratings" style='margin-bottom: 7px;'>
   <div class="empty-stars"></div>
   <div
     class="full-stars"
     [style.width]="starsCountPercentage + '%'"
     style="width: 70%;"
   ></div>
-</div> -->
+</div>

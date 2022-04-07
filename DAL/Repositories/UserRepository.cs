@@ -97,17 +97,32 @@ namespace DAL.Repositories
             string userAgent
         )
         {
-            var user =
+            AppUser user =
                 _context
                     .Users
                     .Include(u => u.Connections)
                     .SingleOrDefault(u => u.UserName == username);
 
-            user
+            IQueryable<string> unclosedConnectionIds =
+                _context
+                    .Connections
+                    .Where(c =>
+                        !c.DisconnectedTime.HasValue &&
+                        c.UserId == user.Id &&
+                        c.UserAgent == userAgent)
+                    .Select(c => c.ConnectionID);
+
+            foreach (string unclosedConnectionId in unclosedConnectionIds)
+            {
+                await MarkConnectionClosed(unclosedConnectionId);
+            }
+
+            _context
                 .Connections
                 .Add(new Connection {
                     ConnectionID = connectionId,
                     UserAgent = userAgent,
+                    UserId = user.Id,
                     ConnectedTime = DateTime.UtcNow
                 });
 
@@ -234,6 +249,14 @@ namespace DAL.Repositories
                     .SingleOrDefault(u => u.Id == userId);
             user.IsVerified = true;
             return await _context.SaveChangesAsync() > 0;
+        }
+
+        public async Task<bool>
+        DoesUsernameExistForDifferentUser(int userId, string username)
+        {
+            return await _context
+                .Users
+                .AnyAsync(u => u.Id != userId && u.UserName == username);
         }
     }
 }

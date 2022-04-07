@@ -15,17 +15,18 @@
     </button>
 
     <div class="collapse navbar-collapse" id="nav-content">
-      <div
+          <div
         class="logo-font"
         style="
           height: 30px;
           background-color: #ffe8d4;
           font-size: 21px;
           color: #ff7b02;
-
+          cursor: pointer;
           margin-bottom: 2px;
           padding-left: 5px;
         "
+         [routerLink]="['/questions']"
       >
         V
       </div>
@@ -35,14 +36,18 @@
           padding-right: 5px;
           background-color: #ffe8d4;
           padding-top: 4px;
-
+          min-width: 76px;
           margin-bottom: 2px;
+          cursor: pointer;
         "
+        [routerLink]="['/questions']"
       >
         id Call Me
-      </div>
-      <div class="navbar-nav me-auto mb-2 mb-md-0">
-        <li class="nav-item">
+      
+    </div>
+
+      <div class="navbar-nav me-auto mb-2 mb-md-0"  style="width: 100%;">
+        <div class="nav-item">
           <a
             class="nav-link"
             aria-current="page"
@@ -51,7 +56,7 @@
           >
             All Questions
           </a>
-        </li>
+        </div>
         <!-- <li class="nav-item">
           <a
             class="nav-link"
@@ -63,7 +68,7 @@
           </a>
         </li> -->
 
-        <li class="nav-item">
+        <div class="nav-item" *ngIf="(user && accountService.currentUser$ | async)">
           <a
             class="nav-link"
             aria-current="page"
@@ -72,9 +77,9 @@
           >
             My Questions
           </a>
-        </li>
+        </div>
 
-        <li class="nav-item">
+        <div class="nav-item" *ngIf="(user && accountService.currentUser$ | async)">
           <a
             class="nav-link"
             aria-current="page"
@@ -83,26 +88,26 @@
           >
             Ask
           </a>
-        </li>
+        </div>
 
-        <!-- <li class="nav-item">
+         <!-- <li class="nav-item">
           <a class="nav-link" aria-current="page" routerLink="/poc">POCs</a>
-        </li> -->
+        </li>  -->
 
-        <li class="nav-item">
+        <div style="text-align: right;margin-left: auto;" class="nav-item" *ngIf="!(user && accountService.currentUser$ | async)">
           <a
             class="nav-link"
             aria-current="page"
             routerLink="/register"
             routerLinkActive="active"
           >
-            Register
+            Register/Sign In
           </a>
-        </li>
+        </div>
       </div>
 
       <div
-        class="dropdown"
+        class="dropdown" style='min-width: 150px;'
         *ngIf="user && accountService.currentUser$ | async"
         dropdown
       >
@@ -115,6 +120,9 @@
           ></app-display-user-image>
         </div>
 
+        <div style="display: inline-block; 
+        vertical-align: bottom;
+        line-height: 30px;  ">
         <a
           class="dropdown-toggle text-light"
           style="margin-left: 5px;"
@@ -122,6 +130,7 @@
         >
           {{ user.username }}
         </a>
+      </div>
         <div class="dropdown-menu mt-3" *dropdownMenu>
           <a class="dropdown-item" routerLink="/users/{{ user.username }}">
             Profile

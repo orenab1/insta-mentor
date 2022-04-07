@@ -37,6 +37,8 @@
                 class="form-control"
                 name="username"
                 [(ngModel)]="member.username"
+                maxlength="15"
+                minlength="3"
               />
             </div>
           </div>
@@ -49,7 +51,7 @@
               id="email"
               [(ngModel)]="member.email"
             />
-            <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+            <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else</small>
           </div>
           <div class="form-group">
             <label for="title">Title</label>
@@ -172,6 +174,18 @@
                 Cancel
               </button>
             </div>
+
+            <div
+            style="
+              font-size: 16px;
+              color: red;
+              font-family: Poppins-SemiBold;
+              margin-top: 10px;
+            "
+          >
+            
+            <div *ngIf="errorMessage">{{errorMessage}}</div>
+          </div>
           </div>
         </div>
       </div>

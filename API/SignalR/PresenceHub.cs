@@ -8,6 +8,8 @@ using DAL.DTOs.Full;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
+using Microsoft.AspNetCore.Http;
+using Microsoft.Net.Http.Headers;
 
 namespace API.SignalR
 {
@@ -16,18 +18,25 @@ namespace API.SignalR
     {
         private readonly PresenceTracker _tracker;
 
-        public PresenceHub(PresenceTracker tracker)
+        private readonly IHttpContextAccessor _httpContextAccessor;
+
+        public PresenceHub(PresenceTracker tracker,IHttpContextAccessor httpContextAccessor)
         {
             _tracker = tracker;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         public override async Task OnConnectedAsync()
         {
+            var userAgent= _httpContextAccessor.HttpContext.Request.Headers[HeaderNames.UserAgent].ToString();
+
+
             await _tracker
                 .UserConnected(Context.User.GetUsername(),
                 Context.ConnectionId,
-                string.Empty);
+                userAgent);
 
+            
             await Clients.Others.UserIsOnline(Context.User.GetUsername());
 
             var currentUsers = await _tracker.GetOnlineUsers();

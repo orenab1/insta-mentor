@@ -109,12 +109,12 @@ namespace API.Controllers
 
             string offererUsername = offererAppUser.UserName;
 
-            _messagesService.NotifyOffererAskerAcceptedOfferAsync (
+           await _messagesService.NotifyOffererAskerAcceptedOfferAsync (
                 offererId,
                 askerAcceptedOfferDto
             );
 
-            _unitOfWork.QuestionRepository.UpdateQuestionLastOfferer (
+          await  _unitOfWork.QuestionRepository.UpdateQuestionLastOfferer (
                 questionId,
                 offererId
             );
@@ -196,7 +196,6 @@ namespace API.Controllers
             return NoContent();
         }
 
-        [Authorize]
         [HttpGet("{id}")]
         [ActionName("get-question")]
         public async Task<ActionResult<QuestionDto>> GetQuestion(int id)
@@ -243,10 +242,6 @@ namespace API.Controllers
         public async Task<ActionResult<IEnumerable<MyQuestionSummaryDto>>>
         GetMyQuestions()
         {
-            this._logger.Error("just check");
-
-            Log.CloseAndFlush();
-
             return Ok(await _unitOfWork
                 .QuestionRepository
                 .GetMyQuestionsAsync(User.GetUserId()));

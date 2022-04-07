@@ -44,13 +44,13 @@ export class QuestionComponent implements OnInit {
     private route: ActivatedRoute,
     private accountService: AccountService,
     private modalService: BsModalService,
-  ) {
+  ) {}
+
+  ngOnInit(): void {
     this.accountService.currentUser$
       .pipe(take(1))
       .subscribe((user) => (this.currentUserUsername = user.username))
-  }
 
-  ngOnInit(): void {
     this.routeSub = this.route.params.subscribe((params) => {
       const questionIdFromUrl = parseInt(params['id']) || 0
 
@@ -63,10 +63,9 @@ export class QuestionComponent implements OnInit {
     })
   }
 
-  openImage(){
-    window.open( this.model.photoUrl,'Question Image');
+  openImage() {
+    window.open(this.model.photoUrl, 'Question Image')
   }
-
 
   toggleDisplayComments() {
     this.shouldDisplayComments = !this.shouldDisplayComments
@@ -110,11 +109,13 @@ export class QuestionComponent implements OnInit {
               this.lengthAsString = 'more than 15 minutes'
               break
           }
-          this.isCurrentUserQuestionOwner =
-            this.model.askerUsername === this.currentUserUsername;
 
-          this.hasCurrentUserMadeAnOffer=this.model.offers.some((offer)=> offer.username==this.currentUserUsername);
-          
+          this.isCurrentUserQuestionOwner =
+            this.model.askerUsername === this.currentUserUsername
+
+          this.hasCurrentUserMadeAnOffer = this.model.offers.some(
+            (offer) => offer.username == this.currentUserUsername,
+          )
         }
       },
       (error) => {
@@ -123,9 +124,8 @@ export class QuestionComponent implements OnInit {
     )
   }
 
-
   solved(template: TemplateRef<any>) {
-    this.questionService.markQuestionAsSolved(this.model.id);
+    this.questionService.markQuestionAsSolved(this.model.id)
     this.modalRef = this.modalService.show(template, this.modalConfig)
   }
 

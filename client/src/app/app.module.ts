@@ -20,7 +20,6 @@ import { QuestionsComponent } from './question/questions/questions.component';
 import { OffersComponent } from './question/offers/offers.component';
 import { PhotoEditorComponent } from './members/photo-editor/photo-editor.component';
 import { FileUploadModule } from 'ng2-file-upload';
-import { ReviewComponent } from './review/review.component';
 import { RatingModule } from 'ngx-bootstrap/rating';
 
 
@@ -59,7 +58,6 @@ import { EventsComponent } from './_components/questions/events/events.component
     QuestionsComponent,
     OffersComponent,
     PhotoEditorComponent,
-    ReviewComponent,
     RatingBasicComponent,
     EditQuestionComponent,
     PocComponent,

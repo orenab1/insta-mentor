@@ -33,19 +33,21 @@
               much better
             </div>
           </div>
-
           <button
             style="
+              padding: 0 15px;
               background-color: #ff7b02;
               color: white;
               border: 0px;
               border-radius: 25px;
-              width: 200px;
+              min-width: 170px;
               height: 40px;
             "
             class="semi-bold-font"
             (click)="goToAsk()"
           >
+        
+          {{currentUser === null ? "SIGN IN TO":""}}
             ASK ANYTHING
           </button>
         </div>
@@ -63,13 +65,7 @@
       <div class="col-lg-1"></div>
     </div>
 
-
-
     <app-events></app-events>
-
-   
-
- 
   </div>
 </div>
 
@@ -90,25 +86,33 @@
         *ngFor="let question of questions"
         style="background-color: white; border-radius: 10px;"
         class="my-2 p-2 question-container"
-
-      
-        
-        [class.short-bg]="question.isActive && question.isUserOnline && question.ageInSeconds<60*60"
-        [class.long-bg]="question.isActive && question.isUserOnline && question.ageInSeconds>=60*60"
-        [class.question-not-active]="!question.isActive || question.isSolved || !question.isUserOnline"
+        [class.short-bg]="
+          question.isActive &&
+          question.isUserOnline &&
+          question.ageInSeconds < 60 * 60
+        "
+        [class.long-bg]="
+          question.isActive &&
+          question.isUserOnline &&
+          question.ageInSeconds >= 60 * 60
+        "
+        [class.question-not-active]="
+          !question.isActive || question.isSolved || !question.isUserOnline
+        "
         (click)="router.navigateByUrl('/display-question/' + question.id)"
       >
-   
         <div class="first-question-row d-flex justify-content-between">
           <div class="user semi-bold-font">
             <app-display-user-image
-            [isSmall]="true"
-            [username]="question.askerUsername"
-            [photoUrl]="question.askerPhotoUrl"
-            [userId]="question.askerId"
-          ></app-display-user-image>
-         
-            <span style="font-size: 14px; margin-left: 10px;">{{ question.askerUsername }}</span>
+              [isSmall]="true"
+              [username]="question.askerUsername"
+              [photoUrl]="question.askerPhotoUrl"
+              [userId]="question.askerId"
+            ></app-display-user-image>
+
+            <span style="font-size: 14px; margin-left: 10px;">
+              {{ question.askerUsername }}
+            </span>
           </div>
 
           <div class="d-flex justify-content-end">
@@ -136,14 +140,26 @@
               style="font-size: 10px; margin-top: 5px;"
             >
               {{ question.howLongAgo }}
-
             </div>
           </div>
         </div>
-        <div *ngIf="question.isUserOnline"  style="float: right;" class="semi-bold-font waiting-for mt-3">
+        <div
+          *ngIf="question.isUserOnline"
+          style="float: right;"
+          class="semi-bold-font waiting-for mt-3"
+        >
           <div>
-            <div style="float: right; font-size:20px;" title='Waiting online for..'>   {{ question.onlineAgeString }}</div>
-            <img title='Waiting online for..'  src="./assets/timer.png" style="height: 28px; margin-right: 3px; float: right;" />            
+            <div
+              style="float: right; font-size: 20px;"
+              title="Waiting online for.."
+            >
+              {{ question.onlineAgeString }}
+            </div>
+            <img
+              title="Waiting online for.."
+              src="./assets/timer.png"
+              style="height: 28px; margin-right: 3px; float: right;"
+            />
           </div>
           <!-- <div style='
           color: black;
@@ -151,7 +167,7 @@
           font-family: poppins;
           margin-left: 5px;'>Waiting Online</div> -->
         </div>
-        
+
         <div>
           <div class="d-flex flex-row">
             <div
@@ -164,14 +180,15 @@
               "
               class="rounded-circle"
             ></div>
-            <div class="bold-font question-header my-2">{{ question.header }}</div>
+            <div class="bold-font question-header my-2">
+              {{ question.header }}
+            </div>
           </div>
           <div
             class="faded-text question-body"
             style="margin-left: 10px; margin-bottom: 5px;"
           >
             {{ question.body }}
-         
           </div>
 
           <div class="d-flex" style="margin-left: 10px;">

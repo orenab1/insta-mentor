@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
  
 @Component({
   // eslint-disable-next-line @angular-eslint/component-selector
@@ -6,15 +6,25 @@ import { Component, EventEmitter, Output } from '@angular/core';
   templateUrl: './rating-basic.component.html',
   styleUrls: ['./rating-basic.component.scss']
 })
-export class RatingBasicComponent {
+export class RatingBasicComponent  implements OnInit{
   max = 5;
   rate = 0;
   isReadonly = false;
   overStar: number | undefined;
   starsAsText:string=''; //without empty string no place will be reserved for text
   @Output() onRatingChanged=new EventEmitter<number>();
+  @Input() isDisplayOnly:false;
+  @Input() ratingOneToFive:number;
 
-  starsCountPercentage=84;
+  starsCountPercentage:number;
+
+  ngOnInit(): void {
+    
+    this.starsCountPercentage=(this.ratingOneToFive/5)*100
+   
+  }
+
+
   
   confirmSelection(event: KeyboardEvent) {
     if (event.keyCode === 13 || event.key === 'Enter') {

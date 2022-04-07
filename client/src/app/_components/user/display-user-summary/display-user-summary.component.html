@@ -8,9 +8,11 @@
   </div>
 
   <div class="d-flex flex-column">
-    <label style="margin-bottom: -3px; font-size: 14px; margin-top: 4px;">
+    <label style="margin-bottom: -3px; font-size: 14px; margin-top: 4px;" class="width-limitation" [style.width.px]="widthInPx" >
       {{ model.username }}
     </label>
-    <div class="faded-text" style="font-size: 14px;">{{ model.title }}</div>
+    <div class="faded-text width-limitation" style="font-size: 14px;" [style.width.px]="widthInPx" class="width-limitation">{{ model.title }}</div>
   </div>
+
+  <rating-basic style='margin-top:-3px;' *ngIf='showRating' [isDisplayOnly]='true' [ratingOneToFive]='model.averageRating'></rating-basic>
 </div>

@@ -150,20 +150,11 @@ export class EditQuestionComponent implements OnInit {
   }
 
   askQuestion() {
-    if (!this.model.header) {
-      this.userFilledHeader = false
-    } else {
-      this.userFilledHeader = true
-    }
-
-    if (this.model.tags == null || this.model.tags.length == 0) {
-      this.userFilledTags = false
-    } else {
-      this.userFilledTags = true
-    }
-
+    this.userFilledHeader = this.model.header!=null && this.model.header!=undefined && this.model.header!='' && this.model.header.length>0;
+    this.userFilledTags =!(this.model.tags == null || this.model.tags.length == 0)
+  
     if (!this.userFilledHeader || !this.userFilledTags) {
-      return
+      return;
     }
 
     if (this.model.tags != null && this.model.tags.length != 0) {

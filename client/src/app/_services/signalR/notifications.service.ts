@@ -34,7 +34,6 @@ export class NotificationsService {
     //  });
 
      this.hubConnection.on("BroadcastMessage", () => {  
-      alert('offer!');
     });  
 
 

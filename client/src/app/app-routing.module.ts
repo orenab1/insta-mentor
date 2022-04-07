@@ -12,7 +12,6 @@ import { RegisterComponent } from './register/register.component'
 
 const routes: Routes = [
   { path: '', redirectTo:'questions', pathMatch: 'full' },
-  { path: 'communities', component: CommunitiesComponent },
   { path: 'questions', component: QuestionsComponent },
   { path: 'my-questions', component: QuestionsComponent },
   { path: 'register', component: RegisterComponent },

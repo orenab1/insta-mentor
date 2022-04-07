@@ -31,9 +31,7 @@ export class PocComponent implements OnInit {
   }
 
   startZoom(){
-    this.questionService.acceptOffer(50).subscribe(response => {
-    
-      alert('zoomed '+ response);
+    this.questionService.acceptOffer(50).subscribe(response => {    
     });
   }
 

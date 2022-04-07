@@ -6,6 +6,7 @@ import { BehaviorSubject } from 'rxjs'
 import { take } from 'rxjs/operators'
 import { UserConnectedDuration } from 'src/app/_models/userConnectedDuration'
 import { environment } from 'src/environments/environment'
+import { json } from 'stream/consumers'
 import { User } from '../../_models/user'
 
 @Injectable({
@@ -37,14 +38,12 @@ export class PresenceService {
 
     this.hubConnection.on('UserIsOnline', (username) => {
 
-      alert(username + ' connected')
       this.onlineUsers$.pipe(take(1)).subscribe((usernames) => {
         this.onlineUsersSource.next([...usernames, username])
       })
     })
 
     this.hubConnection.on('UserIsOffline', (username) => {
-      alert(username + ' DISconnected')
       this.onlineUsers$.pipe(take(1)).subscribe((usernames) => {
         this.onlineUsersSource.next([
           ...usernames.filter((x) => x !== username),

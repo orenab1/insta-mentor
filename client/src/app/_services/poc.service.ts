@@ -30,11 +30,9 @@ export class PocService {
     this.hubConnection.start().catch(error => console.log(error));
 
     this.hubConnection.on('ReceiveMessageThread', messages => {
-      alert('ReceiveMessageThread');
     })
 
     this.hubConnection.on('NewMessage', () => {
-      alert('NewMessage');
     })   
   }
 

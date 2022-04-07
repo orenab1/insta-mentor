@@ -6,6 +6,8 @@ import { NavigationEnd, Router } from '@angular/router'
 import { filter, interval, Observable, take, takeWhile } from 'rxjs'
 import { User } from 'src/app/_models/user'
 import { AccountService } from 'src/app/_services/account.service'
+import { json } from 'stream/consumers'
+import { UserConnectedDuration } from 'src/app/_models/userConnectedDuration'
 
 @Component({
   selector: 'app-questions',
@@ -14,11 +16,12 @@ import { AccountService } from 'src/app/_services/account.service'
 })
 export class QuestionsComponent implements OnInit {
   questions: QuestionSummary[]
-  currentUser: User;
+  currentUser: User
 
   isFromMyQuestionsRoute: boolean = false
 
-  intervalSeconds=10;
+  intervalSeconds = 10
+  userTimes: UserConnectedDuration[]
 
   constructor(
     private questionService: QuestionService,
@@ -35,20 +38,32 @@ export class QuestionsComponent implements OnInit {
         }
       })
 
-      this.accountService.currentUser$.pipe(take(1)).subscribe(user => this.currentUser = user);
+    this.accountService.currentUser$
+      .pipe(take(1))
+      .subscribe((user) => (this.currentUser = user))
   }
 
   ngOnInit(): void {
-    setInterval(() => {
-      this.loadQuestions(this.intervalSeconds)
-    }, this.intervalSeconds*1000)
+   
 
-    this.loadQuestions(0);
+    this.presenceService.onlineUsersTimesSource$.subscribe((usernamesTimes) => {
+      this.userTimes = new Array() as Array<UserConnectedDuration>
+      usernamesTimes.forEach((userTime) => {
+        this.userTimes.push({
+          username: userTime.username,
+          secondsElapsed: userTime.secondsElapsed,
+        })
+      })
+    })
+
+    setInterval(() => {
+      this.loadQuestions()
+    }, this.intervalSeconds * 1000)
+
+    this.loadQuestions()
   }
 
- 
-
-  loadQuestions(interval): void {
+  loadQuestions(): void {
     let questions = new Observable<QuestionSummary[]>()
     if (this.isFromMyQuestionsRoute) {
       questions = this.questionService.getMyQuestions()
@@ -58,40 +73,27 @@ export class QuestionsComponent implements OnInit {
 
     questions.subscribe(
       (response) => {
-        this.presenceService.onlineUsersTimesSource$.subscribe(
-          (usernamesTimes) => {
-            usernamesTimes.forEach(x=>x.secondsElapsed+=10);
-          });
-
-
-        this.questions = response
+        this.questions = response;
+        this.userTimes.forEach(userTime => {
+          userTime.secondsElapsed+=this.intervalSeconds;
+        });
         this.questions.forEach((q) => {
-          q.isWaitingOnlineForTooLong=q.ageInSeconds>60*60;
+          q.isWaitingOnlineForTooLong = q.ageInSeconds > 60 * 60
 
-
-       
-          this.presenceService.onlineUsersTimesSource$.subscribe(
-            (usernamesTimes) => {
+        
               q.isUserOnline =
-                usernamesTimes.find((x) => x.username == q.askerUsername) !==
+              this.userTimes.find((x) => x.username == q.askerUsername) !==
                 undefined
 
               if (q.isUserOnline) {
-
-                
-                q.onlineAgeSeconds=Math.min(
-                  usernamesTimes.find((x) => x.username == q.askerUsername)
+                q.onlineAgeSeconds = Math.min(
+                  this.userTimes.find((x) => x.username == q.askerUsername)
                     .secondsElapsed,
                   q.ageInSeconds,
-                );
+                )
 
-                q.onlineAgeString = this.getQuestionTime(
-                  q.onlineAgeSeconds);
-
+                q.onlineAgeString = this.getQuestionTime(q.onlineAgeSeconds)
               }
-            },
-          )
-          
 
           switch (q.length) {
             case 1:
@@ -105,34 +107,38 @@ export class QuestionsComponent implements OnInit {
               break
           }
 
-          this.questions=this.questions.sort((a, b) =>this.questionsOrderComparetor(a,b)).reverse();
+          this.questions = this.questions
+            .sort((a, b) => this.questionsOrderComparetor(a, b))
+            .reverse()
         })
       },
       (error) => {
         console.log(error)
       },
     )
-
-  
   }
 
-  questionsOrderComparetor(question1:QuestionSummary, question2:QuestionSummary){
-
-
-    if (question1.onlineAgeSeconds!==0 || question2.onlineAgeSeconds!==0) { 
-      return this.numbersComperator(question1.onlineAgeSeconds, question2.onlineAgeSeconds);     
+  questionsOrderComparetor(
+    question1: QuestionSummary,
+    question2: QuestionSummary,
+  ) {
+    if (question1.onlineAgeSeconds !== 0 || question2.onlineAgeSeconds !== 0) {
+      return this.numbersComperator(
+        question1.onlineAgeSeconds,
+        question2.onlineAgeSeconds,
+      )
     }
 
-    return this.numbersComperator(question1.ageInSeconds, question2.ageInSeconds);
+    return this.numbersComperator(
+      question1.ageInSeconds,
+      question2.ageInSeconds,
+    )
   }
 
-  numbersComperator(num1:number=0,num2:number=0)
-  { 
-    if (num1>num2)
-      return 1;
-    if (num2>num1)
-      return -1;
-      return 0;
+  numbersComperator(num1: number = 0, num2: number = 0) {
+    if (num1 > num2) return 1
+    if (num2 > num1) return -1
+    return 0
   }
 
   getQuestionTime(seconds) {
@@ -152,10 +158,10 @@ export class QuestionsComponent implements OnInit {
   }
 
   goToAsk() {
-    if (this.currentUser==null){
+    if (this.currentUser == null) {
       this.router.navigateByUrl('register')
-    }else{
-    this.router.navigateByUrl('question/edit-question')
+    } else {
+      this.router.navigateByUrl('question/edit-question')
     }
   }
 }

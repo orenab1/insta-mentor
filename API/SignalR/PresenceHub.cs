@@ -44,7 +44,7 @@ namespace API.SignalR
 
             UserConnectedDurationDto[] currentUsersWithTime =
                 await _tracker.GetOnlineUsersWithTimes();
-            await Clients.Caller.GetOnlineUsersWithTimes(currentUsersWithTime);
+             await Clients.All.GetOnlineUsersWithTimes(currentUsersWithTime);
         }
 
         public override async Task OnDisconnectedAsync(Exception exception)
@@ -60,7 +60,7 @@ namespace API.SignalR
             UserConnectedDurationDto[] currentUsersWithTime =
                 await _tracker.GetOnlineUsersWithTimes();
 
-            await Clients.Caller.GetOnlineUsersWithTimes(currentUsersWithTime);
+            await Clients.All.GetOnlineUsersWithTimes(currentUsersWithTime);
 
             await base.OnDisconnectedAsync(exception);
         }

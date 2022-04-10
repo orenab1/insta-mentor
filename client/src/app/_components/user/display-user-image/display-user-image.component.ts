@@ -20,9 +20,8 @@ export class DisplayUserImageComponent implements OnInit {
   constructor(private presenceService: PresenceService) { }
 
   ngOnInit(): void {
-    this.presenceService.onlineUsers$.subscribe((usernames) => {
-      this.isUserOnline = usernames.indexOf(this.username) > -1
-    })
+    this.presenceService.onlineUsersTimesSource$.subscribe((usernamesTimes) => {
+      this.isUserOnline =usernamesTimes.map(e=>e.username).indexOf(this.username)>-1;
+    });
   }
-
 }

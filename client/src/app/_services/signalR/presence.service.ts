@@ -36,24 +36,24 @@ export class PresenceService {
 
     this.hubConnection.start().catch((error) => console.log(error))
 
-    this.hubConnection.on('UserIsOnline', (username) => {
+    // this.hubConnection.on('UserIsOnline', (username) => {
 
-      this.onlineUsers$.pipe(take(1)).subscribe((usernames) => {
-        this.onlineUsersSource.next([...usernames, username])
-      })
-    })
+    //   this.onlineUsers$.pipe(take(1)).subscribe((usernames) => {
+    //     this.onlineUsersSource.next([...usernames, username])
+    //   })
+    // })
 
-    this.hubConnection.on('UserIsOffline', (username) => {
-      this.onlineUsers$.pipe(take(1)).subscribe((usernames) => {
-        this.onlineUsersSource.next([
-          ...usernames.filter((x) => x !== username),
-        ])
-      })
-    })
+    // this.hubConnection.on('UserIsOffline', (username) => {
+    //   this.onlineUsers$.pipe(take(1)).subscribe((usernames) => {
+    //     this.onlineUsersSource.next([
+    //       ...usernames.filter((x) => x !== username),
+    //     ])
+    //   })
+    // })
 
-    this.hubConnection.on('GetOnlineUsers', (usernames: string[]) => {
-      this.onlineUsersSource.next(usernames)
-    })
+    // this.hubConnection.on('GetOnlineUsers', (usernames: string[]) => {
+    //   this.onlineUsersSource.next(usernames)
+    // })
 
     this.hubConnection.on('GetOnlineUsersWithTimes', (users: UserConnectedDuration[]) => {
       this.onlineUsersTimesSource.next(users)

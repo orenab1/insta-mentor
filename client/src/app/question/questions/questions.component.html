@@ -82,6 +82,7 @@
           My Questions
         </h3>
       </div>
+     
       <div
         *ngFor="let question of questions"
         style="background-color: white; border-radius: 10px;"
@@ -89,18 +90,19 @@
         [class.short-bg]="
           question.isActive &&
           question.isUserOnline &&
-          question.ageInSeconds < 60 * 60
+          question.onlineAgeSeconds < 60 * 60
         "
         [class.long-bg]="
           question.isActive &&
           question.isUserOnline &&
-          question.ageInSeconds >= 60 * 60
+          question.onlineAgeSeconds >= 60 * 60
         "
         [class.question-not-active]="
           !question.isActive || question.isSolved || !question.isUserOnline
         "
         (click)="router.navigateByUrl('/display-question/' + question.id)"
       >
+
         <div class="first-question-row d-flex justify-content-between">
           <div class="user semi-bold-font">
             <app-display-user-image

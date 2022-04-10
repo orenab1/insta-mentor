@@ -19,12 +19,12 @@ export class NavComponent implements OnInit {
     this.user={
       username:'',      
     }    
-    this.accountService.currentUser$.pipe(take(1))
-      .subscribe(user => this.user = user);
+ 
   }
 
   ngOnInit(): void {
-    
+    this.accountService.currentUser$.pipe(take(1))
+    .subscribe(user => this.user = user);
   }
 
   logout() {

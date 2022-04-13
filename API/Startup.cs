@@ -90,11 +90,10 @@ namespace API
                                 .WithOrigins("https://vidcallme.azurewebsites.net",
                                 "https://localhost:4200",
                                 "https://vidcallme-app.azurewebsites.net",
-                                "https://vidcallme.azurewebsites.net/hubs/",
-                                "http://vidcallme.com",
-                                "http://vidcallme.com/hubs/",
-                                "http://www.vidcallme.com",
-                                "http://www.vidcallme.com/hubs/")
+                                "https://vidcallme-app.azurewebsites.net/api",                                                           
+                                "https://vidcallme.com/hubs/",                                                                                                
+                                "https://vidcallme.com" 
+                                )
                                 .AllowAnyHeader()
                                 .AllowAnyMethod()
                                 .AllowCredentials();
@@ -165,6 +164,14 @@ namespace API
                     endpoints.MapControllers();
                     endpoints.MapHub<PresenceHub>("hubs/presence");
                 });
+
+
+
+
+
+
+
+
         }
 
         private void CheckSameSite(

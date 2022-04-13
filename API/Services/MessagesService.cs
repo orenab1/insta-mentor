@@ -237,7 +237,7 @@ namespace API.Services
             // )
 
 
-            var callbackLink=this._config["baseWebUrl"]+"?email="+email+"&verificationCode="+verificationCode;
+            var callbackLink=this._config["baseWebUrl"]+"register?email="+email+"&verificationCode="+verificationCode;
          
 
             return callbackLink;

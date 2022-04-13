@@ -41,6 +41,7 @@ namespace API.Services
             SmtpClient client = new SmtpClient(_mailSettings.Host, _mailSettings.Port);
             client.EnableSsl = true;
 
+            client.UseDefaultCredentials = false;
             client.Credentials =
                 new NetworkCredential(_mailSettings.Mail, _mailSettings.Password);
             client.Send (message);

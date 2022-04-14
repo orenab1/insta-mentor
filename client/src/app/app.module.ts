@@ -32,7 +32,7 @@ import { EditUserComponent } from './_components/user/edit-user/edit-user.compon
 import { SocialLoginModule, SocialAuthServiceConfig } from 'angularx-social-login';
 import { GoogleLoginProvider } from 'angularx-social-login';
 import { ToastrModule } from 'ngx-toastr';
-import { NgxUiLoaderModule, NgxUiLoaderRouterModule } from 'ngx-ui-loader';
+import { NgxUiLoaderConfig, NgxUiLoaderModule, NgxUiLoaderRouterModule } from 'ngx-ui-loader';
 import { CommunitiesComponent } from './_components/community/communities/communities.component';
 import { DisplayCommunityComponent } from './_components/community/display-community/display-community.component';
 import { AddCommunityComponent } from './_components/community/add-community/add-community.component';
@@ -43,7 +43,15 @@ import { DisplayUserSummaryComponent } from './_components/user/display-user-sum
 import { DisplayUsernameComponent } from './_components/user/display-username/display-username.component';
 import { DisplayUserImageComponent } from './_components/user/display-user-image/display-user-image.component';
 import { EventsComponent } from './_components/questions/events/events.component';
+import { LoadingInterceptor } from './_interceptors/loading.interceptor';
 
+
+const ngxUiLoaderConfig: NgxUiLoaderConfig = {
+  "overlayColor": "rgba(40,40,40,0)",
+  "blur": 0,
+  "pbColor": "#ff7b02",
+  "fgsColor": "#ff7b02",
+  };
 
 @NgModule({
   declarations: [
@@ -88,6 +96,7 @@ import { EventsComponent } from './_components/questions/events/events.component
     NgToggleModule,
     TabsModule.forRoot(),
     RouterModule.forRoot([],{scrollPositionRestoration: 'enabled'}),
+    NgxUiLoaderModule.forRoot(ngxUiLoaderConfig),
   ],
   providers: [
     BsModalService,
@@ -95,6 +104,11 @@ import { EventsComponent } from './_components/questions/events/events.component
     {
       provide: HTTP_INTERCEPTORS,
       useClass: JwtInterceptor,
+      multi: true
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: LoadingInterceptor,
       multi: true
     },
     {

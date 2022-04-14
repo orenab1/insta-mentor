@@ -48,7 +48,7 @@ namespace API.Controllers
              Log.CloseAndFlush();
         }
 
- [HttpPost]
+        [HttpPost]
         [ActionName("register")]
         public async Task<ActionResult<UserDto>> Register(RegisterDto registerDto)
         {
@@ -88,7 +88,7 @@ namespace API.Controllers
             return new UserDto
             {
                 Username = user.UserName,
-                Token = _tokenService.CreateToken(user),
+              //  Token = _tokenService.CreateToken(user),
                 Id = user.Id
             };
         }

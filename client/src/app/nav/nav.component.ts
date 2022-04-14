@@ -25,6 +25,7 @@ export class NavComponent implements OnInit {
   ngOnInit(): void {
     this.accountService.currentUser$.pipe(take(1))
     .subscribe(user => this.user = user);
+
   }
 
   logout() {

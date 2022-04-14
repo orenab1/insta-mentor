@@ -53,7 +53,7 @@ export class RegisterComponent implements OnInit {
       
       },
       (error) => {
-        this.errorMessage = error.error;
+        this.handleErrorMessage(error.error);
       },
     )
   }
@@ -84,8 +84,8 @@ export class RegisterComponent implements OnInit {
       (response) => {
        
       },
-      (error) => {
-        this.errorMessage = error.error;
+      (error) => {        
+        this.handleErrorMessage(error.error);
       },
     )
   }
@@ -93,12 +93,21 @@ export class RegisterComponent implements OnInit {
   register() {
     this.accountService.register(this.model).subscribe(
       (response) => {
-        this.errorMessage='We have sent an email with a confirmation link to your email address.<br/>In order to complete the registration process, please click the confirmation link. <br/>If you do not receive a confirmation email,<br/>please check your spam folder.<br/>Also, please verify that you entered a valid email address in our sign-up form.'
+        this.errorMessage='We have sent an email with a confirmation link to your email address.<br/>In order to complete the registration process, please click the confirmation link. <br/>If you do not receive a confirmation email,<br/>please check your spam folder.'
       },
       (error) => {
-        this.errorMessage = error.error;
+        this.handleErrorMessage(error.error)
       },
     )
+  }
+
+  handleErrorMessage(errorMessage:string){
+    if (errorMessage.startsWith('Your') || errorMessage.startsWith('Email') || errorMessage.startsWith('Something')){
+      this.errorMessage = errorMessage;
+      } else{
+        this.errorMessage='Something went wrong. Please try again later, or contact us at oren@vidcallme.com';
+        console.log(errorMessage)
+      }    
   }
 
   toggleDisplayPassword() {

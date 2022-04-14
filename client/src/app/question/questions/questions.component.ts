@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core'
+import { Component, OnDestroy, OnInit } from '@angular/core'
 import { Question, QuestionSummary } from 'src/app/_models/question'
 import { PresenceService } from 'src/app/_services/signalR/presence.service'
 import { QuestionService } from 'src/app/_services/question.service'
@@ -14,7 +14,7 @@ import { UserConnectedDuration } from 'src/app/_models/userConnectedDuration'
   templateUrl: './questions.component.html',
   styleUrls: ['./questions.component.scss'],
 })
-export class QuestionsComponent implements OnInit {
+export class QuestionsComponent implements OnInit,OnDestroy {
   questions: QuestionSummary[]
   currentUser: User
 
@@ -22,6 +22,7 @@ export class QuestionsComponent implements OnInit {
 
   intervalSeconds = 10
   userTimes: UserConnectedDuration[]
+  intervalId;
 
   constructor(
     private questionService: QuestionService,
@@ -56,11 +57,17 @@ export class QuestionsComponent implements OnInit {
       })
     })
 
-    setInterval(() => {
+  this.intervalId=  setInterval(() => {
       this.loadQuestions()
     }, this.intervalSeconds * 1000)
 
     this.loadQuestions()
+  }
+
+  ngOnDestroy() {
+    if (this.intervalId) {
+      clearInterval(this.intervalId);
+    }
   }
 
   loadQuestions(): void {

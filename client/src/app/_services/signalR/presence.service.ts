@@ -16,10 +16,6 @@ export class PresenceService {
   hubUrl = environment.hubUrl
   private hubConnection: HubConnection
 
-
-  private onlineUsersSource = new BehaviorSubject<string[]>([])
-  onlineUsers$ = this.onlineUsersSource.asObservable()
-
   private onlineUsersTimesSource = new BehaviorSubject<UserConnectedDuration[]>([])
   onlineUsersTimesSource$ = this.onlineUsersTimesSource.asObservable()
 

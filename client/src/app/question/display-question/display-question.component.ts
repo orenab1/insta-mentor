@@ -8,6 +8,7 @@ import { Question } from '../../_models/question'
 import { Review } from '../../_models/question'
 import { QuestionService } from '../../_services/question.service'
 import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal'
+import { CommonService } from 'src/app/_services/common.service'
 
 @Component({
   selector: 'app-display-question',
@@ -44,6 +45,7 @@ export class QuestionComponent implements OnInit {
     private route: ActivatedRoute,
     private accountService: AccountService,
     private modalService: BsModalService,
+    private commonService:CommonService
   ) {}
 
   ngOnInit(): void {

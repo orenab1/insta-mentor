@@ -117,7 +117,7 @@ export class EditQuestionComponent implements OnInit {
   getQuestion() {
     this.questionService.getQuestion(this.id).subscribe(
       (response) => {
-        if (response != null) {
+        if (response.id != 0) {
           this.model = response
           this.isCurrentUserQuestionOwner =
             this.model.askerUsername === this.currentUserUsername

@@ -57,4 +57,13 @@ export class AccountService {
     this.presenceService.stopHubConnection();
   }
 
+  getUser()
+  {
+      const user=localStorage.getItem('user');
+      if (user)
+      return user;// this.currentUserSource.next(JSON.parse(user))
+      
+      return null;
+  }
+
 }

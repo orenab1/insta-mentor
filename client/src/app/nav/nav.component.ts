@@ -12,7 +12,7 @@ import { JsonpClientBackend } from '@angular/common/http';
   styleUrls: ['./nav.component.scss']
 })
 export class NavComponent implements OnInit {
-  user: any={};
+  user: any=null;
   navbarCollapsed:boolean;
 
   constructor(public accountService: AccountService, private router: Router) {
@@ -26,6 +26,10 @@ export class NavComponent implements OnInit {
     this.accountService.currentUser$.pipe(take(1))
     .subscribe(user => this.user = user);
 
+
+    setInterval(()=>{
+      this.user= JSON.parse(this.accountService.getUser()  )
+    },500)
   }
 
   logout() {

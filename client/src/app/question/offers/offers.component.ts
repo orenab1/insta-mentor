@@ -23,9 +23,9 @@ export class OffersComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.presenceService.onlineUsers$.subscribe((usernames) => {
+    this.presenceService.onlineUsersTimesSource$.subscribe((userConnectedDurations) => {
       this.offers.forEach(offer => {
-        offer.isUserOnline= usernames.indexOf(offer.username) > -1
+        offer.isUserOnline= userConnectedDurations.map(u=>u.username).indexOf(offer.username) > -1
       });
     })
   }

@@ -14,7 +14,11 @@ export class CommonService {
   private currentUserSource = new ReplaySubject<User>(1);
   currentUser$ = this.currentUserSource.asObservable();
 
-  constructor(private http: HttpClient) { }
+  localMinutesOffset:number=0;
+
+  constructor(private http: HttpClient) {
+    this.localMinutesOffset=new Date().getTimezoneOffset();
+   }
 
 
   getTags() {
@@ -23,5 +27,10 @@ export class CommonService {
         return tags;
       })
     );
+  }
+
+  getLocalMinutesOffset(){
+    return 180;
+    return this.localMinutesOffset;
   }
 }

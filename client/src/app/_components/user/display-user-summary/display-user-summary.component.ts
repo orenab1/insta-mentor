@@ -28,8 +28,8 @@ export class DisplayUserSummaryComponent implements OnInit {
   ngOnInit(): void {
     this.loadUserSummary()
 
-    this.presenceService.onlineUsers$.subscribe((usernames) => {
-      this.isUserOnline = usernames.indexOf(this.username) > -1
+    this.presenceService.onlineUsersTimesSource$.subscribe((userConnectedDurations) => {
+      this.isUserOnline = userConnectedDurations.map(u=>u.username).indexOf(this.username) > -1
     })
 
   

@@ -49,7 +49,7 @@ export interface QuestionSummary {
   onlineAgeString: string
   isWaitingOnlineForTooLong:boolean
 
-  onlineAgeSeconds: number  
+  onlineAgeSeconds: number    
 }
 
 

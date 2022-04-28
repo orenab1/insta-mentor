@@ -14,7 +14,7 @@ import { UserConnectedDuration } from 'src/app/_models/userConnectedDuration'
   templateUrl: './questions.component.html',
   styleUrls: ['./questions.component.scss'],
 })
-export class QuestionsComponent implements OnInit,OnDestroy {
+export class QuestionsComponent implements OnInit, OnDestroy {
   questions: QuestionSummary[]
   currentUser: User
 
@@ -22,7 +22,7 @@ export class QuestionsComponent implements OnInit,OnDestroy {
 
   intervalSeconds = 10
   userTimes: UserConnectedDuration[]
-  intervalId;
+  intervalId
 
   constructor(
     private questionService: QuestionService,
@@ -45,8 +45,6 @@ export class QuestionsComponent implements OnInit,OnDestroy {
   }
 
   ngOnInit(): void {
-   
-
     this.presenceService.onlineUsersTimesSource$.subscribe((usernamesTimes) => {
       this.userTimes = new Array() as Array<UserConnectedDuration>
       usernamesTimes.forEach((userTime) => {
@@ -55,18 +53,18 @@ export class QuestionsComponent implements OnInit,OnDestroy {
           secondsElapsed: userTime.secondsElapsed,
         })
       })
+
+      this.loadQuestions()
     })
 
-  this.intervalId=  setInterval(() => {
+    this.intervalId = setInterval(() => {
       this.loadQuestions()
     }, this.intervalSeconds * 1000)
-
-    this.loadQuestions()
   }
 
   ngOnDestroy() {
     if (this.intervalId) {
-      clearInterval(this.intervalId);
+      clearInterval(this.intervalId)
     }
   }
 
@@ -80,27 +78,15 @@ export class QuestionsComponent implements OnInit,OnDestroy {
 
     questions.subscribe(
       (response) => {
-        this.questions = response;
-        this.userTimes.forEach(userTime => {
-          userTime.secondsElapsed+=this.intervalSeconds;
-        });
+        this.questions = response
+       
         this.questions.forEach((q) => {
-          q.isWaitingOnlineForTooLong = q.ageInSeconds > 60 * 60
+          q.isUserOnline =
+            q.onlineAgeSeconds!=0;
 
-        
-              q.isUserOnline =
-              this.userTimes.find((x) => x.username == q.askerUsername) !==
-                undefined
-
-              if (q.isUserOnline) {
-                q.onlineAgeSeconds = Math.min(
-                  this.userTimes.find((x) => x.username == q.askerUsername)
-                    .secondsElapsed,
-                  q.ageInSeconds,
-                )
-
-                q.onlineAgeString = this.getQuestionTime(q.onlineAgeSeconds)
-              }
+          if (q.isUserOnline) {
+            q.onlineAgeString = this.getQuestionTime(q.onlineAgeSeconds)
+          }
 
           switch (q.length) {
             case 1:
@@ -113,11 +99,11 @@ export class QuestionsComponent implements OnInit,OnDestroy {
               q.lengthAsString = '>15 mins.'
               break
           }
-
-          this.questions = this.questions
-            .sort((a, b) => this.questionsOrderComparetor(a, b))
-            .reverse()
         })
+
+        this.questions = this.questions
+          .sort((a, b) => this.questionsOrderComparetor(a, b))
+          .reverse()
       },
       (error) => {
         console.log(error)

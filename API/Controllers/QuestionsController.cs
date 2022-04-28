@@ -258,9 +258,26 @@ namespace API.Controllers
             int[] userCommunitiesIds =
                 user?.Communities?.Select(x => x.Value).ToArray();
 
-            return Ok(await _unitOfWork
+            var questions= (await _unitOfWork
                 .QuestionRepository
-                .GetQuestionsAsync(userTagsIds, userCommunitiesIds));
+                .GetQuestionsAsync(userTagsIds, userCommunitiesIds)).ToList();
+
+            UserConnectedDurationDto[] usersDuration= _unitOfWork.UserRepository.GetOnlineUsersWithTimes();
+
+
+            for (int i = 0; i < questions.Count(); i++)
+            {
+                UserConnectedDurationDto duration=  usersDuration.SingleOrDefault(x=>x.Username==questions[i].AskerUsername);
+                int onlineAge=  duration==null?
+                    0:
+                   Math.Max( duration.SecondsElapsed,1);
+                
+
+                questions[i].OnlineAgeSeconds= Math.Min(onlineAge,questions[i].AgeInSeconds);
+            }
+        
+
+            return Ok(await Task.FromResult(questions));
         }
 
         [HttpPost]

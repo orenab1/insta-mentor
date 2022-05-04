@@ -44,7 +44,6 @@ namespace API.Controllers
             this._unitOfWork = unitOfWork;
         }
 
-        [Authorize]
         [HttpGet("{id}")]
         [ActionName("get-user-summary-by-id")]
         public async Task<ActionResult<UserSummaryDto>>

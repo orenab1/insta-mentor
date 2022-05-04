@@ -88,6 +88,10 @@ namespace API
                         .WriteTo
                         .File("logs/logs.txt",
                         rollingInterval: RollingInterval.Day)
+                        .WriteTo
+                        .MSSqlServer(
+                            connectionString: "Server=localhost;Database=vidcallme;Integrated Security=SSPI;",
+                            sinkOptions: new MSSqlServerSinkOptions { TableName = "LogEvents" })
                         // .MinimumLevel
                         // .Debug()
                         )

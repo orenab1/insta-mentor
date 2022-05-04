@@ -7,12 +7,14 @@ using System.Web;
 using DAL.Repositories;
 using DAL.Interfaces;
 using DAL.DTOs.Full;
+using API.Interfaces;
 
 namespace API.SignalR
 {
     public class PresenceTracker
     {
          private readonly IUnitOfWork _unitOfWork;
+
 
         public PresenceTracker( IUnitOfWork unitOfWork)
         {
@@ -24,6 +26,8 @@ namespace API.SignalR
         {
             await _unitOfWork.UserRepository
                 .SaveNewConnectionForUser(username, connectionId, userAgent);
+
+            
         }
 
         public async Task<bool> UserDisconnected(string connectionId)

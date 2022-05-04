@@ -51,7 +51,7 @@ export class QuestionComponent implements OnInit {
   ngOnInit(): void {
     this.accountService.currentUser$
       .pipe(take(1))
-      .subscribe((user) => (this.currentUserUsername = user.username))
+      .subscribe((user) => (this.currentUserUsername = user? user.username: undefined))
 
     this.routeSub = this.route.params.subscribe((params) => {
       const questionIdFromUrl = parseInt(params['id']) || 0

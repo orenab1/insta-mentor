@@ -1,31 +1,47 @@
-<div *ngFor="let event of model">
-  
-  <div *ngIf="event.minutesToStart<=0 && event.minutesToEnd>0" class="row" style="padding-top: 20px;">
-    <div class="col-lg-1"></div>
-    <div class="col-lg-10 container-fluid">
-      <div class="row semi-bold-font mb-3">
-        <div
-          class="col-1"
-          style="
-            background-color: green;
-            color: white;
-            text-align: center;
-            padding-top: 8px;
-          "
-        >
-          <span style="font-size: 20px;">NOW</span>
-        </div>
-        <div class="col-11">
-          <div>
-            <div [innerHTML]="(event.nowText)"></div>
+<div *ngIf="model!==undefined && model.length>0"
+  style="
+    font-family: 'Poppins-SemiBold';
+    font-size: 18px;
+    margin-top: 20px;
+    text-decoration: underline;
+  "
+  class="d-block d-md-none"
+>
+  Upcoming Events
+</div>
+<div style="margin-top: 20px;">
+  <div *ngFor="let event of model">
+    <div
+      *ngIf="event.minutesToStart <= 0 && event.minutesToEnd > 0"
+      class="row" style="margin-top: 15px !important;"
+    >
+      <div class="col-lg-1"></div>
+      <div class="col-lg-10 container-fluid">
+        <div class="row semi-bold-font mb-3">
+          <div
+            class="col-1 d-none d-md-block"
+            style="
+              background-color: green;
+              color: white;
+              text-align: center;
+              padding-top: 8px;
+              padding-left: 0px;
+              padding-right: 0px;
+            "
+          >
+            <span style="font-size: 20px;">NOW</span>
           </div>
-          <div style="opacity: 0.6;">
-            Please do consider accepting other helpers’ help offers as well
+          <div class="col-11">
+            <div>
+              <div [innerHTML]="event.nowText"></div>
+            </div>
+            <div style="opacity: 0.6;">
+              Please do consider accepting other helpers’ help offers as well
+            </div>
           </div>
         </div>
-      </div>
 
-      <div class="row semi-bold-font">
+        <!-- <div class="row semi-bold-font">
         <a
           href=""
           style="
@@ -38,34 +54,38 @@
         >
           All
         </a>
+      </div> -->
       </div>
+      <div class="col-lg-1"></div>
     </div>
-    <div class="col-lg-1"></div>
-  </div>
 
-
-  <div class="row" *ngIf="event.minutesToStart>0" style="padding-top: 20px;">
-    <div class="col-lg-1"></div>
-    <div class="col-lg-10 container-fluid">      
-
-      <div class="row semi-bold-font">
-        <div
-          class="col-1"
-          style="
-            color: #08092f;
-            border: #08092f 1px solid;
-            text-align: center;
-            padding-top: 8px;
-          "
-        >
-          <span style="font-size: 20px;">NEXT</span>
-        </div>
-        <div class="col-11">
-            <div [innerHTML]="(event.nextText)"></div>        
-            <span style="color: red;" *ngIf="event.minutesToStart<=60">Starts in less than 1 hour!</span>
+    <div class="row" *ngIf="event.minutesToStart > 0" style="margin-top: 15px !important;">
+      <div class="col-lg-1"></div>
+      <div class="col-lg-10 container-fluid">
+        <div class="row semi-bold-font">
+          <div
+            class="col-1 d-none d-md-block"
+            style="
+              padding-right: 0px;
+              color: #08092f;
+              border: #08092f 1px solid;
+              text-align: center;
+              padding-top: 8px;
+              padding-left: 0px;
+              height: 48px;
+            "
+          >
+            <span style="font-size: 20px;">NEXT</span>
           </div>
+          <div class="col-11">
+            <div [innerHTML]="event.nextText"></div>
+            <span style="color: red;" *ngIf="event.minutesToStart <= 60">
+              Starts in less than 1 hour!
+            </span>
+          </div>
+        </div>
       </div>
+      <div class="col-lg-1"></div>
     </div>
-    <div class="col-lg-1"></div>
   </div>
 </div>

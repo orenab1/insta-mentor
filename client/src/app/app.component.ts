@@ -5,7 +5,9 @@ import { User } from './_models/user';
 import { PresenceService } from './_services/signalR/presence.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { GoogleLoginProvider, SocialAuthService,SocialUser  } from 'angularx-social-login';
+import { NavigationEnd, Router } from '@angular/router';
 
+declare let gtag: Function;
 
 @Component({
   selector: 'app-root',
@@ -23,7 +25,8 @@ export class AppComponent implements OnInit {
 
   constructor(private accountService: AccountService, private presenceService: PresenceService,
     private formBuilder: FormBuilder, 
-    private socialAuthService: SocialAuthService) { }
+    private socialAuthService: SocialAuthService,
+    private router: Router) { }
 
 
   ngOnInit() {
@@ -59,5 +62,7 @@ export class AppComponent implements OnInit {
   // logOut(): void {
   //   this.socialAuthService.signOut();
   // }
+
+ 
 }
 

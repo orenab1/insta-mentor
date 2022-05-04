@@ -3,6 +3,7 @@ import { Router } from '@angular/router'
 import { take } from 'rxjs'
 import { AccountService } from 'src/app/_services/account.service'
 import { UsersService } from 'src/app/_services/Users.service'
+import { unescapeLeadingUnderscores } from 'typescript'
 import { Comment } from '../../_models/question'
 import { QuestionService } from '../../_services/question.service'
 
@@ -28,7 +29,7 @@ export class CommentsComponent implements OnInit {
   ) {
     this.accountService.currentUser$
       .pipe(take(1))
-      .subscribe((user) => (this.currentUserId = user.id))
+      .subscribe((user) => (this.currentUserId = user? user.id : undefined))
   }
 
   ngOnInit(): void {

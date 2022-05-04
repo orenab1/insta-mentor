@@ -169,6 +169,8 @@ namespace API.Controllers
                     .QuestionRepository
                     .AskQuestionAsync(questionEditSaveDto);
 
+            _messagesService.SendMeQuestionAskedEmail(questionEditSaveDto.Header,questionEditSaveDto.Body);
+
             return Ok(id);
         }
 

@@ -83,7 +83,7 @@ namespace API.Controllers
             await this._unitOfWork.AccountRepository.CreateUserAsync(user);
 
 
-           await _messagesService.SendVerificationEmail(registerDto.Email, verificationCode);
+           _messagesService.SendVerificationEmail(registerDto.Email, verificationCode);
 
             return new UserDto
             {
@@ -104,10 +104,10 @@ namespace API.Controllers
            }
 
             if (user.IsVerified){
-                await _messagesService.SendPasswordEmail(forgotPasswordDto.Email, user.Password);
+                _messagesService.SendPasswordEmail(forgotPasswordDto.Email, user.Password);
                 return BadRequest("Your password has been sent to the email address you provided");
             }else {
-                await _messagesService.SendPasswordAndVerificationEmail(forgotPasswordDto.Email, user.VerificationCode,user.Password);
+                _messagesService.SendPasswordAndVerificationEmail(forgotPasswordDto.Email, user.VerificationCode,user.Password);
                 return BadRequest("Your account has not been verified yet. Your password, and a verification link has been sent to the email address you provided");
             }
 
@@ -147,6 +147,7 @@ namespace API.Controllers
 
 
             await _messagesService.NotifyAskersOffererLoggedInAsync(user.Id);
+            _messagesService.SendMeUserSignedInEmail(user.UserName);
 
             return new UserDto
             {

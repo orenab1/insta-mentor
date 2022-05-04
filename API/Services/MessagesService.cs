@@ -196,18 +196,18 @@ namespace API.Services
         }
 
 
-        public async Task SendVerificationEmail(string email, string verificationCode)
+        public void SendVerificationEmail(string email, string verificationCode)
         {
             
                   _mailService
                 .SendEmailAsync(new EmailDto {
-                    Subject = "Wellcome to VidCallMe!",
+                    Subject = "Welcome to VidCallMe!",
                     Body ="Please click the link below to verify your account <br/><br/>"+ GenerateConfirmEmailLink(email,verificationCode),
                     To = email
                 });
         }
 
-        public async Task SendPasswordEmail(string email,string password)
+        public void SendPasswordEmail(string email,string password)
         {
             _mailService
                 .SendEmailAsync(new EmailDto {
@@ -217,13 +217,32 @@ namespace API.Services
                 });
         }
 
-        public async Task SendPasswordAndVerificationEmail(string email,string verificationCode, string password)
+        public void SendPasswordAndVerificationEmail(string email,string verificationCode, string password)
         {
             _mailService
                 .SendEmailAsync(new EmailDto {
                     Subject = "Your VidCallMe Password & verification code",
                     Body ="Your password is: "+password+ "<br/>Please click the link below to verify your account <br/><br/>"+ GenerateConfirmEmailLink(email,verificationCode),
                     To = email
+                });
+        }
+
+        public void SendMeQuestionAskedEmail(string questionHeader,string questionBody)
+        {
+            _mailService
+                .SendEmailAsync(new EmailDto {
+                    Subject = "New Question Asked!!",
+                    Body =$"Here it is:<br/> {questionHeader} <br/><br/><br/> And Body:<br/> {questionHeader}",
+                    To = "orenab1@gmail.com "
+                });
+        }
+        public void SendMeUserSignedInEmail(string username)
+        {
+            _mailService
+                .SendEmailAsync(new EmailDto {
+                    Subject = "User Logged in!",
+                    Body =$"username: {username}",
+                    To = "orenab1@gmail.com "
                 });
         }
 

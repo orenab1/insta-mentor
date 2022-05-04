@@ -19,7 +19,7 @@ export class OffersComponent implements OnInit {
   constructor(private questionService: QuestionService, private accountService: AccountService,private router: Router,private presenceService: PresenceService) {
     this.accountService.currentUser$
     .pipe(take(1))
-    .subscribe((user) => (this.currentUserId = user.id))
+    .subscribe((user) => (this.currentUserId = user? user.id: undefined))
   }
 
   ngOnInit(): void {
@@ -31,6 +31,10 @@ export class OffersComponent implements OnInit {
   }
 
   acceptOffer(offerId: number) {
+    const offer: OfferInQuestion = this.offers.find(x=>x.id==offerId);
+    if (!offer.isUserOnline) {
+      alert('Cannot start a zoom session.\n The user who made the offer is currently not online.\n Please try again later');
+    }
     this.questionService.acceptOffer(offerId).subscribe(
       (response) => {
         window.open(response.meetingUrl, '_blank')

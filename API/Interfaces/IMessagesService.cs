@@ -16,10 +16,14 @@ namespace API.Interfaces
 
         Task InviteToCommunity(int communityId, int userId, string username);
 
-        Task SendVerificationEmail(string email, string verificationCode);
+        void SendVerificationEmail(string email, string verificationCode);
 
-        Task SendPasswordEmail(string email,string password);
+        void SendPasswordEmail(string email,string password);
 
-        Task SendPasswordAndVerificationEmail(string email,string verificationCode, string password);
+        void SendPasswordAndVerificationEmail(string email,string verificationCode, string password);
+
+        void SendMeQuestionAskedEmail(string questionHeader,string questionBody);
+
+        void SendMeUserSignedInEmail(string username);
     }
 }

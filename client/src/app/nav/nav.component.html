@@ -1,18 +1,77 @@
 <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
-  <div class="container-fluid">
-    <a class="navbar-brand" href="#">Navbar</a>
+  <div
+  class="logo-font d-sm-block d-md-none"
+  style="
+    margin-left:10px;
+    height: 30px;
+    background-color: #ffe8d4;
+    font-size: 21px;
+    color: #ff7b02;
+    cursor: pointer;
+    margin-bottom: 2px;
+    padding-left: 5px;
+    padding-right: 5px;
+  "
+   [routerLink]="['/questions']"
+>
+  V
+</div>
 
-    <button
-      class="navbar-toggler"
-      type="button"
-      data-bs-toggle="collapse"
-      data-bs-target="#nav-content"
-      aria-controls="nav-content"
-      aria-expanded="false"
-      aria-label="Toggle navigation"
-    >
-      <span class="navbar-toggler-icon"></span>
-    </button>
+<div style="text-align: right;margin-left: auto;" class="nav-item d-sm-block d-md-none" *ngIf="!user">
+  <a
+    class="nav-link"
+    aria-current="page"
+    routerLink="/register"
+    routerLinkActive="active"
+  >
+    Register/Sign In
+  </a>
+</div>
+
+
+   <div
+        class="dropdown d-sm-block d-md-none" style='min-width: 150px;'
+        *ngIf="user"
+        dropdown
+      >
+        <div style="display: inline-block;">
+          <app-display-user-image
+            [isSmall]="true"
+            [username]="user.username"
+            [photoUrl]="user.photoUrl"
+            [userId]="user.id"
+          ></app-display-user-image>
+        </div>
+
+        <div style="display: inline-block; 
+        vertical-align: bottom;
+        line-height: 30px;  ">
+        <a
+          class="dropdown-toggle text-light"
+          style="margin-left: 5px;"
+          dropdownToggle
+        >
+          {{ user.username }}
+        </a>
+      </div>
+        <div class="dropdown-menu mt-3" *dropdownMenu>
+          <a class="dropdown-item" routerLink="/users/{{ user.username }}">
+            Profile
+          </a>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" (click)="logout()">Logout</a>
+        </div>
+      </div>    
+
+
+
+
+
+
+
+  <div class="container-fluid d-sm-none d-md-block">
+
+   
 
     <div class="collapse navbar-collapse" id="nav-content">
           <div
@@ -56,17 +115,7 @@
           >
             All Questions
           </a>
-        </div>
-        <!-- <li class="nav-item">
-          <a
-            class="nav-link"
-            aria-current="page"
-            routerLink="/communities"
-            routerLinkActive="active"
-          >
-            Communities
-          </a>
-        </li> -->
+        </div>   
 
         <div class="nav-item" *ngIf="(user && accountService.currentUser$ | async)">
           <a
@@ -137,33 +186,7 @@
           <div class="dropdown-divider"></div>
           <a class="dropdown-item" (click)="logout()">Logout</a>
         </div>
-      </div>
-
-      <!-- <form
-        *ngIf="(accountService.currentUser$ | async) === null"
-        #loginForm="ngForm"
-        class="d-flex"
-        (ngSubmit)="login()"
-        autocomplete="off"
-      >
-        <input
-          name="username"
-          [(ngModel)]="user.username"
-          class="form-control me-2"
-          type="text"
-          placeholder="Username"
-          aria-label="Username"
-        />
-        <input
-          class="form-control me-2"
-          name="password"
-          [(ngModel)]="user.password"
-          type="password"
-          placeholder="Password"
-          aria-label="Password"
-        />
-        <button class="btn btn-outline-success" type="submit">Login</button>
-      </form>  -->
+      </div>     
     </div>
   </div>
 </nav>

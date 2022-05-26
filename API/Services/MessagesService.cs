@@ -246,6 +246,16 @@ namespace API.Services
                 });
         }
 
+        public void NotifyUserHisQuestionAsked(string questionGuid,string discordLink,string userEmail)
+        {
+             _mailService
+                .SendEmailAsync(new EmailDto {
+                    Subject = "Here are your vidCallMe.com question's links",
+                    Body =$"To view and edit your question, click <a href='{getDisplayink(questionGuid)}'>here</a> <br/><br/> To go to your Discord channel to get an answer, click <a href='{discordLink}'>here</a>",
+                    To = userEmail
+                });
+        }
+
         private string GenerateConfirmEmailLink(string email,string verificationCode)
         {
             // var callbackLink = _generator.GetUriByAction(
@@ -260,6 +270,20 @@ namespace API.Services
          
 
             return callbackLink;
+        }
+
+       public void AskFeedback(string askerEmail,string answererUsername,string questionIdOrGuid)
+        {
+             _mailService
+                .SendEmailAsync(new EmailDto {
+                    Subject = $"{answererUsername} has asked for your feedback on vidCallMe.com!",
+                    Body =$"If you received help from {answererUsername}, please consider giving him a feedback <a href='{getDisplayink(questionIdOrGuid)}'>here</a>",
+                    To = askerEmail
+                });
+        }
+
+        private string getDisplayink(string guid){
+            return this._config["baseWebUrl"]+"display-question/"+guid;
         }
     }
 }

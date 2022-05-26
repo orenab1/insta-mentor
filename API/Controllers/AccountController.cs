@@ -48,6 +48,8 @@ namespace API.Controllers
              Log.CloseAndFlush();
         }
 
+        
+
         [HttpPost]
         [ActionName("register")]
         public async Task<ActionResult<UserDto>> Register(RegisterDto registerDto)
@@ -72,7 +74,8 @@ namespace API.Controllers
                 Created=DateTime.UtcNow,
                 VerificationCode=verificationCode,
                 Email=registerDto.Email,
-                Password=registerDto.Password
+                Password=registerDto.Password,
+                HasRegistered=true
             };
 
             if (user.EmailPrefrence==null)
@@ -97,7 +100,7 @@ namespace API.Controllers
         [ActionName("forgot-password")]
         public async Task<ActionResult<UserDto>> ForgotPassword(ForgotPasswordDto forgotPasswordDto){
 
-            AppUser user=await _unitOfWork.UserRepository.GetUserByEmailAsync(forgotPasswordDto.Email);
+            AppUser user=await _unitOfWork.UserRepository.GetUserByEmailAsync(forgotPasswordDto.Email,true);
 
            if (user==null){
                 return BadRequest("Email address not found. Please make sure you typed it correctly, or register");
@@ -118,7 +121,7 @@ namespace API.Controllers
         [ActionName("login")]
         public async Task<ActionResult<UserDto>> Login(LoginDto loginDto)
         {
-            var user=await this._unitOfWork.UserRepository.GetUserByEmailAsync(loginDto.Email);
+            var user=await this._unitOfWork.UserRepository.GetUserByEmailAsync(loginDto.Email,true);
             
             if (user == null)
             {

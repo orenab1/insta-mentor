@@ -37,10 +37,22 @@ namespace DAL.Entities
 
         public ICollection<QuestionsCommunities> Communities { get; set; }
 
+         public ICollection<QuestionFeedbackRequestor> FeedbackRequestors { get; set; }
+
         public Photo Photo { get; set; }
 
         public int? PhotoId{ get; set; }
 
         public int? LastAnswererUserId { get; set; }
+
+        public int? DiscordLinkId{get;set;}
+
+        public DiscordLink DiscordLink{get;set;}
+
+        public string NeededSkills { get; set; }
+
+        public string UserEmail { get; set; }
+
+        public string Guid { get; set; }
     }
 }

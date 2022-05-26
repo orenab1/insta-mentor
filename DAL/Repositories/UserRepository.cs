@@ -134,14 +134,15 @@ namespace DAL.Repositories
             _context.Entry(user).State = EntityState.Modified;
         }
 
-        public async Task<AppUser> GetUserByEmailAsync(string email)
+        public async Task<AppUser> GetUserByEmailAsync(string email, bool shouldBeRegistered)
         {
             return await _context
                 .Users
                 .Include(x => x.EmailPrefrence)
                 .Include(x => x.Photo)
-                .SingleOrDefaultAsync(x => x.Email == email);
+                .SingleOrDefaultAsync(x => x.Email == email && x.HasRegistered==shouldBeRegistered);
         }
+
 
         public async Task<AppUser> GetUserAsync(string username)
         {

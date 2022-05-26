@@ -1,3 +1,6 @@
+
+
+
 <form
   *ngIf="model"
   #askQuestionForm="ngForm"
@@ -6,6 +9,13 @@
 >
   <div class="row justify-content-center">
     <div class="col-xl-7 col-lg-7 col-md-10 col-sm-12 mt-3 mb-5">
+      <div class="card p-3 mb-3">
+        <label>Ask for any programming help, and get a discord link</label><br/>
+        <label>If no helper joins the discord channel in 10 minutes - you will get a link to schedule with someone who will help you</label><br/>
+        <label style='direction: rtl;'>אפשר גם בעברית</label>
+        </div>
+
+
       <div class="card p-3">
         <div class="aligns-items-center">
           <h5 class="semi-bold-font text-center my-3">{{ pageTitle }}</h5>
@@ -36,7 +46,7 @@
           </div>
         </div>
         <div class="form-group mt-5">
-          <label for="header">Title</label>
+          <label for="header">What is the issue you are facing?</label>
           <div>
             <input
               *ngIf="model"
@@ -52,7 +62,7 @@
         <div class="mt-4"></div>
 
         <div>
-          <label for="body">Body</label>
+          <label for="body">Describe with more details. You can also add relevant links &#160;</label>
           <span style="opacity: 0.5; font-size: 14px;">(optional)</span>
         </div>
 
@@ -68,11 +78,12 @@
         </div>
 
         <div>
+          <label for="body" style="margin-top: 15px;">Add an Image</label>
           <app-photo-editor
             [addPhotoUrlExtension]="'questions/add-photo/'"
             [onUploadSuccess]="onUploadPhotoSuccess"
             [onDeletePhoto]="deletePhoto"
-            style='float: left; width:100%'
+            style='float: left; width:100%; margin-top: -15px;'
           ></app-photo-editor>
           <button (click)='removePhoto()' *ngIf="model.photoUrl && !doesQuestionHavePhotoBeforeEdit" type="button" class="btn btn-sm btn-danger ng-star-inserted" style='margin-top: 17px;'><i class="fa fa-trash"></i></button>
           <img
@@ -97,10 +108,10 @@
           </div>
 
           <div class="form-group" style='margin-top:60px;'>
-            <label for="aboutMe">Tags</label>
-            <div>
-            <small id="emailHelp" class="form-text text-muted">Feel free to add your own if you don't find what you're looking for</small>
+            <label>Topics</label><br/>
+            <label style="opacity: 0.5; font-size: 14px;">Feel free to add your own</label>
           </div>
+          <div>
             <tag-input
               name="tags"
               [(ngModel)]="model.tags"
@@ -112,6 +123,37 @@
               ></tag-input-dropdown>
             </tag-input>
           </div>
+
+
+          <div  class="form-group" style="margin-top: 15px;">
+            <label for="body">What skills or knowledge is required, and at what level to solve this issue?</label>
+            <label style="opacity: 0.5; font-size: 14px;">e.g. expert problem solving, basic rxjs..</label>
+          </div>
+  
+          <div>
+            <input
+              class="form-control"
+              name="needed-skills"
+              [(ngModel)]="model.neededSkills"
+              rows="3"
+              id="needed-skills"
+            />
+          </div>
+
+          <div *ngIf="currentUserUsername ==null"  class="form-group" style="margin-top: 15px;">
+            <label for="body">Your Email Address</label><br/>
+            <label style="opacity: 0.5; font-size: 14px;">For scheduling and review. We will not share it with anyone</label>
+          </div>
+  
+          <div *ngIf="currentUserUsername ==null">
+            <input
+              class="form-control"
+              name="user-email"
+              [(ngModel)]="model.userEmail"
+              id="user-email"
+            />
+          </div>
+  
 
           <!-- <div class="form-group mt-4">
             <label for="communities">Community</label>
@@ -132,7 +174,7 @@
             </tag-input>
           </div> -->
 
-          <div class="form-group mt-4">
+          <!-- <div class="form-group mt-4">
             <label class="form-check-label" for="howLong">
               How long do you think it should take to solve your question (in
               minutes)?
@@ -167,7 +209,7 @@
               </button>
             </div>
           </div>
-          <div class="mt-3"></div>
+          <div class="mt-3"></div> -->
 
           <div
             [class.d-flex]="isEditMode"
@@ -209,7 +251,7 @@
               Please fill in a title for your question
             </div>
         
-            <div *ngIf="!userFilledTags">Please fill in at least one tag</div>
+            <div *ngIf="!userFilledTags">Please fill in at least one topic</div>
           </div>
         </div>
       </div>

@@ -55,5 +55,9 @@ namespace DAL.DTOs
         public string LastAnswererUserName { get; set; }
 
         public string RevieweeUsername { get; set; }
+
+        public string DiscordLink{get;set;}
+
+        public bool HasCurrentUserRequestedFeedback{get;set;}
     }
 }

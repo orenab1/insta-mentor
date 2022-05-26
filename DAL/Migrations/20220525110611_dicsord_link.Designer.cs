@@ -4,14 +4,16 @@ using DAL;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DAL.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20220525110611_dicsord_link")]
+    partial class dicsord_link
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -292,9 +294,6 @@ namespace DAL.Migrations
                     b.Property<int?>("DiscordLinkId")
                         .HasColumnType("int");
 
-                    b.Property<string>("Guid")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Header")
                         .HasColumnType("nvarchar(max)");
 
@@ -329,28 +328,6 @@ namespace DAL.Migrations
                     b.HasIndex("PhotoId");
 
                     b.ToTable("Questions");
-                });
-
-            modelBuilder.Entity("DAL.Entities.QuestionFeedbackRequestor", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("QuestionId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("RequestorId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("QuestionId");
-
-                    b.HasIndex("RequestorId");
-
-                    b.ToTable("QuestionFeedbackRequestors");
                 });
 
             modelBuilder.Entity("DAL.Entities.QuestionsCommunities", b =>
@@ -640,25 +617,6 @@ namespace DAL.Migrations
                     b.Navigation("Photo");
                 });
 
-            modelBuilder.Entity("DAL.Entities.QuestionFeedbackRequestor", b =>
-                {
-                    b.HasOne("DAL.Entities.Question", "Question")
-                        .WithMany("FeedbackRequestors")
-                        .HasForeignKey("QuestionId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("DAL.Entities.AppUser", "Requestor")
-                        .WithMany("FeebackedQuestions")
-                        .HasForeignKey("RequestorId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Question");
-
-                    b.Navigation("Requestor");
-                });
-
             modelBuilder.Entity("DAL.Entities.QuestionsCommunities", b =>
                 {
                     b.HasOne("DAL.Entities.Community", "Community")
@@ -775,8 +733,6 @@ namespace DAL.Migrations
 
                     b.Navigation("EmailPrefrence");
 
-                    b.Navigation("FeebackedQuestions");
-
                     b.Navigation("Questions");
 
                     b.Navigation("ReviewsGiven");
@@ -800,8 +756,6 @@ namespace DAL.Migrations
                     b.Navigation("Communities");
 
                     b.Navigation("DiscordLink");
-
-                    b.Navigation("FeedbackRequestors");
 
                     b.Navigation("Offers");
 

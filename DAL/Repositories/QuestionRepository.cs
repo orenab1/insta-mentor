@@ -37,6 +37,24 @@ namespace DAL.Repositories
             this._tagRepository = tagRepository;
         }
 
+        public async Task<QuestionDto> GetQuestionAsync(string id)
+        {
+            QuestionDto result =
+                await _mapper
+                    .ProjectTo<QuestionDto>(_context
+                        .Questions
+                        .Where(x => x.Guid == id))
+                    .SingleOrDefaultAsync();
+            
+            return result;
+        }
+
+         public bool GetHasUserRequestedFeedback(int userId,int id)
+         {
+             return _context.QuestionFeedbackRequestors.SingleOrDefault(x=>x.Id==id && x.RequestorId==userId)==null;
+         }
+
+
         public async Task<QuestionDto> GetQuestionAsync(int id)
         {
             if (id == 0)
@@ -51,16 +69,16 @@ namespace DAL.Repositories
                         .Where(x => x.Id == id))
                     .SingleOrDefaultAsync();
 
-            if (result?.LastAnswererUserId.HasValue == true)
-            {
-                AppUser answerer =
-                    await _context
-                        .Users
-                        .SingleOrDefaultAsync(x =>
-                            x.Id == result.LastAnswererUserId);
+            // if (result?.LastAnswererUserId.HasValue == true)
+            // {
+            //     AppUser answerer =
+            //         await _context
+            //             .Users
+            //             .SingleOrDefaultAsync(x =>
+            //                 x.Id == result.LastAnswererUserId);
 
-                result.LastAnswererUserName = answerer.UserName;
-            }
+            //     result.LastAnswererUserName = answerer.UserName;
+            // }
 
             // Review review =
             //     await _context
@@ -79,7 +97,7 @@ namespace DAL.Repositories
             return result;
         }
 
-        public async Task<int> AskQuestionAsync(QuestionEditDto questionEditDto)
+        public async Task<IdAndGuidDTO> AskQuestionAsync(QuestionEditDto questionEditDto, bool isUserRegistered)
         {
             if (questionEditDto.PhotoId == 0)
             {
@@ -90,11 +108,23 @@ namespace DAL.Repositories
 
             Question question = _mapper.Map<Question>(questionEditDto);
 
+            
+            
             if (question.Id == 0)
             {
                 question.Created = DateTime.UtcNow;
+
+                if (!isUserRegistered){
+                    question.Guid=Guid.NewGuid().ToString();
+                }
                 question.IsActive = true;
+                question.DiscordLink=getDiscordLink();
+                question.DiscordLinkId=question.DiscordLink.Id;
+
                 await _context.Questions.AddAsync(question);
+                
+                await _context.SaveChangesAsync();
+                updateDiscordLinkQuestion(question.DiscordLink.Id,question.Id);                
             }
             else
             {
@@ -119,16 +149,19 @@ namespace DAL.Repositories
             questionEditDto.AskerId,
             question.Id);
 
-            if (questionEditDto.Communities != null)
-            {
-                await UpdateCommunitiesForQuestion(questionEditDto
-                    .Communities
-                    .ToArray(),
-                questionEditDto.AskerId,
-                question.Id);
-            }
+            // if (questionEditDto.Communities != null)
+            // {
+            //     await UpdateCommunitiesForQuestion(questionEditDto
+            //         .Communities
+            //         .ToArray(),
+            //     questionEditDto.AskerId,
+            //     question.Id);
+            // }
 
-            return question.Id;
+            return new IdAndGuidDTO{
+                Id= question.Id,
+                Guid=question.Guid
+            };
         }
 
         public async Task<bool>
@@ -167,6 +200,16 @@ namespace DAL.Repositories
                 await _context
                     .Questions
                     .SingleOrDefaultAsync(x => x.Id == questionId);
+            question.IsSolved = true;
+            return await _context.SaveChangesAsync() > 0;
+        }
+
+        public async Task<bool> MarkQuestionAsSolved(string questionGuid)
+        {
+            var question =
+                await _context
+                    .Questions
+                    .SingleOrDefaultAsync(x => x.Guid == questionGuid);
             question.IsSolved = true;
             return await _context.SaveChangesAsync() > 0;
         }
@@ -321,38 +364,21 @@ namespace DAL.Repositories
                         .Where(q => !q.IsSolved && q.IsActive))
                     .ToListAsync();
 
-            if (userTagsIds != null)
-            {
-                foreach (var questionSummary in result)
-                {
-                    questionSummary.HasCommonTags =
-                        questionSummary
-                            .Tags
-                            .Select(x => x.Value)
-                            .Intersect(userTagsIds)
-                            .Any();
-                }
-            }
-
-            // if (userCommunitiesIds != null)
+            // if (userTagsIds != null)
             // {
             //     foreach (var questionSummary in result)
             //     {
-            //         questionSummary.HasCommonCommunities =
+            //         questionSummary.HasCommonTags =
             //             questionSummary
-            //                 .Communities
+            //                 .Tags
             //                 .Select(x => x.Value)
-            //                 .Intersect(userCommunitiesIds)
+            //                 .Intersect(userTagsIds)
             //                 .Any();
             //     }
             // }
 
             return result
-                .OrderBy(questionSummary =>
-                    questionSummary.IsActive
-                        ? questionSummary.HasCommonTags ? 0 : 1
-                        : 2)
-                .ThenByDescending(questionSummary => questionSummary.Created);
+                .OrderBy(questionSummary => questionSummary.Created);
         }
 
         public async Task PublishReview(ReviewDto reviewDto)
@@ -411,6 +437,55 @@ namespace DAL.Repositories
                             t.topic == e.TopicIdentifier &&
                             t.time == e.UtcTime))
                 .ToArray();
+        }
+
+        public string GetQuestionDiscordLink(int questionId){
+            return _context.Questions
+                .Include(q=>q.DiscordLink)
+                .Single(q=>q.Id==questionId)
+                .DiscordLink.Link;
+        }
+
+        public string GetAskerEmail(string questionIdOrGuid){
+            return _context.Questions
+                .Include(q=>q.Asker)
+                .Single(q=>q.Id.ToString()==questionIdOrGuid || q.Guid==questionIdOrGuid)
+                .Asker.Email;
+        }
+
+        public void RemoveDiscordLink(string questionIdOrGuid){
+            Question question= _context.Questions
+                .Include(q=>q.DiscordLink)
+                .Single(q=>q.Id.ToString()==questionIdOrGuid || q.Guid==questionIdOrGuid);
+
+            question.DiscordLink=null;
+            _context.SaveChanges();
+        }
+
+        public void MarkFeedbackRequested(string questionIdOrGuid,int userId){
+
+            Question question= _context.Questions
+                .Include(q=>q.Asker)
+                .Single(q=>q.Id.ToString()==questionIdOrGuid || q.Guid==questionIdOrGuid);
+
+            _context.QuestionFeedbackRequestors.Add(new QuestionFeedbackRequestor{
+                Question=question,
+                RequestorId=userId
+            });
+
+            _context.SaveChanges();
+        }
+        private DiscordLink getDiscordLink(){
+            return  _context.DiscordLinks.FirstOrDefault(x=>x.Question==null);
+            // result.QuestionId=questionId;
+            // _context.SaveChanges();
+        }
+
+        private void updateDiscordLinkQuestion(int discordLinkId, int questionId)
+        {
+            DiscordLink link=_context.DiscordLinks.Single(x=> x.Id==discordLinkId);
+            link.QuestionId=questionId;
+            _context.SaveChanges();
         }
     }
 }

@@ -15,17 +15,31 @@ export class QuestionService {
   constructor(private http: HttpClient) {}
 
   askQuestion(model: Question) {
-    return this.http.post(this.baseUrl + 'questions/ask-question', model).pipe(
-      map((questionId) => {
+    return this.http.post(this.baseUrl + 'questions/ask-question', model, {responseType: 'text'}).pipe(
+      map((questionId:string) => {
         return questionId
       }),
     )
   }
 
-  getQuestion(id: number) {
+  getQuestion(idOrGuid:any){
+    if (isNaN(idOrGuid)){
+      return this.getQuestionByGuid(idOrGuid);
+    }else{
+      return this.getQuestionById(idOrGuid);
+    }
+  }
+
+  getQuestionById(id: number) {
     const serverId = id ?? 0
     return this.http.get<Question>(
       this.baseUrl + 'questions/get-question/' + serverId,
+    )
+  }
+
+  getQuestionByGuid(guid: string) {
+    return this.http.get<Question>(
+      this.baseUrl + 'questions/get-question-by-guid/' + guid,
     )
   }
 
@@ -93,10 +107,22 @@ export class QuestionService {
     return this.http.post<Review>(this.baseUrl + 'questions/publish-review/', model);
   }
 
-  markQuestionAsSolved(questionId:number) {
-    return this.http.put(this.baseUrl + 'questions/mark-question-as-solved', questionId).pipe(
-      map(() => {        
-      })
-    );
+  markQuestionAsSolved(questionId:number,questionGuid:string) {
+    const questionIdOrGuid=questionGuid==undefined?
+      questionId.toString():
+      questionGuid;
+    return this.http.put(this.baseUrl + 'questions/mark-question-as-solved', {questionIdOrGuid}).subscribe(    
+      );
+  }
+
+  requestFeedback(questionId:number,questionGuid:string) {
+    const questionIdOrGuid=questionGuid==undefined?
+      questionId.toString():
+      questionGuid;
+
+    var model = {
+      QuestionIdOrGuid: questionIdOrGuid,
+    }
+    return this.http.post(this.baseUrl + 'questions/request-feedback/', {questionIdOrGuid});
   }
 }

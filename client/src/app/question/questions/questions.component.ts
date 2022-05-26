@@ -19,6 +19,8 @@ export class QuestionsComponent implements OnInit, OnDestroy {
   currentUser: User
 
   isFromMyQuestionsRoute: boolean = false
+  isJavascriptPage=false;
+  isSoftwareCraftsmanshipPage=false;
 
   intervalSeconds = 10
   userTimes: UserConnectedDuration[]
@@ -36,6 +38,14 @@ export class QuestionsComponent implements OnInit, OnDestroy {
         let currentRoute = event.url
         if (currentRoute.indexOf('my') != -1) {
           this.isFromMyQuestionsRoute = true
+        }
+
+        if (currentRoute.indexOf('javascript') != -1) {
+          this.isJavascriptPage = true
+        }
+
+        if (currentRoute.indexOf('software-craftsmanship') != -1) {
+          this.isSoftwareCraftsmanshipPage = true
         }
       })
 

@@ -19,6 +19,7 @@ export class DisplayUserComponent implements OnInit {
   allTags: Tag[];
   communitiesAsString:string;
   reviewAverageAsPercentage:number;
+  meetingTopics:string[]=['Clean Code','Full Stack Development','Basic Problem Solving'];
 
 
   constructor(private usersService: UsersService, private route: ActivatedRoute,
@@ -70,6 +71,18 @@ export class DisplayUserComponent implements OnInit {
 
   edit() {
     this.router.navigateByUrl('edit-user/' + this.route.snapshot.paramMap.get('username'));
+  }
+
+  markHour(target){
+    console.log(target.innerText);
+
+    for (let i=0;i<document.getElementsByTagName('td').length;i++){
+      document.getElementsByTagName('td')[i].style.backgroundColor='';
+    }
+
+    
+    target.style.backgroundColor='lightblue';
+
   }
 }
 

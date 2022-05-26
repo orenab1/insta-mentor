@@ -1,6 +1,6 @@
 import { Component, OnInit, TemplateRef } from '@angular/core'
 import { ActivatedRoute, Router } from '@angular/router'
-import { Subscription } from 'rxjs'
+import { Observable, Subscription } from 'rxjs'
 import { take } from 'rxjs/operators'
 import { AccountService } from 'src/app/_services/account.service'
 import { environment } from 'src/environments/environment'
@@ -9,6 +9,7 @@ import { Review } from '../../_models/question'
 import { QuestionService } from '../../_services/question.service'
 import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal'
 import { CommonService } from 'src/app/_services/common.service'
+import { collapseTextChangeRangesAcrossMultipleVersions } from 'typescript'
 
 @Component({
   selector: 'app-display-question',
@@ -22,16 +23,16 @@ export class QuestionComponent implements OnInit {
   id: number = 0
   routeSub: Subscription
   baseUrl = environment.apiUrl
-  isNew = false
   shouldDisplayComments = false
   currentUserUsername: string
   isCurrentUserQuestionOwner: boolean
-  isInEditMode = false
   communitiesAsString: string
   lengthAsString: string
+  questionGuid:string
   review: string
   rating: number
   hasCurrentUserMadeAnOffer: boolean = false
+  questionId:number
 
   modalConfig = {
     animated: true,
@@ -54,14 +55,15 @@ export class QuestionComponent implements OnInit {
       .subscribe((user) => (this.currentUserUsername = user? user.username: undefined))
 
     this.routeSub = this.route.params.subscribe((params) => {
-      const questionIdFromUrl = parseInt(params['id']) || 0
+      
 
-      if (questionIdFromUrl === 0) {
-        this.isInEditMode = true
-        this.isNew = true
+      if (isNaN(params['id'])) {
+        this.questionGuid=params['id'];
+      }else{
+        this.questionId=parseInt(params['id']);
       }
 
-      this.getQuestion(questionIdFromUrl)
+      this.getQuestion()
     })
   }
 
@@ -90,34 +92,30 @@ export class QuestionComponent implements OnInit {
       this.router.navigate([currentUrl])
     })
   }
+  editQuestion(){
+    if (this.questionId===undefined){
+      this.router.navigateByUrl('edit-question/'+this.questionGuid);
+    }else{
+      this.router.navigateByUrl('edit-question/'+this.questionId);
+    }
+  }
 
-  getQuestion(id: number) {
-    this.questionService.getQuestion(id).subscribe(
+  getQuestion() {
+
+    let getGuestion:Observable<Question>;
+    if (this.questionId===undefined){
+      getGuestion=this.questionService.getQuestionByGuid(this.questionGuid)
+    } else{
+      getGuestion=this.questionService.getQuestion(this.questionId);
+    }
+
+    getGuestion.subscribe(
       (response) => {
         if (response != null) {
           this.model = response
-          this.communitiesAsString = this.model.communities
-            .map((item) => item.display)
-            .join(', ')
-
-          switch (this.model.length) {
-            case 1:
-              this.lengthAsString = 'less than 5 minutes'
-              break
-            case 2:
-              this.lengthAsString = 'less than 15 minutes'
-              break
-            case 3:
-              this.lengthAsString = 'more than 15 minutes'
-              break
-          }
-
+        
           this.isCurrentUserQuestionOwner =
-            this.model.askerUsername === this.currentUserUsername
-
-          this.hasCurrentUserMadeAnOffer = this.model.offers.some(
-            (offer) => offer.username == this.currentUserUsername,
-          )
+            this.model.askerUsername === this.currentUserUsername || this.questionId===undefined;
         }
       },
       (error) => {
@@ -127,8 +125,8 @@ export class QuestionComponent implements OnInit {
   }
 
   solved(template: TemplateRef<any>) {
-    this.questionService.markQuestionAsSolved(this.model.id)
-    this.modalRef = this.modalService.show(template, this.modalConfig)
+    this.questionService.markQuestionAsSolved(this.model.id,this.questionGuid);
+    this.model.isSolved=true;
   }
 
   answererHelped(template: TemplateRef<any>) {
@@ -153,6 +151,12 @@ export class QuestionComponent implements OnInit {
 
     //alert(rating);
     console.log(rating)
+  }
+
+  requestFeedback(){
+    this.questionService.requestFeedback(this.model.id,this.questionGuid).subscribe(() => {
+      
+    })
   }
 
   submitReview() {

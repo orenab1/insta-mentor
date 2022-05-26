@@ -13,6 +13,8 @@ import { RegisterComponent } from './register/register.component'
 const routes: Routes = [
   { path: '', redirectTo:'questions', pathMatch: 'full' },
   { path: 'questions', component: QuestionsComponent },
+  { path: 'questions/javascript', component: QuestionsComponent },
+  { path: 'questions/software-craftsmanship', component: QuestionsComponent },
   { path: 'my-questions', component: QuestionsComponent },
   { path: 'register', component: RegisterComponent },
   { path: 'users/:username', component: DisplayUserComponent },

@@ -1,7 +1,7 @@
 <div *ngIf="member">
   <div class="container my-5">
     <div class="row" style="padding-top: 40px;">
-      <div class="card col-3">
+      <div class="card col-md-3" style="margin-bottom: 12px;">
         <div class="card-body text-center">
           <div class="my-4">
             <h5 class="semi-bold-font text-center">Details</h5>
@@ -22,7 +22,7 @@
             {{ member.title }}
           </div>
 
-          <div class="my-3" style='text-align: left;'>
+          <div class="my-3" style="text-align: left;">
             <div
               *ngFor="let tag of member.tags"
               class="tag-display px-2 mx-2"
@@ -41,7 +41,7 @@
               Edit Profile
             </button>
           </div>
-<!-- 
+          <!-- 
           <div
             class="mt-3 bold-font"
             style="font-size: 16px; text-align: left;"
@@ -54,7 +54,7 @@
           </div> -->
         </div>
       </div>
-      <div class="col">
+      <div class="col-md-9">
         <div class="card mb-3">
           <div class="card-body">
             <div class="my-4">
@@ -64,6 +64,130 @@
             <p>{{ member.aboutMe }}</p>
           </div>
         </div>
+
+        <!-- <div class="card mb-3">
+          <div class="card-body">
+            <div class="my-4">
+              <h5 class="semi-bold-font text-center">Let's Meet</h5>
+              <hr class="seperator mx-auto" />
+            </div>
+
+            <div
+              class="btn-group"
+              role="group"
+              aria-label="Basic radio toggle button group"
+              id="meeting-topics"
+            >
+              <input
+                type="radio"
+                class="btn-check"
+                name="btnradio"
+                id="clean-code"
+                autocomplete="off"
+                checked
+              />
+              <label
+                class="btn btn-outline-primary"
+                for="clean-code"
+                style="margin-left: 0px;"
+              >
+                Clean Code
+              </label>
+
+              <input
+                type="radio"
+                class="btn-check"
+                name="btnradio"
+                id="full-stack"
+                autocomplete="off"
+              />
+              <label class="btn btn-outline-primary" for="full-stack">
+                Full Stack Development
+              </label>
+
+              <input
+                type="radio"
+                class="btn-check"
+                name="btnradio"
+                id="basic-problem"
+                autocomplete="off"
+              />
+              <label class="btn btn-outline-primary" for="basic-problem">
+                Basic Problem Solving
+              </label>
+            </div>
+
+            <div style=' margin-top:25px;'>
+              <div
+                class="btn-group-1"
+                role="group-1"
+                aria-label="Basic radio toggle button group"
+                id="meeting-title"
+                style="display: block; width: 255px; float:left;"
+              >
+                <input
+                  type="radio"
+                  class="btn-check"
+                  name="titles"
+                  id="btnradio1"
+                  autocomplete="off"
+                  checked
+                />
+                <label class="btn btn-outline-secondary" for="btnradio1">
+                  Code Review (30 mins.)
+                </label>
+
+                <input
+                  type="radio"
+                  class="btn-check"
+                  name="titles"
+                  id="btnradio2"
+                  autocomplete="off"
+                />
+                <label class="btn btn-outline-secondary" for="btnradio2">
+                  Basic Concepts (30 mins.)
+                </label>
+
+                <input
+                  type="radio"
+                  class="btn-check"
+                  name="titles"
+                  id="btnradio3"
+                  autocomplete="off"
+                />
+                <label class="btn btn-outline-secondary" for="btnradio3">
+                  Introduction to Full Stack Development (30 mins.)
+                </label>
+              </div>
+
+              <div>
+                <div class="mb-4">
+                  <div style="font-family: poppins-bold;">Meeting Description</div>
+                  נבדוק אם הקוד שלכם כתוב ברמה גבוהה, שמתאימה לתעשייה, ומה אפשר לשפר
+                </div>
+                <table>
+                  <tr>
+                    <th>יום א' 22/05</th>
+                    <th>יום ב' 23/05</th>
+                  </tr>
+                  <tr>
+                    <td (click)="markHour($event.target)">08:00-08:45</td>
+                    <td (click)="markHour($event.target)">08:00-08:45</td>
+                  </tr>
+                  <tr>
+                    <td (click)="markHour($event.target)">09:00-09:45</td>
+                    <td (click)="markHour($event.target)">09:00-09:45</td>
+                  </tr>
+                  <tr>
+                    <td (click)="markHour($event.target)">10:00-10:45</td>
+                    <td (click)="markHour($event.target)">10:00-10:45</td>
+                  </tr>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div> -->
+
         <div class="card">
           <div>
             <div class="my-4">
@@ -88,16 +212,15 @@
                 <span style="font-size: 22px;">
                   {{ this.member.askerNumOfRatings }} Reviews
                 </span>
-                <div *ngFor="let review of member.reviews" class='my-3'>
+                <div *ngFor="let review of member.reviews" class="my-3">
                   <div style="color: #ecbe24; font-size: 20px; float: right;">
                     ★
                     <span style="color: black;">{{ review.rating }}</span>
                   </div>
                   <app-display-user-summary
-                    [userId]="review.reviewerId"                  
+                    [userId]="review.reviewerId"
                   ></app-display-user-summary>
-                  <div style='
-                  margin-left: 62px;'>{{ review.text }}</div>
+                  <div style="margin-left: 62px;">{{ review.text }}</div>
                 </div>
               </div>
             </div>

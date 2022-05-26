@@ -26,6 +26,12 @@ namespace DAL.DTOs
         public int? PhotoId{get;set;}
         public string PhotoUrl{get;set;}
 
+        public string NeededSkills { get; set; }
+
+        public string UserEmail { get; set; }
+
+        public string IdOrGuid{get;set;}
+
        // public PhotoDto Photo { get; set; }
     }
 }

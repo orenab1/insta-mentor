@@ -1,6 +1,15 @@
 <div class="mt-5">
   <div *ngIf="!isFromMyQuestionsRoute" class="container-fluid">
+
+
     <div class="row" style="padding-top: 20px;">
+      <div class="col-lg-1"></div>
+      <div class="col-lg-10">
+        <h1 *ngIf="isJavascriptPage" class='page-title' style='font-family: monospace;'>The Javascript Live Helpers Community</h1>
+        <h1 *ngIf="isSoftwareCraftsmanshipPage" class='page-title' style='font-family: monospace;'>The Software Craftsmanship Live Helpers Community</h1>
+      </div>
+      <div class="col-lg-1"></div>
+
       <div class="col-lg-1"></div>
       <div class="col-lg-5" style="align-items: center; display: flex;">
         <div>
@@ -10,28 +19,26 @@
           >
             <div class="header-line">
               <img src="./assets/ask.png" class="header-img" />
-              Ask a Question
+              Ask For Help in Programming
             </div>
             <div class="header-line">
-              <img src="./assets/pick.png" class="header-img" />
-              Pick a Helper
+              <img src="./assets/link.png" class="header-img" />
+              Get a discord link
             </div>
             <div class="header-line">
-              <img src="./assets/answer.png" class="header-img" />
-              Get Your Answer in a 1:1 Zoom Session
+              <img src="./assets/discord.png" class="header-img" />
+              Get Your Answer in a discord chat
             </div>
 
-            <div
+            <!-- <div
               style="
                 font-size: 17px;
                 color: rgb(102, 102, 102);
                 font-family: 'Poppins';
               "
             >
-              Live personal dev answers are
-              <span class="semi-bold-font" style="color: black;">SO</span>
-              much better
-            </div>
+              <a href="./assets/how-it-works.gif" target="_blank" class='how-it-works'>How it works (gif)</a>
+            </div> -->
           </div>
           <button
             style="
@@ -44,11 +51,9 @@
               height: 40px;
             "
             class="semi-bold-font"
-            (click)="goToAsk()"
-          >
-        
-          {{currentUser === null ? "SIGN IN TO":""}}
-            ASK ANYTHING
+            [routerLink]="'/question/edit-question'"
+          >        
+            Find Helpers
           </button>
         </div>
       </div>
@@ -56,7 +61,7 @@
 
       <div class="col-lg-4 d-none d-lg-block">
         <img
-          src="./assets/cover.jpg"
+          [src]="isJavascriptPage? './assets/js.jpg': isSoftwareCraftsmanshipPage? './assets/airplane.jpg' : './assets/cover.jpg' "
           alt="cover"
           class="img-fluid"
           style="margin-right: 10px; margin-bottom: 5px; border-radius: 20px;"
@@ -76,7 +81,7 @@
     <div class="col-xs-12 col-md-12 col-lg-10 col-xl-8">
       <div class="text-center">
         <h3 *ngIf="!isFromMyQuestionsRoute" class="semi-bold-font mb-4">
-          Questions
+          Live Help Requests
         </h3>
         <h3 *ngIf="isFromMyQuestionsRoute" class="semi-bold-font mb-4">
           My Questions
@@ -87,18 +92,9 @@
         *ngFor="let question of questions"
         style="background-color: white; border-radius: 10px;"
         class="my-2 p-2 question-container"
-        [class.short-bg]="
-          question.isActive &&
-          question.isUserOnline &&
-          question.onlineAgeSeconds < 60 * 60
-        "
-        [class.long-bg]="
-          question.isActive &&
-          question.isUserOnline &&
-          question.onlineAgeSeconds >= 60 * 60
-        "
+       
         [class.question-not-active]="
-          (!question.isActive || question.isSolved || !question.isUserOnline) && (currentUser!=null && currentUser!==undefined && question.askerUsername != currentUser.username)
+          (!question.isActive || question.isSolved)
         "
         (click)="router.navigateByUrl('/display-question/' + question.id)"
       >
@@ -150,7 +146,7 @@
           style="float: right;"
           class="semi-bold-font waiting-for mt-3"
         >
-          <div>
+          <!-- <div>
             <div
               style="float: right; font-size: 20px;"
               title="Waiting online for.."
@@ -162,7 +158,7 @@
               src="./assets/timer.png"
               style="height: 28px; margin-right: 3px; float: right;"
             />
-          </div>
+          </div> -->
           <!-- <div style='
           color: black;
           font-size: 11px;
@@ -194,7 +190,7 @@
           </div>
 
           <div class="d-flex" style="margin-left: 10px;">
-            <div
+            <!-- <div
               style="
                 border-radius: 11px;
                 font-size: 12px;
@@ -210,7 +206,7 @@
               }"
             >
               {{ question.lengthAsString }}
-            </div>
+            </div> -->
             <div
               class="bottom-tag"
               style="width: 15px;"
@@ -224,7 +220,7 @@
                 style="width: 15px; height: 15px; margin-right: 10px;"
               />
             </div>
-            <div
+            <!-- <div
               class="bottom-tag"
               style="padding-top: 2px; min-width: 25px;"
               [class.has-no-content]="question.numOfComments == 0"
@@ -245,7 +241,7 @@
                 src="./assets/support.png"
               />
               {{ question.numOfOffers }}
-            </div>
+            </div> -->
 
             <!-- <div
             *ngIf="question.communities.length > 0"

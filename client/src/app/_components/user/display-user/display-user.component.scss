@@ -37,3 +37,24 @@
     z-index: 0;
   }
 }
+
+
+#meeting-topics label:not(:first-child){
+  margin-left: 15px;
+}
+
+
+#meeting-title label{
+margin-top: 15px;
+font-size: 14px;
+}
+
+tr td:hover{
+  background-color: lightblue !important;
+  cursor:pointer;
+}
+
+tr td,th{
+  text-align: right;
+  width: 110px;
+}

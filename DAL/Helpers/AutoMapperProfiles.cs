@@ -155,7 +155,10 @@ namespace API.Helpers
                 .ForMember(dest => dest.PhotoUrl,
                 opt => opt.MapFrom(src => src.Photo.Url))
                 .ForMember(dest => dest.PhotoId,
-                opt => opt.MapFrom(src => src.Photo.Id));
+                opt => opt.MapFrom(src => src.Photo.Id))
+                .ForMember(dest => dest.DiscordLink,
+                opt => opt.MapFrom(src => src.DiscordLink.Link));
+                
             CreateMap<Question, QuestionSummaryDto>()
                 .ForMember(dest => dest.AskerUsername,
                 opt => opt.MapFrom(src => src.Asker.UserName))

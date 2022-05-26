@@ -42,8 +42,12 @@ namespace DAL.Entities
 
         public ICollection<UsersCommunities> Communities { get; set; }
 
+         public ICollection<QuestionFeedbackRequestor> FeebackedQuestions { get; set; }
+
         public ICollection<Connection> Connections { get; set; }
 
         public string Password { get; set; }
+
+        public bool HasRegistered { get; set; }
     }
 }

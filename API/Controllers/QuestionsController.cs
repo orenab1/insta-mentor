@@ -109,15 +109,13 @@ namespace API.Controllers
 
             string offererUsername = offererAppUser.UserName;
 
-           await _messagesService.NotifyOffererAskerAcceptedOfferAsync (
-                offererId,
-                askerAcceptedOfferDto
-            );
+            await _messagesService
+                .NotifyOffererAskerAcceptedOfferAsync(offererId,
+                askerAcceptedOfferDto);
 
-          await  _unitOfWork.QuestionRepository.UpdateQuestionLastOfferer (
-                questionId,
-                offererId
-            );
+            await _unitOfWork
+                .QuestionRepository
+                .UpdateQuestionLastOfferer(questionId, offererId);
             return Ok(new AcceptedOfferDto { MeetingUrl = meetingUrl });
 
             // var tokenHandler =
@@ -159,19 +157,53 @@ namespace API.Controllers
 
         [HttpPost]
         [ActionName("ask-question")]
-        public async Task<ActionResult<int>>
+        public async Task<ActionResult<string>>
         AskQuestion(QuestionEditDto questionEditSaveDto)
         {
-            questionEditSaveDto.AskerId = User.GetUserId();
+            bool isUserRegistered=User.GetUserId() != 0;
 
-            int id =
-                await _unitOfWork
+            if (!isUserRegistered)
+            {
+                AppUser user =
+                    await _unitOfWork
+                        .UserRepository
+                        .GetUserByEmailAsync(questionEditSaveDto.UserEmail, false);
+
+                if (user == null)
+                {
+                    user =
+                        await _unitOfWork
+                            .AccountRepository
+                            .CreateFakeUserAsync(questionEditSaveDto.UserEmail);
+                }
+
+                questionEditSaveDto.AskerId = user.Id;
+
+
+            }
+            else
+            {
+                questionEditSaveDto.AskerId = User.GetUserId();
+            }
+
+            
+
+          IdAndGuidDTO idAndGuid =
+                (await _unitOfWork
                     .QuestionRepository
-                    .AskQuestionAsync(questionEditSaveDto);
+                    .AskQuestionAsync(questionEditSaveDto,isUserRegistered));
+
+            string discordLink=_unitOfWork
+                    .QuestionRepository
+                    .GetQuestionDiscordLink(idAndGuid.Id);
+
+
+            if (!isUserRegistered){
+                _messagesService.NotifyUserHisQuestionAsked(idAndGuid.Guid,discordLink,questionEditSaveDto.UserEmail);
+            }
 
             _messagesService.SendMeQuestionAskedEmail(questionEditSaveDto.Header,questionEditSaveDto.Body);
-
-            return Ok(id);
+            return Ok(idAndGuid.GetIdOrGuid());
         }
 
         [Authorize]
@@ -186,23 +218,70 @@ namespace API.Controllers
             return NoContent();
         }
 
-        [Authorize]
         [HttpPut]
         [ActionName("mark-question-as-solved")]
         public async Task<ActionResult>
-        MarkQuestionAsSolved(QuestionMarkSolvedDto questionMarkSolvedDto)
+        MarkQuestionAsSolved(QuestionIdOrGuidDto questionIdOrGuid)
         {
-            await _unitOfWork
-                .QuestionRepository
-                .MarkQuestionAsSolved(questionMarkSolvedDto.QuestionId);
-            return NoContent();
+            int questionId;
+
+            if (int.TryParse(questionIdOrGuid.QuestionIdOrGuid,out questionId)){
+                await _unitOfWork
+                    .QuestionRepository
+                    .MarkQuestionAsSolved(questionId);
+            }
+            else {
+                 await _unitOfWork
+                    .QuestionRepository
+                    .MarkQuestionAsSolved(questionIdOrGuid.QuestionIdOrGuid);
+            }
+
+            _unitOfWork
+                    .QuestionRepository
+                    .RemoveDiscordLink(questionIdOrGuid.QuestionIdOrGuid);
+           
+            return Ok();
+        }
+
+
+        [HttpPost]
+        [ActionName("request-feedback")]
+        public async Task<ActionResult>
+        RequestFeedback(QuestionIdOrGuidDto questionIdOrGuid)
+        {
+            int userId=User.GetUserId();
+            if (userId==0){
+                throw new InvalidOperationException();
+            }
+
+            int questionId;
+             string askerEmail=_unitOfWork.QuestionRepository.GetAskerEmail(questionIdOrGuid.QuestionIdOrGuid);
+
+            _unitOfWork.QuestionRepository.MarkFeedbackRequested(questionIdOrGuid.QuestionIdOrGuid,userId);
+            
+            _messagesService.AskFeedback(askerEmail, User.GetUsername(),questionIdOrGuid.QuestionIdOrGuid);
+           
+            return Ok();
         }
 
         [HttpGet("{id}")]
         [ActionName("get-question")]
         public async Task<ActionResult<QuestionDto>> GetQuestion(int id)
         {
-            return await _unitOfWork.QuestionRepository.GetQuestionAsync(id);
+            QuestionDto result= await _unitOfWork.QuestionRepository.GetQuestionAsync(id);
+            int userId=User.GetUserId();
+            if (userId !=0){
+                result.HasCurrentUserRequestedFeedback=_unitOfWork.QuestionRepository.GetHasUserRequestedFeedback(userId,id);
+            }
+
+            return result;
+        }
+
+        [HttpGet("{guid}")]
+        [ActionName("get-question-by-guid")]
+        public async Task<ActionResult<QuestionDto>> GetQuestionByGuid(string guid)
+        {
+            return await _unitOfWork.QuestionRepository.GetQuestionAsync(guid);
         }
 
         [HttpPost]
@@ -260,24 +339,28 @@ namespace API.Controllers
             int[] userCommunitiesIds =
                 user?.Communities?.Select(x => x.Value).ToArray();
 
-            var questions= (await _unitOfWork
-                .QuestionRepository
-                .GetQuestionsAsync(userTagsIds, userCommunitiesIds)).ToList();
+            var questions =
+                (
+                await _unitOfWork
+                    .QuestionRepository
+                    .GetQuestionsAsync(userTagsIds, userCommunitiesIds)
+                ).ToList();
 
-            UserConnectedDurationDto[] usersDuration= _unitOfWork.UserRepository.GetOnlineUsersWithTimes();
-
+            UserConnectedDurationDto[] usersDuration =
+                _unitOfWork.UserRepository.GetOnlineUsersWithTimes();
 
             for (int i = 0; i < questions.Count(); i++)
             {
-                UserConnectedDurationDto duration=  usersDuration.SingleOrDefault(x=>x.Username==questions[i].AskerUsername);
-                int onlineAge=  duration==null?
-                    0:
-                   Math.Max( duration.SecondsElapsed,1);
-                
+                UserConnectedDurationDto duration =
+                    usersDuration
+                        .SingleOrDefault(x =>
+                            x.Username == questions[i].AskerUsername);
+                int onlineAge =
+                    duration == null ? 0 : Math.Max(duration.SecondsElapsed, 1);
 
-                questions[i].OnlineAgeSeconds= Math.Min(onlineAge,questions[i].AgeInSeconds);
+                questions[i].OnlineAgeSeconds =
+                    Math.Min(onlineAge, questions[i].AgeInSeconds);
             }
-        
 
             return Ok(await Task.FromResult(questions));
         }
@@ -365,15 +448,13 @@ namespace API.Controllers
             return BadRequest("Failed to delete the photo");
         }
 
-
         [HttpGet()]
         [ActionName("events")]
-        public ActionResult<IEnumerable<EventDto>>
-        GetEvents()
+        public ActionResult<IEnumerable<EventDto>> GetEvents()
         {
-            return Ok(_unitOfWork
-                .QuestionRepository
-                .GetNextEvents());
+            return Ok(_unitOfWork.QuestionRepository.GetNextEvents());
         }
+
+        
     }
 }

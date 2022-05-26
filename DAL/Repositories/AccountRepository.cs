@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using AutoMapper;
 using DAL.Entities;
@@ -27,6 +28,27 @@ namespace DAL.Repositories
             user.UserName = "Guest" + user.Id;
 
             return await _context.SaveChangesAsync() > 0;
+        }
+
+        public async Task<AppUser> CreateFakeUserAsync(string email)
+        {
+            AppUser user =
+                new AppUser {
+                    Created = DateTime.Now,
+                    EmailPrefrence = new EmailPrefrence(),
+                    IsVerified = false,
+                    Title = "Solution Seeker",
+                    Email = email
+                };
+
+            _context.Users.Add(user);
+            
+            await _context.SaveChangesAsync();
+
+            user.UserName = "Guest" + user.Id;
+
+            await _context.SaveChangesAsync();
+            return user;
         }
 
         public async Task<bool> IsUserExistsAsync(string email)

@@ -1,3 +1,4 @@
+using System.Security.AccessControl;
 using System.Threading.Tasks;
 using DAL.DTOs.Partial;
 
@@ -25,5 +26,9 @@ namespace API.Interfaces
         void SendMeQuestionAskedEmail(string questionHeader,string questionBody);
 
         void SendMeUserSignedInEmail(string username);
+
+        void NotifyUserHisQuestionAsked(string questionLink,string discordLink,string userEmail);
+
+         void AskFeedback(string askerEmail,string answererUsername,string questionIdOrGuid);
     }
 }

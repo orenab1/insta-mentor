@@ -40,9 +40,13 @@ namespace DAL
 
         public DbSet<QuestionsCommunities> QuestionsCommunities { get; set; }
 
+        public DbSet<QuestionFeedbackRequestor> QuestionFeedbackRequestors { get; set; }
+
         public DbSet<Connection> Connections { get; set; }
 
          public DbSet<Event> Events { get; set; }
+
+         public DbSet<DiscordLink> DiscordLinks {get;set;}
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -61,6 +65,12 @@ namespace DAL
                 .WithMany(l => l.ReviewsReceived)
                 .HasForeignKey(s => s.RevieweeId)
                 .OnDelete(DeleteBehavior.NoAction);
+
+
+            builder.Entity<Question>()
+            .HasOne(a => a.DiscordLink)
+            .WithOne(a => a.Question)
+            .HasForeignKey<DiscordLink>(c => c.QuestionId);
 
             // builder
             //     .Entity<UsersCommunities>()

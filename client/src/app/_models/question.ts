@@ -23,6 +23,10 @@ export interface Question {
   revieweeUsername: string
   photoUrl: string
   photoId: number
+  neededSkills:string
+  userEmail:string
+  discordLink:string
+  hasCurrentUserRequestedFeedback:boolean
 }
 
 export interface QuestionSummary {

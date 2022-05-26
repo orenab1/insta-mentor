@@ -11,7 +11,9 @@ namespace DAL.Interfaces
     {
         Task<QuestionDto> GetQuestionAsync(int id);
 
-        Task<int> AskQuestionAsync(QuestionEditDto questionDto);
+        Task<IdAndGuidDTO> AskQuestionAsync(QuestionEditDto questionDto, bool isUserRegistered);
+
+        string GetQuestionDiscordLink(int questionId);
 
         Task<bool> PostCommentAsync(AddCommentDto commentDto,int userId);
 
@@ -27,6 +29,8 @@ namespace DAL.Interfaces
 
         Task<bool> MarkQuestionAsSolved(int questionId);
 
+        Task<bool> MarkQuestionAsSolved(string questionGuid);
+
         Task DeleteCommentAsync(int commentId,int userId);
         Task DeleteOfferAsync(int offerId, int userId);
 
@@ -37,6 +41,16 @@ namespace DAL.Interfaces
         Task<bool>
         UpdateQuestionLastOfferer(int questionId, int userId);
 
-         public EventDto[] GetNextEvents();
+        Task<QuestionDto> GetQuestionAsync(string id);
+
+         EventDto[] GetNextEvents();
+
+         bool GetHasUserRequestedFeedback(int userId,int id);
+
+         string GetAskerEmail(string questionGuid);
+
+         void MarkFeedbackRequested(string questionIdOrGuid,int userId);
+
+         void RemoveDiscordLink(string questionIdOrGuid);
     }
 }

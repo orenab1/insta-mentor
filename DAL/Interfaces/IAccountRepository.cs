@@ -8,5 +8,7 @@ namespace DAL.Interfaces
         Task<bool> CreateUserAsync(AppUser user);
 
         Task<bool> IsUserExistsAsync(string email);
+
+        Task<AppUser> CreateFakeUserAsync(string email);
     }
 }

@@ -30,6 +30,9 @@ export class EditQuestionComponent implements OnInit {
   allTags: Tag[]
   allCommunities: Community[]
   doesQuestionHavePhotoBeforeEdit:boolean
+  questionId:number
+  questionGuid:string
+  idOrGuid:any
 
   userFilledHeader = true
   userFilledTags = true
@@ -51,6 +54,13 @@ export class EditQuestionComponent implements OnInit {
     this.routeSub = this.route.params.subscribe((params) => {
       this.id = parseInt(params['id']) || 0
 
+      this.idOrGuid=params['id'];
+
+      // if (isNaN(parseInt(params['id']))) {
+      //   this.questionGuid=params['id'];
+      // }else{
+      //   this.questionId=parseInt(params['id']);
+      // }
       
 
       if (this.id === 0) {
@@ -59,7 +69,7 @@ export class EditQuestionComponent implements OnInit {
       }
 
       if (this.isNew) {
-        this.pageTitle = 'Ask a Question'
+        this.pageTitle = 'Find Helpers'
       } else {
         this.pageTitle = 'Question'
       }
@@ -85,6 +95,10 @@ export class EditQuestionComponent implements OnInit {
         revieweeUsername: '',
         photoUrl: '',
         photoId: 0,
+        neededSkills:'',
+        userEmail:'',
+        discordLink:'',
+        hasCurrentUserRequestedFeedback:false
       }
       this.getQuestion()
     })
@@ -115,7 +129,10 @@ export class EditQuestionComponent implements OnInit {
   }
 
   getQuestion() {
-    this.questionService.getQuestion(this.id).subscribe(
+
+
+
+    this.questionService.getQuestion(this.idOrGuid).subscribe(
       (response) => {
         if (response.id != 0) {
           this.model = response
@@ -192,7 +209,7 @@ export class EditQuestionComponent implements OnInit {
     if (this.model.id == 0) {
       url=''
     } else {
-      url='display-question/' + this.model.id
+      url='display-question/' + this.idOrGuid
     }
 
     this.router.navigateByUrl(url)

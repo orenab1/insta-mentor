@@ -27,6 +27,7 @@ export interface Question {
   userEmail:string
   discordLink:string
   hasCurrentUserRequestedFeedback:boolean
+  wasReviewed:boolean
 }
 
 export interface QuestionSummary {

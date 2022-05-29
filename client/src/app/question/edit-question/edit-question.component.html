@@ -10,9 +10,9 @@
   <div class="row justify-content-center">
     <div class="col-xl-7 col-lg-7 col-md-10 col-sm-12 mt-3 mb-5">
       <div class="card p-3 mb-3">
-        <label>Ask for any programming help, and get a discord link</label><br/>
-        <label>If no helper joins the discord channel in 10 minutes - you will get a link to schedule with someone who will help you</label><br/>
-        <label style='direction: rtl;'>אפשר גם בעברית</label>
+        <label>Ask for programming help at c#, js, ts, html, css, and code reviews, and get a discord link</label><br/>
+        <label>If no helper joins the discord channel shortly - you will get a link to schedule with someone who will help you</label><br/>
+        <label style='direction: rtl; font-size: 20px;'>אפשר גם בעברית</label>
         </div>
 
 
@@ -78,14 +78,14 @@
         </div>
 
         <div>
-          <label for="body" style="margin-top: 15px;">Add an Image</label>
-          <app-photo-editor
+          <!-- <label for="body" style="margin-top: 15px;">Add an Image</label> -->
+          <!-- <app-photo-editor
             [addPhotoUrlExtension]="'questions/add-photo/'"
             [onUploadSuccess]="onUploadPhotoSuccess"
             [onDeletePhoto]="deletePhoto"
             style='float: left; width:100%; margin-top: -15px;'
-          ></app-photo-editor>
-          <button (click)='removePhoto()' *ngIf="model.photoUrl && !doesQuestionHavePhotoBeforeEdit" type="button" class="btn btn-sm btn-danger ng-star-inserted" style='margin-top: 17px;'><i class="fa fa-trash"></i></button>
+          ></app-photo-editor> -->
+          <!-- <button (click)='removePhoto()' *ngIf="model.photoUrl && !doesQuestionHavePhotoBeforeEdit" type="button" class="btn btn-sm btn-danger ng-star-inserted" style='margin-top: 17px;'><i class="fa fa-trash"></i></button>
           <img
             *ngIf="model.photoUrl"
             src="{{ model.photoUrl }}"
@@ -98,20 +98,20 @@
               margin-top:15px;
             "
             (click)="openImage()"
-          />
-          <div
+          /> -->
+          <!-- <div
             *ngIf="model.photoUrl"
             style="font-size: 12px;"
             class="semi-bold-font"
           >
             Click image to enlarge
-          </div>
+          </div> -->
 
-          <div class="form-group" style='margin-top:60px;'>
+          <div class="form-group" style='margin-top:20px;'>
             <label>Topics</label><br/>
             <label style="opacity: 0.5; font-size: 14px;">Feel free to add your own</label>
           </div>
-          <div>
+          <div style="margin-top:-10px;"> 
             <tag-input
               name="tags"
               [(ngModel)]="model.tags"

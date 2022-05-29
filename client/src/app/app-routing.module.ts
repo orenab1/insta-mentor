@@ -23,6 +23,7 @@ const routes: Routes = [
   { path: 'question/edit-question', component: EditQuestionComponent },
   { path: 'edit-question/:id', component: EditQuestionComponent },
   { path: 'display-question/:id', component: QuestionComponent },
+  { path: 'display-question/:id/fb/user/:userid', component: QuestionComponent },
   { path: '**', component: HomeComponent, pathMatch: 'full' },
 ]
 

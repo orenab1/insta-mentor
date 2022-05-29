@@ -47,6 +47,8 @@ namespace DAL.Interfaces
 
          bool GetHasUserRequestedFeedback(int userId,int id);
 
+        bool WasQuestionFeedbacked(int questionId,int revieweeId);
+
          string GetAskerEmail(string questionGuid);
 
          void MarkFeedbackRequested(string questionIdOrGuid,int userId);

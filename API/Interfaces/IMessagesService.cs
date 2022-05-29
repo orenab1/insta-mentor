@@ -29,6 +29,6 @@ namespace API.Interfaces
 
         void NotifyUserHisQuestionAsked(string questionLink,string discordLink,string userEmail);
 
-         void AskFeedback(string askerEmail,string answererUsername,string questionIdOrGuid);
+         void AskFeedback(string askerEmail,string answererUsername, int answererUserid,string questionIdOrGuid);
     }
 }

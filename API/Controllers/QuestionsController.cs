@@ -259,7 +259,7 @@ namespace API.Controllers
 
             _unitOfWork.QuestionRepository.MarkFeedbackRequested(questionIdOrGuid.QuestionIdOrGuid,userId);
             
-            _messagesService.AskFeedback(askerEmail, User.GetUsername(),questionIdOrGuid.QuestionIdOrGuid);
+            _messagesService.AskFeedback(askerEmail, User.GetUsername(),userId,questionIdOrGuid.QuestionIdOrGuid);
            
             return Ok();
         }
@@ -270,9 +270,12 @@ namespace API.Controllers
         {
             QuestionDto result= await _unitOfWork.QuestionRepository.GetQuestionAsync(id);
             int userId=User.GetUserId();
-            if (userId !=0){
-                result.HasCurrentUserRequestedFeedback=_unitOfWork.QuestionRepository.GetHasUserRequestedFeedback(userId,id);
-            }
+
+            
+            result.HasCurrentUserRequestedFeedback=
+                userId !=0 && _unitOfWork.QuestionRepository.GetHasUserRequestedFeedback(userId,id);
+        
+            result.WasReviewed=_unitOfWork.QuestionRepository.WasQuestionFeedbacked(id,userId);
 
             return result;
         }

@@ -98,7 +98,8 @@ export class EditQuestionComponent implements OnInit {
         neededSkills:'',
         userEmail:'',
         discordLink:'',
-        hasCurrentUserRequestedFeedback:false
+        hasCurrentUserRequestedFeedback:false,
+        wasReviewed:false
       }
       this.getQuestion()
     })

@@ -49,9 +49,14 @@ namespace DAL.Repositories
             return result;
         }
 
-         public bool GetHasUserRequestedFeedback(int userId,int id)
+         public bool GetHasUserRequestedFeedback(int userId,int questionId)
          {
-             return _context.QuestionFeedbackRequestors.SingleOrDefault(x=>x.Id==id && x.RequestorId==userId)==null;
+             return _context.QuestionFeedbackRequestors.Any(x=>x.QuestionId==questionId && x.RequestorId==userId);
+         }
+         
+         public bool WasQuestionFeedbacked(int questionId,int revieweeId)
+         {
+             return _context.Reviews.Any(x=> x.QuestionId==questionId && x.RevieweeId==revieweeId);
          }
 
 

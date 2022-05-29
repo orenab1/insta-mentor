@@ -33,6 +33,7 @@ export class QuestionComponent implements OnInit {
   rating: number
   hasCurrentUserMadeAnOffer: boolean = false
   questionId:number
+  answererUserId:number=0
 
   modalConfig = {
     animated: true,
@@ -55,7 +56,10 @@ export class QuestionComponent implements OnInit {
       .subscribe((user) => (this.currentUserUsername = user? user.username: undefined))
 
     this.routeSub = this.route.params.subscribe((params) => {
-      
+
+      if (params['userid']!=undefined){
+        this.answererUserId=parseInt(params['userid']);
+      }
 
       if (isNaN(params['id'])) {
         this.questionGuid=params['id'];
@@ -115,7 +119,7 @@ export class QuestionComponent implements OnInit {
           this.model = response
         
           this.isCurrentUserQuestionOwner =
-            this.model.askerUsername === this.currentUserUsername || this.questionId===undefined;
+            this.model.askerUsername === this.currentUserUsername || this.questionGuid!=null;
         }
       },
       (error) => {
@@ -128,22 +132,7 @@ export class QuestionComponent implements OnInit {
     this.questionService.markQuestionAsSolved(this.model.id,this.questionGuid);
     this.model.isSolved=true;
   }
-
-  answererHelped(template: TemplateRef<any>) {
-    this.modalRef?.hide()
-
-    setTimeout(() => {
-      let reviewModal: TemplateRef<any>
-      this.bsModalRefReview = this.modalService.show(template, this.modalConfig)
-    }, 100)
-
-    // this.modalRef = this.modalService.show('reviewModal', this.modalConfig)
-    //   alert('yo')
-  }
-  answererDidntHelp() {
-    this.modalRef?.hide()
-  }
-
+ 
   ratingChanged(rating: any) {
     this.rating = rating
     //rating
@@ -155,7 +144,10 @@ export class QuestionComponent implements OnInit {
 
   requestFeedback(){
     this.questionService.requestFeedback(this.model.id,this.questionGuid).subscribe(() => {
-      
+      const currentUrl = this.router.url
+      this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+        this.router.navigate([currentUrl])
+      })
     })
   }
 
@@ -166,11 +158,15 @@ export class QuestionComponent implements OnInit {
       rating: this.rating,
       text: this.review,
       reviewerId: this.model.askerId,
-      revieweeId: this.model.lastAnswererUserId,
+      revieweeId: this.answererUserId,
     }
 
     this.questionService.publishReview(review).subscribe(() => {
-      this.bsModalRefReview.hide()
+      alert('Review received. Thank you');
+      const currentUrl = this.router.url
+      this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+        this.router.navigate([currentUrl])
+      })
     })
   }
 }

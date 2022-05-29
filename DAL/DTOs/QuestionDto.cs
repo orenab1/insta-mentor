@@ -59,5 +59,7 @@ namespace DAL.DTOs
         public string DiscordLink{get;set;}
 
         public bool HasCurrentUserRequestedFeedback{get;set;}
+
+        public bool WasReviewed{get;set;}
     }
 }

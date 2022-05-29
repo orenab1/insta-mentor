@@ -251,7 +251,7 @@ namespace API.Services
              _mailService
                 .SendEmailAsync(new EmailDto {
                     Subject = "Here are your vidCallMe.com question's links",
-                    Body =$"To view and edit your question, click <a href='{getDisplayink(questionGuid)}'>here</a> <br/><br/> To go to your Discord channel to get an answer, click <a href='{discordLink}'>here</a>",
+                    Body =$"To view and edit your question, click <a href='{getDisplayLink(questionGuid)}'>here</a> <br/><br/> To go to your Discord channel to get an answer, click <a href='{discordLink}'>here</a>",
                     To = userEmail
                 });
         }
@@ -272,18 +272,23 @@ namespace API.Services
             return callbackLink;
         }
 
-       public void AskFeedback(string askerEmail,string answererUsername,string questionIdOrGuid)
+       public void AskFeedback(string askerEmail,string answererUsername, int answererUserid,string questionIdOrGuid)
         {
              _mailService
                 .SendEmailAsync(new EmailDto {
                     Subject = $"{answererUsername} has asked for your feedback on vidCallMe.com!",
-                    Body =$"If you received help from {answererUsername}, please consider giving him a feedback <a href='{getDisplayink(questionIdOrGuid)}'>here</a>",
+                    Body =$"If you received help from {answererUsername}, please consider giving him a feedback <a href='{getFeedbackLink(questionIdOrGuid,answererUserid)}'>here</a>",
                     To = askerEmail
                 });
         }
 
-        private string getDisplayink(string guid){
-            return this._config["baseWebUrl"]+"display-question/"+guid;
+        private string getDisplayLink(string idOrGuid){
+            return this._config["baseWebUrl"]+"display-question/"+idOrGuid;
+        }
+
+
+         private string getFeedbackLink(string idOrGuid, int answererUserid){
+            return $"{getDisplayLink(idOrGuid)}/fb/user/{answererUserid}";
         }
     }
 }

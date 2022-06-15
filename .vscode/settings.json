@@ -10,6 +10,6 @@
     ],
     "sqltools.useNodeRuntime": true,
     "appService.defaultWebAppToDeploy": "",
-    "appService.deploySubpath": "API\\publish"
-   //  "appService.deploySubpath": "client\\dist\\client"
+  //  "appService.deploySubpath": "API\\publish"
+     "appService.deploySubpath": "client\\dist\\client"
 }

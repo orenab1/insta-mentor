@@ -47,7 +47,7 @@ export class EditQuestionComponent implements OnInit {
   ) {
     this.accountService.currentUser$
       .pipe(take(1))
-      .subscribe((user) => (this.currentUserUsername = user.username))
+      .subscribe((user) => {if (user!=null) (this.currentUserUsername = user.username)})
   }
 
   ngOnInit(): void {
@@ -135,7 +135,7 @@ export class EditQuestionComponent implements OnInit {
 
     this.questionService.getQuestion(this.idOrGuid).subscribe(
       (response) => {
-        if (response.id != 0) {
+        if (response!=null && response.id != 0) {
           this.model = response
           this.isCurrentUserQuestionOwner =
             this.model.askerUsername === this.currentUserUsername

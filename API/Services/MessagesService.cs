@@ -251,7 +251,9 @@ namespace API.Services
              _mailService
                 .SendEmailAsync(new EmailDto {
                     Subject = "Here are your vidCallMe.com question's links",
-                    Body =$"To view and edit your question, click <a href='{getDisplayLink(questionGuid)}'>here</a> <br/><br/> To go to your Discord channel to get an answer, click <a href='{discordLink}'>here</a>",
+                    Body =@$"To view and edit your question, click <a href='{getDisplayLink(questionGuid)}'>here</a> <br/><br/> 
+                             To go to your Discord channel to get an answer, click <a href='{discordLink}'>here</a> <br/><br/> 
+                             If no one joins your Discord channel, you can schedule for a helper to help you, <a href=https://calendly.com/oren_a/helping-solve-issues>here</a>",
                     To = userEmail
                 });
         }

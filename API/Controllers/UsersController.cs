@@ -52,7 +52,7 @@ namespace API.Controllers
             return await _unitOfWork.UserRepository.GetUserSummaryDtoById(id);
         }
 
-        [Authorize]
+        
         [HttpGet("{username}")]
         [ActionName("get-user")]
         public async Task<ActionResult<UserFullDto>> GetUser(string username)
